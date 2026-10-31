@@ -294,7 +294,7 @@ tr:hover .av.ring,.lg:hover .av.ring{transform:scale(1.08)}
 .player .cflag,.player .seedn,.player .info{z-index:2}
 .pod img.mono{object-fit:cover;padding:0;box-shadow:0 0 0 3px rgba(255,255,255,.35)}
 .sheet-top.has-photo{min-height:260px}
-.sheet-top .sheet-photo{position:absolute;right:20px;bottom:0;width:46%;height:112%;object-fit:contain;object-position:bottom right;-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent);filter:drop-shadow(0 10px 30px rgba(0,0,0,.35))}
+.sheet-top .sheet-photo{position:absolute;right:0;top:0;width:56%;height:100%;object-fit:cover;object-position:center 30%;-webkit-mask-image:linear-gradient(90deg,transparent,#000 50%);mask-image:linear-gradient(90deg,transparent,#000 50%)}
 .sheet-top{overflow:hidden}
 .sheet-top.has-photo > :not(.sheet-photo):not(.close){max-width:60%;position:relative}
 .ls-main{display:flex;gap:26px;align-items:center}
@@ -306,7 +306,7 @@ tr:hover .av.ring,.lg:hover .av.ring{transform:scale(1.08)}
 @media (max-width:640px){
   .ls-main{flex-direction:column;align-items:flex-start}
   .ls-photo{width:150px;height:190px;margin:-20px 0 0}
-  .sheet-top .sheet-photo{width:55%;opacity:.75}
+  .sheet-top .sheet-photo{width:62%;opacity:.8}
   .sheet-top.has-photo > :not(.sheet-photo):not(.close){max-width:75%}
   .lead-story > img.nphoto{width:100%;height:62%;-webkit-mask-image:linear-gradient(180deg,#000 50%,transparent);mask-image:linear-gradient(180deg,#000 50%,transparent)}
   .lead-story.has-photo h3,.lead-story.has-photo p{max-width:none}
@@ -809,7 +809,7 @@ document.documentElement.classList.add("js");
 const FLAG_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20"><rect width="30" height="10" fill="#fff"/><rect y="10" width="30" height="10" fill="#d52b1e"/><rect width="10" height="10" fill="#0039a6"/><polygon fill="#fff" points="5.00,2.50 5.56,4.23 7.38,4.23 5.91,5.30 6.47,7.02 5.00,5.96 3.53,7.02 4.09,5.30 2.62,4.23 4.44,4.23"/></svg>';
 document.documentElement.style.setProperty("--flag", `url("data:image/svg+xml,${encodeURIComponent(FLAG_SVG)}")`);
 const FOTOS = new Set(DATA.fotos||[]);
-const FV = "?v=5";
+const FV = "?v=6";
 const bust = id => FOTOS.has(id) ? `fotos/${id}-busto.webp${FV}` : null;
 const cut = id => FOTOS.has(id) ? `fotos/${id}-recorte.webp${FV}` : null;
 const avatar = (id, cls="") => FOTOS.has(id) ? `<img class="av ${cls}" src="fotos/${id}-cara.jpg${FV}" alt="" loading="lazy">` : `<span class="av av-ini ${cls}" aria-hidden="true">${ini(id)}</span>`;
@@ -1082,7 +1082,7 @@ function openPlayer(id){
   const h=DATA.h2h.filter(r=>r[0]===id||r[1]===id).map(r=>r[0]===id?[r[1],r[2],r[3]]:[r[0],r[3],r[2]]);
   const m=$("#modal");
   m.innerHTML=`<div class="sheet"><div class="sheet-top ${FOTOS.has(id)?"has-photo":""}"><button class="close" aria-label="Cerrar ficha">×</button>
-      ${cut(id)?`<img class="sheet-photo" src="${cut(id)}" alt="">`:`<div class="mono" aria-hidden="true">${ini(id)}</div>`}
+      ${FOTOS.has(id)?`<img class="sheet-photo" src="fotos/${id}-rostro.jpg${FV}" alt="">`:`<div class="mono" aria-hidden="true">${ini(id)}</div>`}
       ${wflag(64,14)}<br><span class="tagline">${pos>=0?`Número ${pos+1} del ranking`:stLabel(p.estado)}</span>
       <h3 id="mName">${p.nombre}</h3>${p.apodo&&p.apodo!==p.nombre?`<div class="nick">“${p.apodo}”</div>`:""}
       <div class="big num">${fmt(p.pts)}<small>PUNTOS</small></div></div>

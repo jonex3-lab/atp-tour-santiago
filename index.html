@@ -301,7 +301,19 @@ p{margin:0}
 .prow .who b{font-family:var(--f-display);font-size:19px;font-weight:700;display:block;line-height:1.15}
 .prow .who .st{display:inline-block;margin-top:6px}
 .prow .crowns{display:flex;flex-wrap:wrap;align-items:flex-end;gap:6px 4px;min-width:0}
-.ti{display:inline-block;flex:none;line-height:0}
+.ti{display:inline-flex;flex-direction:column;align-items:center;gap:4px;flex:none;line-height:1}
+.ti em{font-style:normal;font-family:var(--f-mono);font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--muted)}
+.ti.c2000 em{color:#ffc83d}.ti.c1000 em{color:#d6dcef}.ti.c500 em{color:#e4a27a}
+.ti.c2000 svg{filter:drop-shadow(0 0 8px rgba(255,200,61,.55))}
+.brk{grid-column:2 / -1;display:flex;flex-wrap:wrap;gap:8px}
+.bk{display:inline-flex;align-items:center;gap:7px;padding:5px 12px 5px 8px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid var(--line);background:rgba(255,255,255,.04)}
+.bk svg{width:15px;height:19px}
+.bk b{font-family:var(--f-display);font-size:14px}
+.bk.c2000{border-color:rgba(255,200,61,.55);background:linear-gradient(120deg,rgba(255,200,61,.18),rgba(224,112,0,.08))}
+.bk.c1000{border-color:rgba(201,209,230,.5);background:linear-gradient(120deg,rgba(255,255,255,.14),rgba(118,129,159,.08))}
+.bk.c500{border-color:rgba(208,132,74,.55);background:linear-gradient(120deg,rgba(208,132,74,.2),rgba(135,69,33,.08))}
+.bk.lost{color:var(--muted)}
+.bk.zero{opacity:.35}
 .ti svg{display:block}
 .ti.c500 svg{width:24px;height:30px}.ti.c1000 svg{width:30px;height:38px}.ti.c2000 svg{width:38px;height:48px}
 .ti.lost svg{width:20px;height:25px;opacity:.55}
@@ -318,6 +330,7 @@ p{margin:0}
   .prow{grid-template-columns:44px minmax(0,1fr) auto;gap:10px 14px;padding:18px}
   .prow .pn{font-size:30px}
   .prow .crowns{grid-column:1 / -1;grid-row:2}
+  .brk{grid-column:1 / -1}
 }
 .ptable{width:100%;border-collapse:collapse;min-width:620px}
 .ptable th,.ptable td{padding:14px 12px;text-align:left;border-bottom:1px solid var(--line)}
@@ -894,29 +907,39 @@ let io=null;
         </article>`).join("")}</div></div>`;
   }).join("");
   const catCls = c => c.startsWith("Grand")?"c2000":c.startsWith("Masters")?"c1000":"c500";
+  const catShort = c => c.startsWith("Grand")?"GS":c.startsWith("Masters")?"1000":"500";
   const catFill = c => c.startsWith("Grand")?"url(#pg2000)":c.startsWith("Masters")?"url(#pg1000)":"url(#pg500)";
   const byP = {};
   DATA.torneos.forEach(t=>{ (byP[t.campeon]=byP[t.campeon]||{w:[],l:[]}).w.push(t); (byP[t.finalista]=byP[t.finalista]||{w:[],l:[]}).l.push(t); });
   const order = Object.keys(byP).sort((a,b)=>byP[b].w.length-byP[a].w.length||byP[b].l.length-byP[a].l.length||P[b].pts-P[a].pts);
   const rank = {"Grand Slam 2000":0,"Masters 1000":1,"ATP 500":2};
   $("#pal").innerHTML = `<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-      <linearGradient id="pg2000" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff2b0"/><stop offset=".5" stop-color="#ffc83d"/><stop offset="1" stop-color="#ff7a1a"/></linearGradient>
-      <linearGradient id="pg1000" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe38a"/><stop offset="1" stop-color="#e09a12"/></linearGradient>
-      <linearGradient id="pg500" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6e7b8"/><stop offset="1" stop-color="#c99a3a"/></linearGradient></defs></svg>` +
+      <linearGradient id="pg2000" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff4b8"/><stop offset=".45" stop-color="#ffc83d"/><stop offset="1" stop-color="#e07000"/></linearGradient>
+      <linearGradient id="pg1000" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#c9d1e6"/><stop offset="1" stop-color="#76819f"/></linearGradient>
+      <linearGradient id="pg500" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd6ae"/><stop offset=".5" stop-color="#d0844a"/><stop offset="1" stop-color="#874521"/></linearGradient></defs></svg>` +
     order.map((id,i)=>{
       const p=P[id], w=[...byP[id].w].sort((a,b)=>rank[a.cat]-rank[b.cat]||a.anio-b.anio), l=byP[id].l;
       let k=0;
-      const cups = w.map(t=>`<span class="ti ${catCls(t.cat)}" title="${t.nombre} ${t.anio} · ${t.cat}" style="transition-delay:${200+(k++)*90}ms">${cupIcon(catFill(t.cat))}</span>`).join("")
+      const cups = w.map(t=>`<span class="ti ${catCls(t.cat)}" title="${t.nombre} ${t.anio} · ${t.cat}" style="transition-delay:${200+(k++)*90}ms">${cupIcon(catFill(t.cat))}<em>${catShort(t.cat)}</em></span>`).join("")
         + (l.length&&w.length?'<span class="ti sep"></span>':"")
-        + l.map(t=>`<span class="ti lost" title="Final perdida · ${t.nombre} ${t.anio}" style="transition-delay:${200+(k++)*90}ms;color:var(--muted)">${cupIcon("none")}</span>`).join("");
+        + l.map(t=>`<span class="ti lost" title="Final perdida · ${t.nombre} ${t.anio}" style="transition-delay:${200+(k++)*90}ms;color:var(--muted)">${cupIcon("none")}<em>F</em></span>`).join("");
       const g = c => w.filter(t=>t.cat.startsWith(c)).length;
       return `<div class="prow rv ${i%2?"r":"l"} ${i===0?"top":""}" data-id="${id}" tabindex="0" role="button" aria-label="Ver ficha de ${p.nombre}">
         <div class="pn">${i+1}</div>
         <div class="who"><b>${fmini()}${p.nombre}</b>${p.estado!=="activo"?`<span class="st ${p.estado}">${stLabel(p.estado)}</span>`:`<span class="st activo">Activo</span>`}</div>
         <div class="crowns">${cups}</div>
-        <div class="tot"><b class="num">${w.length}</b><span>${w.length===1?"título":"títulos"}</span><small>${w.length+l.length} finales · ${g("Grand")} GS · ${g("Masters")} M1000 · ${g("ATP")} ATP 500</small></div>
+        <div class="tot"><b class="num">${w.length}</b><span>${w.length===1?"título":"títulos"}</span></div>
+        <div class="brk">
+          <span class="bk c2000 ${g("Grand")?"":"zero"}">${cupIcon("url(#pg2000)")}<b class="num">${g("Grand")}</b> Grand Slam</span>
+          <span class="bk c1000 ${g("Masters")?"":"zero"}">${cupIcon("url(#pg1000)")}<b class="num">${g("Masters")}</b> Masters 1000</span>
+          <span class="bk c500 ${g("ATP")?"":"zero"}">${cupIcon("url(#pg500)")}<b class="num">${g("ATP")}</b> ATP 500</span>
+          <span class="bk lost ${l.length?"":"zero"}">${cupIcon("none")}<b class="num">${l.length}</b> ${l.length===1?"final perdida":"finales perdidas"}</span>
+        </div>
       </div>`;}).join("");
-  $("#palKey").innerHTML = `<span class="ti c2000">${cupIcon("url(#pg2000)")}</span> Grand Slam <span class="ti c1000">${cupIcon("url(#pg1000)")}</span> Masters 1000 <span class="ti c500">${cupIcon("url(#pg500)")}</span> ATP 500 <span class="ti lost" style="color:var(--muted)">${cupIcon("none")}</span> Final perdida`;
+  $("#palKey").innerHTML = `<span><span class="ti c2000">${cupIcon("url(#pg2000)")}<em>GS</em></span> Grand Slam · copa de oro, la más grande</span>
+    <span><span class="ti c1000">${cupIcon("url(#pg1000)")}<em>1000</em></span> Masters 1000 · copa de plata</span>
+    <span><span class="ti c500">${cupIcon("url(#pg500)")}<em>500</em></span> ATP 500 · copa de bronce</span>
+    <span><span class="ti lost" style="color:var(--muted)">${cupIcon("none")}<em>F</em></span> Final perdida</span>`;
   $("#palKey").querySelectorAll(".ti").forEach(e=>e.style.transform="none");
   document.querySelectorAll(".prow").forEach(el=>{ el.onclick=()=>openPlayer(el.dataset.id); el.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();openPlayer(el.dataset.id)} }; });
 })();

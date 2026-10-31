@@ -949,7 +949,17 @@ let io=null;
   const ids=Object.entries(P).filter(([id])=>DATA.h2h.some(r=>r[0]===id||r[1]===id))
     .sort((a,b)=>(a[1].estado==="activo"?0:1)-(b[1].estado==="activo"?0:1)||b[1].pts-a[1].pts);
   const opts=ids.map(([id,p])=>`<option value="${id}">${p.nombre}</option>`).join("");
-  $("#h2hA").innerHTML=opts; $("#h2hB").innerHTML=opts; $("#h2hA").value="nunez"; $("#h2hB").value="mila";
+  $("#h2hA").innerHTML=opts; $("#h2hA").value="nunez";
+  /* el segundo menú solo muestra rivales con al menos un partido contra el primero */
+  const rivalsOf = a => DATA.h2h.filter(r=>r[0]===a||r[1]===a)
+    .map(r=>r[0]===a?[r[1],r[2]+r[3]]:[r[0],r[2]+r[3]])
+    .sort((x,y)=>y[1]-x[1]||P[y[0]].pts-P[x[0]].pts);
+  function fillB(prefer){
+    const a=$("#h2hA").value, rv=rivalsOf(a);
+    $("#h2hB").innerHTML = rv.map(([id,n])=>`<option value="${id}">${P[id].nombre} (${n} ${n===1?"partido":"partidos"})</option>`).join("");
+    $("#h2hB").value = rv.some(([id])=>id===prefer) ? prefer : (rv[0]?rv[0][0]:"");
+  }
+  fillB("mila");
   const get=(a,b)=>{const r=DATA.h2h.find(r=>r[0]===a&&r[1]===b); if(r) return [r[2],r[3]]; const s=DATA.h2h.find(r=>r[0]===b&&r[1]===a); return s?[s[3],s[2]]:null;};
   function draw(){
     const a=$("#h2hA").value,b=$("#h2hB").value,o=$("#h2hOut");
@@ -963,10 +973,10 @@ let io=null;
       <p class="h2h-msg">${tot} ${tot===1?"partido registrado":"partidos registrados"}</p>`;
     requestAnimationFrame(()=>requestAnimationFrame(()=>{const i=o.querySelectorAll(".h2h-bar i"); i[0].style.width=r[0]/tot*100+"%"; i[1].style.width=r[1]/tot*100+"%";}));
   }
-  $("#h2hA").onchange=draw; $("#h2hB").onchange=draw; draw();
+  $("#h2hA").onchange=()=>{fillB($("#h2hB").value);draw();}; $("#h2hB").onchange=draw; draw();
   const top=[...DATA.h2h].sort((x,y)=>(y[2]+y[3])-(x[2]+x[3])).slice(0,8);
   $("#rivals").innerHTML=top.map(r=>`<button class="rival" data-a="${r[0]}" data-b="${r[1]}">${short(r[0])} vs ${short(r[1])}<b>${r[2]}-${r[3]}</b></button>`).join("");
-  document.querySelectorAll(".rival").forEach(b=>b.onclick=()=>{$("#h2hA").value=b.dataset.a;$("#h2hB").value=b.dataset.b;draw();});
+  document.querySelectorAll(".rival").forEach(b=>b.onclick=()=>{$("#h2hA").value=b.dataset.a;fillB(b.dataset.b);draw();});
 })();
 
 /* ---------- ficha del jugador ---------- */

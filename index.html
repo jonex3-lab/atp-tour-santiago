@@ -108,6 +108,10 @@ p{margin:0}
 .band.img{background-size:cover;background-position:center}
 .band.img::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,8,23,.55),rgba(12,8,23,.78));pointer-events:none}
 .band > .wrap{position:relative;z-index:1}
+.band.img.scene{background-position:center 55%}
+.band.img.scene::before{background:linear-gradient(180deg,rgba(12,8,23,.72) 0%,rgba(12,8,23,.28) 32%,rgba(12,8,23,.22) 70%,rgba(12,8,23,.6) 100%)}
+.band.scene .head p{text-shadow:0 2px 12px rgba(0,0,0,.7)}
+.band.scene .bracket .box:not(.ch){fill:rgba(12,8,23,.78)}
 .muted{color:var(--muted)}
 .head{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px 60px;align-items:end;margin-bottom:56px}
 .head h2{font-size:clamp(38px,6.4vw,84px);font-weight:900;letter-spacing:-.02em;margin-top:14px}
@@ -755,7 +759,7 @@ const DATA = {
      links une cada partido con el lugar al que avanza su ganador. */
   cuadros: {
     kinoshita2026: {
-      titulo:"Kinoshita Group Japan Open", anio:2026, cat:"ATP 500", mes:"Junio 2026",
+      titulo:"Kinoshita Group Japan Open", anio:2026, cat:"ATP 500", mes:"Junio 2026", fondo:"img/kinoshita.jpg?v=1",
       columnas:[["RONDA QUALY","0 PTS"],["SEMIFINALES","125 PTS"],["FINAL","250 PTS"],["CAMPEÓN","500 PTS"]],
       cajas:{
         q1:{col:0,y:110,j:"palma",s:4,win:1}, q2:{col:0,y:170,j:"gatica",s:5,win:0},
@@ -873,6 +877,7 @@ let io=null;
   const t = DATA.torneos.filter(t=>t.cuadro).sort((a,b)=>b.anio-a.anio||b.m-a.m)[0];
   const c = DATA.cuadros[t.cuadro];
   $("#bkKick").textContent = `Último torneo · ${c.mes}`;
+  if(c.fondo){ const sec=$("#ultimo"); sec.style.backgroundImage=`url(${c.fondo})`; sec.classList.add("scene"); }
   $("#bkTitle").innerHTML = `${c.titulo.replace(/ (\S+)$/," <em>$1</em>")}`;
   $("#bkText").textContent = `${c.cat}. ${P[t.campeon].nombre} se quedó con el título ante ${P[t.finalista].nombre}.`;
   const X=[0,265,530,790], W=215, H=52, WC=210, HC=72;

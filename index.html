@@ -357,7 +357,7 @@ tr:hover .av.ring,.lg:hover .av.ring{transform:scale(1.08)}
 .pod.has-cut .s{max-width:50%}
 .prow{position:relative;overflow:hidden}
 .prow.has-cut{padding-right:180px}
-.prow .prow-cut{position:absolute;right:14px;top:10px;height:180px;width:146px;object-fit:contain;object-position:top;-webkit-mask-image:linear-gradient(180deg,#000 62%,transparent);mask-image:linear-gradient(180deg,#000 62%,transparent);pointer-events:none;transition:transform .5s}
+.prow .prow-cut{position:absolute;right:14px;top:8px;height:150px;width:122px;object-fit:contain;object-position:top;-webkit-mask-image:linear-gradient(180deg,#000 84%,transparent);mask-image:linear-gradient(180deg,#000 84%,transparent);pointer-events:none;transition:transform .5s}
 .prow:hover .prow-cut{transform:translateY(-6px)}
 .h2h-cut{display:block;width:250px;height:309px;max-width:100%;margin:0 auto -34px;object-fit:contain;object-position:bottom;-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent);filter:drop-shadow(0 18px 30px rgba(0,0,0,.4));position:relative;z-index:0}
 .h2h-score b,.h2h-score span{position:relative;z-index:1}
@@ -809,7 +809,7 @@ document.documentElement.classList.add("js");
 const FLAG_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20"><rect width="30" height="10" fill="#fff"/><rect y="10" width="30" height="10" fill="#d52b1e"/><rect width="10" height="10" fill="#0039a6"/><polygon fill="#fff" points="5.00,2.50 5.56,4.23 7.38,4.23 5.91,5.30 6.47,7.02 5.00,5.96 3.53,7.02 4.09,5.30 2.62,4.23 4.44,4.23"/></svg>';
 document.documentElement.style.setProperty("--flag", `url("data:image/svg+xml,${encodeURIComponent(FLAG_SVG)}")`);
 const FOTOS = new Set(DATA.fotos||[]);
-const FV = "?v=4";
+const FV = "?v=5";
 const bust = id => FOTOS.has(id) ? `fotos/${id}-busto.webp${FV}` : null;
 const cut = id => FOTOS.has(id) ? `fotos/${id}-recorte.webp${FV}` : null;
 const avatar = (id, cls="") => FOTOS.has(id) ? `<img class="av ${cls}" src="fotos/${id}-cara.jpg${FV}" alt="" loading="lazy">` : `<span class="av av-ini ${cls}" aria-hidden="true">${ini(id)}</span>`;

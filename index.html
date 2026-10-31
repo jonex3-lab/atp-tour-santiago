@@ -519,6 +519,10 @@ tr:hover .av.ring,.lg:hover .av.ring{transform:scale(1.08)}
 .sheet-top .tagline{color:#fff}
 .sheet-top h3{font-size:clamp(28px,4vw,40px);margin-top:10px;position:relative}
 .sheet-top .nick{margin-top:6px;color:#fbe9ff;position:relative}
+.card-alias{display:block;font-style:normal;font-family:var(--f-display);font-weight:800;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:4px;background:linear-gradient(100deg,#ffd76a,#ff9a2e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pod-alias{position:relative;z-index:2;font-family:var(--f-display);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-top:6px;opacity:.85;max-width:58%}
+.ls-alias{background:linear-gradient(100deg,#ffd76a,#ff9a2e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.h2h-alias{display:block;font-style:normal;font-family:var(--f-display);font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-top:4px;background:linear-gradient(100deg,#ffd76a,#ff9a2e);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
 .sheet-top .alias{position:relative;display:table;margin:12px 0 2px;font-family:var(--f-display);font-weight:800;font-size:clamp(15px,2vw,19px);letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border-radius:999px;background:linear-gradient(100deg,#ffd76a,#ff9a2e);color:#2a1400;box-shadow:0 6px 20px rgba(255,170,40,.35);animation:aliasIn .7s .15s cubic-bezier(.3,1.5,.5,1) both}
 @keyframes aliasIn{from{transform:scale(.6) translateX(-20px);opacity:0}}
 .sheet-top .big{font-family:var(--f-display);font-weight:900;font-size:44px;margin-top:16px;position:relative}
@@ -930,7 +934,7 @@ let io=null;
   $("#heroFlag").innerHTML = wflag(34,8);
   $("#heroMeta").innerHTML = `<span>Número 1<b>${lp.nombre}</b></span><span>Torneos jugados<b>${DATA.torneos.length}</b></span><span>Jugadores en la historia<b>${Object.keys(P).length}</b></span>`;
   const a = DATA.noticias.map(n=>n.titulo);
-  const b = activos.map(([,p],i)=>`${i+1}. ${p.nombre} · ${fmt(p.pts)}`).concat([`Próximo · ${DATA.meses[10].nombre} · por confirmar`]);
+  const b = activos.map(([,p],i)=>`${i+1}. ${p.alias?p.alias+" · ":""}${p.nombre} · ${fmt(p.pts)}`).concat([`Próximo · ${DATA.meses[10].nombre} · por confirmar`]);
   const dup = arr => { const h=arr.map(t=>`<span>${t}</span>`).join(""); return h+h; };
   $("#rbA").innerHTML = dup(a); $("#rbB").innerHTML = dup(b);
   $("#updated").textContent = "Datos al " + fdate(DATA.actualizado);
@@ -1034,7 +1038,7 @@ function sakura(sec){
   $("#podium").innerHTML = activos.slice(0,3).map(([id,p],i)=>`
     <article class="pod rv ${["l","u","r"][i]} ${cut(id)?"has-cut":""}" style="transition-delay:${i*120}ms" data-id="${id}" tabindex="0" role="button" aria-label="Ver ficha de ${p.nombre}">
       ${FOTOS.has(id)?`<img class="pod-photo" src="fotos/${id}-rostro.jpg${FV}" alt="">`:`<div class="pos">${i+1}</div>`}<div class="flagrow">${FOTOS.has(id)?`<span class="posn">${i+1}</span>`:`<div class="mono">${ini(id)}</div>`}${wflag(42,10)}</div>
-      <h3>${p.nombre}</h3><div class="pts num">${fmt(p.pts)}<small>PTS</small></div>
+      <h3>${p.nombre}</h3>${p.alias?`<div class="pod-alias">${p.alias}</div>`:""}<div class="pts num">${fmt(p.pts)}<small>PTS</small></div>
       <div class="s">${p.tit} ${p.tit===1?"título":"títulos"} · ${p.v}-${p.d} · ${pct(p)}% de victorias</div>
     </article>`).join("");
   const max=activos[0][1].pts||1;
@@ -1059,7 +1063,7 @@ function sakura(sec){
     <button class="player rv ${i%2?"r":"l"}" style="transition-delay:${i*90}ms" data-id="${id}">
       <div class="bg"></div>${FOTOS.has(id)?`<img class="pphoto" src="fotos/${id}.jpg${FV}" alt="${p.nombre}" loading="lazy"><div class="tint"></div>`:`<div class="mono">${ini(id)}</div>`}
       <span class="cflag">${wflag(54,12)}</span><span class="seedn">#${i+1}</span>
-      <div class="info"><b>${p.nombre}</b><span>${fmt(p.pts)} pts · ${p.tit} ${p.tit===1?"título":"títulos"}</span></div>
+      <div class="info">${p.alias?`<em class="card-alias">${p.alias}</em>`:""}<b>${p.nombre}</b><span>${fmt(p.pts)} pts · ${p.tit} ${p.tit===1?"título":"títulos"}</span></div>
     </button>`).join("");
   document.querySelectorAll(".player").forEach(b=>b.onclick=()=>openPlayer(b.dataset.id));
 })();
@@ -1068,7 +1072,7 @@ function sakura(sec){
 (function(){
   const [sid,sp]=leyendas[0];
   $("#legendStar").innerHTML = `
-    <div class="ls-main">${cut(sid)?`<img class="ls-photo" src="${cut(sid)}" alt="${sp.nombre}">`:""}<div><span class="tagline">La gran leyenda</span><div style="margin-top:14px">${wflag(56,12)}</div><h3 style="margin-top:12px">${sp.nombre}${sp.apodo?` <span style="opacity:.6">“${sp.apodo}”</span>`:""}</h3>
+    <div class="ls-main">${cut(sid)?`<img class="ls-photo" src="${cut(sid)}" alt="${sp.nombre}">`:""}<div><span class="tagline">La gran leyenda</span><div style="margin-top:14px">${wflag(56,12)}</div><h3 style="margin-top:12px">${sp.nombre}${sp.alias?`, <span class="ls-alias">${sp.alias}</span>`:""}</h3>${sp.apodo?`<div class="muted" style="margin-top:6px">“${sp.apodo}”</div>`:""}
       <p class="muted" style="margin-top:10px">Llegó a ser número ${sp.mejor} del circuito y ganó ${sp.tit} de sus ${sp.fin} finales.</p></div></div>
     <div class="stats"><div><b class="num">${fmt(sp.pts)}</b><span>Puntos</span></div><div><b class="num">${sp.tit}</b><span>Títulos</span></div>
       <div><b class="num">${sp.v}-${sp.d}</b><span>V-D</span></div><div><b class="num">${pct(sp)}%</b><span>Victorias</span></div></div>`;
@@ -1175,7 +1179,7 @@ function sakura(sec){
         <div class="h2h-face a">${face(a)}</div>
         <div class="h2h-mid">
           <div class="h2h-nums"><b class="num ${r[0]>r[1]?"lead":""}">${r[0]}</b><span class="dash">–</span><b class="num ${r[1]>r[0]?"lead":""}">${r[1]}</b></div>
-          <div class="h2h-names"><span>${fmini()}${P[a].nombre}</span><span>${fmini()}${P[b].nombre}</span></div>
+          <div class="h2h-names"><span>${fmini()}${P[a].nombre}${P[a].alias?`<em class="h2h-alias">${P[a].alias}</em>`:""}</span><span>${fmini()}${P[b].nombre}${P[b].alias?`<em class="h2h-alias">${P[b].alias}</em>`:""}</span></div>
         </div>
         <div class="h2h-face b">${face(b)}</div>
       </div>

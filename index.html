@@ -412,7 +412,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
     <div class="wrap">
       <div class="head">
         <div class="rv l"><span class="kick">Lo último</span><h2 class="fh">Noticias del <em>circuito</em></h2></div>
-        <p class="muted rv r">Resultados, ranking y lo que pasa en cada cuadro. Con la aplicación, cada torneo cerrado publicará aquí su noticia.</p>
+        <p class="muted rv r">Campeones, sorpresas y el pulso del ranking, torneo a torneo.</p>
       </div>
       <div class="news" id="news"></div>
     </div>
@@ -450,10 +450,10 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
     <div class="wrap">
       <div class="head">
         <div class="rv l"><span class="kick">Circuito actual</span><h2 class="fh">Los <em>siete</em></h2></div>
-        <p class="muted rv r">Los jugadores que hoy disputan el circuito, ordenados por ranking. Toca una tarjeta para abrir la ficha.</p>
+        <p class="muted rv r">Siete jugadores pelean hoy por la cima del circuito.</p>
       </div>
       <div class="rail" id="rail"></div>
-      <p class="hint muted">Fotos pendientes. Desliza para ver a todos.</p>
+      
     </div>
   </section>
 
@@ -462,7 +462,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
     <div class="wrap">
       <div class="head">
         <div class="rv l"><span class="kick">Los que hicieron historia</span><h2 class="fh">Leyendas del <em>tour</em></h2></div>
-        <p class="rv r" style="color:#e6dcff">Jugadores que marcaron las primeras etapas y hoy están fuera del circuito actual.</p>
+        <p class="rv r" style="color:#e6dcff">Los nombres que levantaron el circuito en sus primeros años.</p>
       </div>
       <div class="legend-star rv u" id="legendStar"></div>
       <div class="legends" id="legends"></div>
@@ -473,7 +473,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
     <div class="wrap">
       <div class="head">
         <div class="rv l"><span class="kick">Temporada 2026</span><h2 class="fh">Un torneo por mes</h2></div>
-        <p class="muted rv r">Cada mes del calendario actual ocupa el lugar del torneo histórico de ese mismo mes.</p>
+        <p class="muted rv r">Doce meses, doce torneos. De Melbourne a Shanghái.</p>
       </div>
       <div class="season rv u" id="season"></div>
     </div>
@@ -483,7 +483,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
     <div class="wrap">
       <div class="head">
         <div class="rv l"><span class="kick">Desde 2015</span><h2 class="fh">La <em>historia</em></h2></div>
-        <p class="muted rv r">Tres etapas. Los nombres de los torneos cambiaron, pero el formato de un torneo por mes se mantuvo.</p>
+        <p class="muted rv r">De las canchas de comuna a los grandes nombres del tenis: once años de circuito en tres etapas.</p>
       </div>
       <div class="chapters" id="chapters"></div>
       <div id="eras"></div>
@@ -503,7 +503,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
     <div class="wrap">
       <div class="head">
         <div class="rv l"><span class="kick" style="color:#fff">Cara a cara</span><h2 class="fh">Head to Head</h2></div>
-        <p class="rv r" style="color:#f3ecff">Elige a dos jugadores y mira cómo les ha ido en los partidos registrados entre ellos.</p>
+        <p class="rv r" style="color:#f3ecff">Las rivalidades que han marcado el circuito, partido a partido.</p>
       </div>
       <div class="h2h-pick rv u">
         <label><span class="sr">Jugador 1</span><select id="h2hA"></select></label>
@@ -576,9 +576,9 @@ const DATA = {
     {id:"historica", nombre:"Etapa histórica", anios:"2015–17",
      desc:"Los primeros años. Cada torneo llevaba el nombre de la comuna donde se jugaba, con categorías ATP 500, Masters 1000 y Grand Slam 2000."},
     {id:"transicion", nombre:"Transición", anios:"2023",
-     desc:"El regreso del circuito. Se mantuvieron los nombres por comuna mientras se preparaba el nuevo calendario."},
+     desc:"El regreso del circuito, todavía con los nombres de comuna, antes del salto a la etapa actual."},
     {id:"nueva", nombre:"Etapa actual", anios:"2025→",
-     desc:"Cada mes toma el nombre de un torneo del circuito profesional. Sigue siendo un torneo por mes."}
+     desc:"Los torneos toman el nombre de los grandes escenarios del tenis mundial, con el mismo ritmo de siempre: uno por mes."}
   ],
   torneos: [
     {etapa:"historica", nombre:"La Cisterna",          anio:2015, m:3,  cat:"ATP 500",         campeon:"juanito", finalista:"valenzuela"},
@@ -722,7 +722,7 @@ let io=null;
 
 /* ---------- ranking ---------- */
 (function(){
-  $("#rankIntro").textContent = `Suma de todos los puntos desde 2015. Actualizado al ${fdate(DATA.actualizado)}.`;
+  $("#rankIntro").textContent = `Puntos acumulados desde 2015. Corte al ${fdate(DATA.actualizado)}.`;
   $("#podium").innerHTML = activos.slice(0,3).map(([id,p],i)=>`
     <article class="pod rv ${["l","u","r"][i]}" style="transition-delay:${i*120}ms" data-id="${id}" tabindex="0" role="button" aria-label="Ver ficha de ${p.nombre}">
       <div class="pos">${i+1}</div><div class="mono">${ini(id)}</div>
@@ -738,7 +738,7 @@ let io=null;
       <td style="width:28%"><div class="bar"><i data-w="${Math.max(1.5,p.pts/max*100)}"></i></div></td>
       <td class="c num">${p.tit}</td><td class="c num">${p.v}-${p.d}</td><td class="c num">${pct(p)}%</td>
     </tr>`).join("");
-  $("#rankNote").textContent = "Toca un jugador para ver su ficha completa.";
+  $("#rankNote").textContent = "";
   document.querySelectorAll("#rank tr,.pod").forEach(el=>{
     el.onclick=()=>openPlayer(el.dataset.id);
     el.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();openPlayer(el.dataset.id)} };
@@ -749,7 +749,7 @@ let io=null;
 (function(){
   $("#rail").innerHTML = activos.map(([id,p],i)=>`
     <button class="player rv ${i%2?"r":"l"}" style="transition-delay:${i*90}ms" data-id="${id}">
-      <div class="bg"></div><span class="ph">Foto pendiente</span><span class="seedn">#${i+1}</span>
+      <div class="bg"></div><span class="seedn">#${i+1}</span>
       <div class="mono">${ini(id)}</div>
       <div class="info"><b>${p.nombre}</b><span>${fmt(p.pts)} pts · ${p.tit} ${p.tit===1?"título":"títulos"}</span></div>
     </button>`).join("");

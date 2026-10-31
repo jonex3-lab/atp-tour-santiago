@@ -320,6 +320,31 @@ p{margin:0}
 .palmares{margin-top:30px}
 .palmares h3{font-size:clamp(26px,3vw,36px);margin-bottom:24px}
 .rtable{color:var(--ink)}
+/* ---------- ranking: escenario del líder ---------- */
+.band.stage{background:radial-gradient(120% 90% at 0% 0%,#3a1366 0%,transparent 55%),radial-gradient(90% 80% at 100% 100%,rgba(255,46,147,.32) 0%,transparent 60%),linear-gradient(160deg,#150b2c,#0c0817 60%,#1d0a24);color:var(--fg)}
+.rank-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.rank-bg img{position:absolute;left:-2%;top:0;height:100%;width:52%;object-fit:cover;object-position:center 20%;opacity:.42;filter:saturate(1.15) contrast(1.05);
+  -webkit-mask-image:linear-gradient(90deg,#000 20%,transparent 92%),linear-gradient(180deg,#000 45%,transparent 95%);-webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,#000 20%,transparent 92%),linear-gradient(180deg,#000 45%,transparent 95%);mask-composite:intersect;
+  mix-blend-mode:luminosity;animation:leaderDrift 18s ease-in-out infinite alternate}
+@keyframes leaderDrift{from{transform:scale(1.02) translateX(0)}to{transform:scale(1.1) translateX(2%)}}
+.rank-bg .glow{position:absolute;border-radius:50%;filter:blur(80px);opacity:.45}
+.rank-bg .g1{width:520px;height:520px;left:8%;top:6%;background:var(--magenta);mix-blend-mode:color;opacity:.55}
+.rank-bg .g2{width:460px;height:460px;right:-6%;top:30%;background:var(--violet);animation:glowMove 14s ease-in-out infinite alternate}
+@keyframes glowMove{to{transform:translate(-80px,60px)}}
+.band.stage .kick{color:var(--ball)}
+.band.stage .fh{-webkit-text-stroke-color:rgba(255,255,255,.6);background-image:linear-gradient(var(--fg),var(--fg))}
+.band.stage .fh em{background-image:var(--grad);-webkit-background-clip:text;background-clip:text;background-size:inherit;background-repeat:no-repeat}
+.glass{background:rgba(20,12,40,.55);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:18px 18px 8px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 30px 60px rgba(0,0,0,.35)}
+.band.stage .rtable{color:var(--fg)}
+.band.stage .rtable th{color:var(--muted)}
+.band.stage .rtable td{border-top-color:rgba(255,255,255,.08)}
+.band.stage .rtable tbody tr:hover{background:rgba(255,255,255,.05)}
+.band.stage .rtable .n small{color:var(--muted)}
+.band.stage .rtable .bar{background:rgba(255,255,255,.08)}
+.band.stage .rtable .bar i{box-shadow:0 0 14px rgba(255,122,26,.55)}
+.band.stage .rtable tbody tr:first-child .p{color:var(--gold)}
+@media (max-width:640px){.rank-bg img{width:100%;opacity:.25}.glass{padding:10px 8px 4px}.rtable td.n .av.ring{width:38px;height:38px;padding:2px}.nwrap{gap:10px}.rtable td.n{font-size:15px}}
 /* fotos */
 .av{display:inline-grid;place-items:center;object-fit:cover;border-radius:50%;flex:none;background:var(--grad-cool);color:#fff;font-family:var(--f-display);font-weight:800;vertical-align:middle}
 .av.sm{width:40px;height:40px;font-size:13px}
@@ -328,7 +353,7 @@ span.av.ring{background:var(--grad-cool)}
 tr:hover .av.ring,.lg:hover .av.ring{transform:scale(1.08)}
 .av.md{width:58px;height:58px;font-size:17px;box-shadow:0 0 0 2px rgba(255,255,255,.15)}
 .av.xl{display:grid;width:118px;height:118px;font-size:36px;margin:0 auto 16px;box-shadow:0 0 0 4px rgba(255,255,255,.25),0 18px 40px rgba(0,0,0,.35)}
-.rtable td.n .av{float:left;margin-right:16px;margin-top:-4px}
+.nwrap{display:flex;align-items:center;gap:14px}
 .player .pphoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s}
 .player:hover .pphoto{transform:scale(1.07)}
 .player .tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(123,60,255,.25),transparent 35%,transparent 55%,rgba(255,46,147,.35) 78%,rgba(12,8,23,.92))}
@@ -639,14 +664,15 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
     </div>
   </section>
 
-  <section class="band paper" id="ranking">
+  <section class="band stage" id="ranking">
+    <div class="rank-bg" aria-hidden="true"><img id="rankBg" alt=""><i class="glow g1"></i><i class="glow g2"></i></div>
     <div class="wrap">
       <div class="head">
-        <div class="rv l"><span class="kick">Clasificación</span><h2 class="fh">El ranking</h2></div>
-        <p class="muted rv r" id="rankIntro"></p>
+        <div class="rv l"><span class="kick">Clasificación</span><h2 class="fh">El <em>ranking</em></h2></div>
+        <p class="rv r" id="rankIntro" style="color:#e9e1ff"></p>
       </div>
       <div class="podium" id="podium"></div>
-      <div class="tscroll rv u">
+      <div class="tscroll glass rv u">
         <table class="rtable">
           <thead><tr><th>Pos.</th><th>Jugador</th><th>Puntos</th><th></th><th class="c">Títulos</th><th class="c">V-D</th><th class="c">%</th></tr></thead>
           <tbody id="rank"></tbody>
@@ -995,6 +1021,7 @@ function sakura(sec){
 /* ---------- ranking ---------- */
 (function(){
   $("#rankIntro").textContent = `Puntos acumulados desde 2015. Corte al ${fdate(DATA.actualizado)}.`;
+  { const [lid]=activos[0]; const bg=$("#rankBg"); if(FOTOS.has(lid)) bg.src=`fotos/${lid}.jpg${FV}`; else bg.remove(); }
   $("#podium").innerHTML = activos.slice(0,3).map(([id,p],i)=>`
     <article class="pod rv ${["l","u","r"][i]} ${cut(id)?"has-cut":""}" style="transition-delay:${i*120}ms" data-id="${id}" tabindex="0" role="button" aria-label="Ver ficha de ${p.nombre}">
       ${FOTOS.has(id)?`<img class="pod-photo" src="fotos/${id}-rostro.jpg${FV}" alt="">`:`<div class="pos">${i+1}</div>`}<div class="flagrow">${FOTOS.has(id)?`<span class="posn">${i+1}</span>`:`<div class="mono">${ini(id)}</div>`}${wflag(42,10)}</div>
@@ -1005,7 +1032,7 @@ function sakura(sec){
   $("#rank").innerHTML = activos.map(([id,p],i)=>`
     <tr data-id="${id}" tabindex="0" aria-label="Ver ficha de ${p.nombre}">
       <td class="p">${i+1}</td>
-      <td class="n">${avatar(id,"ring")}${fmini()}${p.nombre}<small>Mejor ranking: ${p.mejor}°</small></td>
+      <td class="n"><div class="nwrap">${avatar(id,"ring")}<div>${fmini()}${p.nombre}<small>Mejor ranking: ${p.mejor}°</small></div></div></td>
       <td class="pt num">${fmt(p.pts)}</td>
       <td style="width:28%"><div class="bar"><i data-w="${Math.max(1.5,p.pts/max*100)}"></i></div></td>
       <td class="c num">${p.tit}</td><td class="c num">${p.v}-${p.d}</td><td class="c num">${pct(p)}%</td>

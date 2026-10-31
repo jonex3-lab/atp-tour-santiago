@@ -320,23 +320,24 @@ p{margin:0}
 .player .cflag{position:absolute;top:18px;left:18px;z-index:1}
 .pod .flagrow{display:flex;align-items:center;gap:14px}
 .pod.has-cut{min-height:250px}
-.pod .pod-cut{position:absolute;right:-6px;bottom:0;height:96%;width:58%;object-fit:contain;object-position:bottom right;-webkit-mask-image:linear-gradient(180deg,#000 68%,transparent);mask-image:linear-gradient(180deg,#000 68%,transparent);filter:drop-shadow(0 10px 24px rgba(0,0,0,.35));transition:transform .6s}
+.pod .pod-cut{position:absolute;right:4px;bottom:0;height:224px;width:auto;max-width:52%;object-fit:contain;object-position:bottom right;-webkit-mask-image:linear-gradient(180deg,#000 68%,transparent);mask-image:linear-gradient(180deg,#000 68%,transparent);filter:drop-shadow(0 10px 24px rgba(0,0,0,.35));transition:transform .6s}
 .pod:hover .pod-cut{transform:scale(1.05) translateY(-4px)}
-.pod.has-cut .pos{right:14px;top:6px;font-size:130px;z-index:0;opacity:.28}
+.pod.has-cut .pos{right:16px;top:auto;bottom:-14px;font-size:120px;z-index:3;opacity:1;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.85);text-shadow:0 6px 24px rgba(0,0,0,.25)}
+.pod.has-cut:nth-child(1) .pos{-webkit-text-stroke-color:#22000f;color:rgba(34,0,15,.12)}
 .pod .pod-cut{z-index:1}
 .pod.has-cut .flagrow,.pod.has-cut h3,.pod.has-cut .pts,.pod.has-cut .s{z-index:2}
 .pod.has-cut h3,.pod.has-cut .pts,.pod.has-cut .s,.pod.has-cut .flagrow{position:relative;max-width:58%}
 .pod.has-cut .s{max-width:50%}
 .prow{position:relative;overflow:hidden}
-.prow.has-cut{padding-right:190px}
-.prow .prow-cut{position:absolute;right:10px;bottom:0;height:115%;width:170px;object-fit:contain;object-position:bottom;-webkit-mask-image:linear-gradient(180deg,#000 62%,transparent);mask-image:linear-gradient(180deg,#000 62%,transparent);pointer-events:none;transition:transform .5s}
+.prow.has-cut{padding-right:180px}
+.prow .prow-cut{position:absolute;right:14px;top:10px;height:180px;width:146px;object-fit:contain;object-position:top;-webkit-mask-image:linear-gradient(180deg,#000 62%,transparent);mask-image:linear-gradient(180deg,#000 62%,transparent);pointer-events:none;transition:transform .5s}
 .prow:hover .prow-cut{transform:translateY(-6px)}
-.h2h-cut{display:block;height:300px;max-width:100%;margin:0 auto -30px;object-fit:contain;object-position:bottom;-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent);filter:drop-shadow(0 18px 30px rgba(0,0,0,.4));position:relative;z-index:0}
+.h2h-cut{display:block;width:250px;height:309px;max-width:100%;margin:0 auto -34px;object-fit:contain;object-position:bottom;-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent);filter:drop-shadow(0 18px 30px rgba(0,0,0,.4));position:relative;z-index:0}
 .h2h-score b,.h2h-score span{position:relative;z-index:1}
 @media (max-width:760px){
   .prow.has-cut{padding-right:18px}
-  .prow .prow-cut{height:100%;width:130px;opacity:.35;right:0}
-  .h2h-cut{height:170px;margin-bottom:-18px}
+  .prow .prow-cut{height:150px;width:122px;opacity:.35;right:0}
+  .h2h-cut{width:140px;height:173px;margin-bottom:-18px}
   .pod.has-cut .pos{font-size:90px}
 }
 .sheet-top .wflag{margin-bottom:14px}
@@ -781,6 +782,7 @@ document.documentElement.classList.add("js");
 const FLAG_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20"><rect width="30" height="10" fill="#fff"/><rect y="10" width="30" height="10" fill="#d52b1e"/><rect width="10" height="10" fill="#0039a6"/><polygon fill="#fff" points="5.00,2.50 5.56,4.23 7.38,4.23 5.91,5.30 6.47,7.02 5.00,5.96 3.53,7.02 4.09,5.30 2.62,4.23 4.44,4.23"/></svg>';
 document.documentElement.style.setProperty("--flag", `url("data:image/svg+xml,${encodeURIComponent(FLAG_SVG)}")`);
 const FOTOS = new Set(DATA.fotos||[]);
+const bust = id => FOTOS.has(id) ? `fotos/${id}-busto.webp` : null;
 const cut = id => FOTOS.has(id) ? `fotos/${id}-recorte.webp` : null;
 const avatar = (id, cls="") => FOTOS.has(id) ? `<img class="av ${cls}" src="fotos/${id}-cara.jpg" alt="" loading="lazy">` : `<span class="av av-ini ${cls}" aria-hidden="true">${ini(id)}</span>`;
 const fmini = () => '<span class="fmini" role="img" aria-label="Chile"></span>';
@@ -887,7 +889,7 @@ let io=null;
   $("#rankIntro").textContent = `Puntos acumulados desde 2015. Corte al ${fdate(DATA.actualizado)}.`;
   $("#podium").innerHTML = activos.slice(0,3).map(([id,p],i)=>`
     <article class="pod rv ${["l","u","r"][i]} ${cut(id)?"has-cut":""}" style="transition-delay:${i*120}ms" data-id="${id}" tabindex="0" role="button" aria-label="Ver ficha de ${p.nombre}">
-      <div class="pos">${i+1}</div>${cut(id)?`<img class="pod-cut" src="${cut(id)}" alt="">`:""}<div class="flagrow">${cut(id)?"":`<div class="mono">${ini(id)}</div>`}${wflag(42,10)}</div>
+      <div class="pos">${i+1}</div>${bust(id)?`<img class="pod-cut" src="${bust(id)}" alt="">`:""}<div class="flagrow">${cut(id)?"":`<div class="mono">${ini(id)}</div>`}${wflag(42,10)}</div>
       <h3>${p.nombre}</h3><div class="pts num">${fmt(p.pts)}<small>PTS</small></div>
       <div class="s">${p.tit} ${p.tit===1?"título":"títulos"} · ${p.v}-${p.d} · ${pct(p)}% de victorias</div>
     </article>`).join("");
@@ -983,7 +985,7 @@ let io=null;
       const g = c => w.filter(t=>t.cat.startsWith(c)).length;
       return `<div class="prow rv ${i%2?"r":"l"} ${i===0?"top":""} ${cut(id)?"has-cut":""}" data-id="${id}" tabindex="0" role="button" aria-label="Ver ficha de ${p.nombre}">
         <div class="pn">${i+1}</div>
-        ${cut(id)?`<img class="prow-cut" src="${cut(id)}" alt="">`:""}<div class="who"><div class="whoin"><div><b>${fmini()}${p.nombre}</b>${p.estado!=="activo"?`<span class="st ${p.estado}">${stLabel(p.estado)}</span>`:`<span class="st activo">Activo</span>`}</div></div></div>
+        ${bust(id)?`<img class="prow-cut" src="${bust(id)}" alt="">`:""}<div class="who"><div class="whoin"><div><b>${fmini()}${p.nombre}</b>${p.estado!=="activo"?`<span class="st ${p.estado}">${stLabel(p.estado)}</span>`:`<span class="st activo">Activo</span>`}</div></div></div>
         <div class="crowns">${cups}</div>
         <div class="tot"><b class="num">${w.length}</b><span>${w.length===1?"título":"títulos"}</span></div>
         <div class="brk">
@@ -1024,8 +1026,8 @@ let io=null;
     const r=get(a,b);
     if(!r){o.innerHTML=`<p class="h2h-msg">${P[a].nombre} y ${P[b].nombre} no tienen partidos registrados entre ellos.</p>`;return;}
     const tot=r[0]+r[1];
-    o.innerHTML=`<div class="h2h-score"><div class="${r[0]>r[1]?"lead":""}">${cut(a)?`<img class="h2h-cut" src="${cut(a)}" alt="">`:avatar(a,"xl")}<b class="num">${r[0]}</b><span>${fmini()}${P[a].nombre}</span></div>
-      <div class="dash">–</div><div class="${r[1]>r[0]?"lead":""}">${cut(b)?`<img class="h2h-cut" src="${cut(b)}" alt="">`:avatar(b,"xl")}<b class="num">${r[1]}</b><span>${fmini()}${P[b].nombre}</span></div></div>
+    o.innerHTML=`<div class="h2h-score"><div class="${r[0]>r[1]?"lead":""}">${bust(a)?`<img class="h2h-cut" src="${bust(a)}" alt="">`:avatar(a,"xl")}<b class="num">${r[0]}</b><span>${fmini()}${P[a].nombre}</span></div>
+      <div class="dash">–</div><div class="${r[1]>r[0]?"lead":""}">${bust(b)?`<img class="h2h-cut" src="${bust(b)}" alt="">`:avatar(b,"xl")}<b class="num">${r[1]}</b><span>${fmini()}${P[b].nombre}</span></div></div>
       <div class="h2h-bar"><i style="width:0"></i><i style="width:0"></i></div>
       <p class="h2h-msg">${tot} ${tot===1?"partido registrado":"partidos registrados"}</p>`;
     requestAnimationFrame(()=>requestAnimationFrame(()=>{const i=o.querySelectorAll(".h2h-bar i"); i[0].style.width=r[0]/tot*100+"%"; i[1].style.width=r[1]/tot*100+"%";}));

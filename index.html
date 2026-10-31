@@ -281,9 +281,12 @@ p{margin:0}
 /* fotos */
 .av{display:inline-grid;place-items:center;object-fit:cover;border-radius:50%;flex:none;background:var(--grad-cool);color:#fff;font-family:var(--f-display);font-weight:800;vertical-align:middle}
 .av.sm{width:40px;height:40px;font-size:13px}
+.av.ring{width:54px;height:54px;padding:3px;background:var(--grad);font-size:15px;box-shadow:0 6px 18px rgba(255,46,147,.25);transition:transform .3s}
+span.av.ring{background:var(--grad-cool)}
+tr:hover .av.ring,.lg:hover .av.ring{transform:scale(1.08)}
 .av.md{width:58px;height:58px;font-size:17px;box-shadow:0 0 0 2px rgba(255,255,255,.15)}
 .av.xl{display:grid;width:118px;height:118px;font-size:36px;margin:0 auto 16px;box-shadow:0 0 0 4px rgba(255,255,255,.25),0 18px 40px rgba(0,0,0,.35)}
-.rtable td.n .av{float:left;margin-right:14px;margin-top:2px}
+.rtable td.n .av{float:left;margin-right:16px;margin-top:-4px}
 .player .pphoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s}
 .player:hover .pphoto{transform:scale(1.07)}
 .player .tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(123,60,255,.25),transparent 35%,transparent 55%,rgba(255,46,147,.35) 78%,rgba(12,8,23,.92))}
@@ -921,7 +924,7 @@ let io=null;
   $("#rank").innerHTML = activos.map(([id,p],i)=>`
     <tr data-id="${id}" tabindex="0" aria-label="Ver ficha de ${p.nombre}">
       <td class="p">${i+1}</td>
-      <td class="n">${fmini()}${p.nombre}<small>Mejor ranking: ${p.mejor}°</small></td>
+      <td class="n">${avatar(id,"ring")}${fmini()}${p.nombre}<small>Mejor ranking: ${p.mejor}°</small></td>
       <td class="pt num">${fmt(p.pts)}</td>
       <td style="width:28%"><div class="bar"><i data-w="${Math.max(1.5,p.pts/max*100)}"></i></div></td>
       <td class="c num">${p.tit}</td><td class="c num">${p.v}-${p.d}</td><td class="c num">${pct(p)}%</td>
@@ -955,7 +958,7 @@ let io=null;
   $("#legendStar").style.cursor="pointer"; $("#legendStar").onclick=()=>openPlayer(sid);
   $("#legends").innerHTML = leyendas.slice(1).map(([id,p],i)=>`
     <button class="lg rv ${["l","u","r"][i%3]}" style="transition-delay:${(i%3)*100}ms" data-id="${id}">
-      <span class="lg-who">${avatar(id,"sm")}<span><b>${fmini()}${p.nombre}</b><small>${p.v}-${p.d} · mejor ranking ${p.mejor}°</small></span></span><span class="st ${p.estado}">${stLabel(p.estado)}</span>
+      <span class="lg-who">${avatar(id,"ring")}<span><b>${fmini()}${p.nombre}</b><small>${p.v}-${p.d} · mejor ranking ${p.mejor}°</small></span></span><span class="st ${p.estado}">${stLabel(p.estado)}</span>
     </button>`).join("");
   document.querySelectorAll(".lg").forEach(b=>b.onclick=()=>openPlayer(b.dataset.id));
 })();

@@ -996,25 +996,48 @@ function sakura(sec){
   if(reduce||!sec) return;
   const cv=document.createElement("canvas"); cv.className="fx-canvas"; cv.setAttribute("aria-hidden","true");
   sec.insertBefore(cv, sec.firstChild);
-  const ctx=cv.getContext("2d"); let W=0,H=0,dpr=Math.min(2,devicePixelRatio||1),run=false,raf=0,last=0;
-  const N=()=>Math.round(Math.min(70,Math.max(26,W/22)));
-  const cols=[["#ffd3e6","#ff8fbf"],["#ffe4ef","#ffadd0"],["#ffc2dc","#ff6fa8"]];
+  const ctx=cv.getContext("2d"); let W=0,H=0,dpr=Math.min(2,devicePixelRatio||1),run=false,raf=0,last=0,T=0;
+  /* sprites: pétalo real con muesca en la punta, base más intensa y nervadura suave */
+  const tones=[["#fff4f8","#ffc6dc","#f58db5"],["#fffafc","#ffd6e6","#f7a3c4"],["#fdeef5","#ffb8d4","#e9789f"]];
+  function sprite(sz,blur,tone){
+    const pad=blur*3+4, c=document.createElement("canvas"); c.width=c.height=Math.ceil(sz*2+pad*2);
+    const g=c.getContext("2d"); g.translate(c.width/2,c.height/2); if(blur) g.filter=`blur(${blur}px)`;
+    const w=sz*.62, h=sz;
+    g.beginPath(); g.moveTo(0,h*.95);
+    g.bezierCurveTo(w*1.05,h*.55, w*1.1,-h*.55, w*.32,-h*.92);
+    g.quadraticCurveTo(w*.12,-h*.98, 0,-h*.7);
+    g.quadraticCurveTo(-w*.12,-h*.98, -w*.32,-h*.92);
+    g.bezierCurveTo(-w*1.1,-h*.55, -w*1.05,h*.55, 0,h*.95); g.closePath();
+    const gr=g.createLinearGradient(0,h,0,-h); gr.addColorStop(0,tone[2]); gr.addColorStop(.35,tone[1]); gr.addColorStop(1,tone[0]);
+    g.fillStyle=gr; g.fill();
+    g.globalAlpha=.35; g.strokeStyle=tone[2]; g.lineWidth=Math.max(.5,sz*.04);
+    g.beginPath(); g.moveTo(0,h*.85); g.quadraticCurveTo(w*.08,0,0,-h*.6); g.stroke();
+    return c;
+  }
+  /* capas de profundidad: lejos (chicos, suaves), medio y cerca (grandes, desenfocados) */
+  const layers=[{n:.55,sz:[4,6],blur:0,sp:[18,30],a:[.45,.65]},{n:.35,sz:[7,10],blur:0,sp:[30,48],a:[.75,.95]},{n:.10,sz:[15,22],blur:2.2,sp:[60,90],a:[.6,.8]}];
+  const sprites=layers.map(L=>tones.map(t=>[L.sz[0],(L.sz[0]+L.sz[1])/2,L.sz[1]].map(z=>sprite(z*1.6,L.blur,t))));
   let ps=[];
-  const mk=(top)=>({x:Math.random()*W, y:top?-20-Math.random()*H*.3:Math.random()*H, s:6+Math.random()*9,
-    vy:28+Math.random()*42, vx:-18+Math.random()*10, a:Math.random()*6.28, va:-1.5+Math.random()*3,
-    flip:Math.random()*6.28, vf:1.5+Math.random()*2.5, sw:Math.random()*6.28, c:cols[Math.floor(Math.random()*cols.length)], o:.55+Math.random()*.4});
+  const R=(a,b)=>a+Math.random()*(b-a);
+  function mk(top){ const r=Math.random(); let li=r<layers[0].n?0:(r<layers[0].n+layers[1].n?1:2); const L=layers[li];
+    const img=sprites[li][Math.floor(Math.random()*tones.length)][Math.floor(Math.random()*3)];
+    return {li,img,x:R(-40,W+80),y:top?R(-80,-10):R(0,H),vy:R(L.sp[0],L.sp[1]),drift:R(-14,-4),a:R(0,6.28),va:R(-1.2,1.2),
+      tilt:R(0,6.28),vt:R(1.2,3.2),sw:R(0,6.28),swA:R(10,28),swF:R(.6,1.3),o:R(L.a[0],L.a[1])}; }
   function size(){ const r=sec.getBoundingClientRect(); W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
-    const n=N(); while(ps.length<n) ps.push(mk(false)); ps.length=n; }
-  function petal(p){ ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a); ctx.scale(1,Math.abs(Math.cos(p.flip))*.75+.25);
-    const g=ctx.createLinearGradient(-p.s,0,p.s,0); g.addColorStop(0,p.c[0]); g.addColorStop(1,p.c[1]);
-    ctx.globalAlpha=p.o; ctx.fillStyle=g; ctx.beginPath(); ctx.moveTo(0,-p.s);
-    ctx.bezierCurveTo(p.s*.9,-p.s*.6,p.s*.8,p.s*.6,0,p.s); ctx.bezierCurveTo(-p.s*.8,p.s*.6,-p.s*.9,-p.s*.6,-p.s*.15,-p.s*.85);
-    ctx.lineTo(0,-p.s*.55); ctx.closePath(); ctx.fill(); ctx.restore(); }
-  function frame(t){ if(!run) return; const dt=Math.min(.05,(t-(last||t))/1000); last=t; ctx.clearRect(0,0,W,H);
-    for(const p of ps){ p.sw+=dt*1.3; p.y+=p.vy*dt; p.x+=(p.vx+Math.sin(p.sw)*22)*dt; p.a+=p.va*dt; p.flip+=p.vf*dt;
-      if(p.y>H+20||p.x<-30) Object.assign(p,mk(true),{x:Math.random()*(W+120)}); petal(p); }
+    const n=Math.round(Math.min(85,Math.max(30,W/18))); while(ps.length<n) ps.push(mk(false)); ps.length=n; ps.forEach(p=>{ if(p.y>H) p.y=R(0,H); }); ps.sort((p,q)=>p.li-q.li); }
+  function frame(t){ if(!run) return; const dt=Math.min(.05,(t-(last||t))/1000); last=t; T+=dt; ctx.clearRect(0,0,W,H);
+    const gust=Math.sin(T*.35)*.5+Math.sin(T*.9+1.3)*.25;                     /* ráfagas suaves de viento */
+    for(const p of ps){
+      p.sw+=dt*p.swF; p.tilt+=p.vt*dt; p.a+=(p.va+Math.sin(p.sw)*.6)*dt;
+      p.y+=p.vy*dt*(.8+.35*Math.abs(Math.cos(p.tilt)));                        /* cae más lento cuando queda "plano" */
+      p.x+=(p.drift+gust*28*(p.li+1)+Math.cos(p.sw)*p.swA)*dt;
+      if(p.y>H+40||p.x<-60||p.x>W+90) Object.assign(p,mk(true));
+      const sx=Math.cos(p.tilt), sy=.75+.25*Math.sin(p.tilt*.7);              /* volteo 3D */
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a); ctx.scale(Math.max(.12,Math.abs(sx)),sy);
+      ctx.globalAlpha=p.o*(.7+.3*Math.abs(sx)); ctx.drawImage(p.img,-p.img.width/2,-p.img.height/2); ctx.restore();
+    }
     raf=requestAnimationFrame(frame); }
-  size(); addEventListener("resize",size);
+  size(); addEventListener("resize",size); if("ResizeObserver" in window) new ResizeObserver(()=>size()).observe(sec);
   new IntersectionObserver(es=>{ const v=es[0].isIntersecting; if(v&&!run){ run=true; last=0; raf=requestAnimationFrame(frame); } else if(!v){ run=false; cancelAnimationFrame(raf); } }).observe(sec);
 }
 

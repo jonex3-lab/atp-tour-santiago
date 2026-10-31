@@ -809,9 +809,10 @@ document.documentElement.classList.add("js");
 const FLAG_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20"><rect width="30" height="10" fill="#fff"/><rect y="10" width="30" height="10" fill="#d52b1e"/><rect width="10" height="10" fill="#0039a6"/><polygon fill="#fff" points="5.00,2.50 5.56,4.23 7.38,4.23 5.91,5.30 6.47,7.02 5.00,5.96 3.53,7.02 4.09,5.30 2.62,4.23 4.44,4.23"/></svg>';
 document.documentElement.style.setProperty("--flag", `url("data:image/svg+xml,${encodeURIComponent(FLAG_SVG)}")`);
 const FOTOS = new Set(DATA.fotos||[]);
-const bust = id => FOTOS.has(id) ? `fotos/${id}-busto.webp` : null;
-const cut = id => FOTOS.has(id) ? `fotos/${id}-recorte.webp` : null;
-const avatar = (id, cls="") => FOTOS.has(id) ? `<img class="av ${cls}" src="fotos/${id}-cara.jpg" alt="" loading="lazy">` : `<span class="av av-ini ${cls}" aria-hidden="true">${ini(id)}</span>`;
+const FV = "?v=4";
+const bust = id => FOTOS.has(id) ? `fotos/${id}-busto.webp${FV}` : null;
+const cut = id => FOTOS.has(id) ? `fotos/${id}-recorte.webp${FV}` : null;
+const avatar = (id, cls="") => FOTOS.has(id) ? `<img class="av ${cls}" src="fotos/${id}-cara.jpg${FV}" alt="" loading="lazy">` : `<span class="av av-ini ${cls}" aria-hidden="true">${ini(id)}</span>`;
 const fmini = () => '<span class="fmini" role="img" aria-label="Chile"></span>';
 const wflag = (w, n=12) => { let h=`<span class="wflag" style="--w:${w}px" role="img" aria-label="Bandera de Chile">`;
   for(let i=0;i<n;i++) h+=`<i style="background-position:${-(i*w/n)}px 0;animation-delay:${-(i*0.11).toFixed(2)}s"></i>`; return h+"</span>"; };
@@ -858,7 +859,7 @@ let io=null;
   const n0=ns[0]; const [y,m,d]=n0.fecha.split("-").map(Number);
   $("#news").innerHTML = `
     <article class="lead-story rv l ${n0.foto&&FOTOS.has(n0.foto)?"has-photo":""}">
-      ${n0.foto&&FOTOS.has(n0.foto)?`<img class="nphoto" src="fotos/${n0.foto}.jpg" alt="">`:""}
+      ${n0.foto&&FOTOS.has(n0.foto)?`<img class="nphoto" src="fotos/${n0.foto}.jpg${FV}" alt="">`:""}
       <div class="date">${String(d).padStart(2,"0")}<small>${MES[m].toUpperCase()} ${y}</small></div>
       <span class="tagline">${n0.tag}</span><h3>${n0.titulo}</h3><p>${n0.texto}</p>
     </article>
@@ -916,7 +917,7 @@ let io=null;
   $("#rankIntro").textContent = `Puntos acumulados desde 2015. Corte al ${fdate(DATA.actualizado)}.`;
   $("#podium").innerHTML = activos.slice(0,3).map(([id,p],i)=>`
     <article class="pod rv ${["l","u","r"][i]} ${cut(id)?"has-cut":""}" style="transition-delay:${i*120}ms" data-id="${id}" tabindex="0" role="button" aria-label="Ver ficha de ${p.nombre}">
-      ${FOTOS.has(id)?`<img class="pod-photo" src="fotos/${id}-rostro.jpg" alt="">`:`<div class="pos">${i+1}</div>`}<div class="flagrow">${FOTOS.has(id)?`<span class="posn">${i+1}</span>`:`<div class="mono">${ini(id)}</div>`}${wflag(42,10)}</div>
+      ${FOTOS.has(id)?`<img class="pod-photo" src="fotos/${id}-rostro.jpg${FV}" alt="">`:`<div class="pos">${i+1}</div>`}<div class="flagrow">${FOTOS.has(id)?`<span class="posn">${i+1}</span>`:`<div class="mono">${ini(id)}</div>`}${wflag(42,10)}</div>
       <h3>${p.nombre}</h3><div class="pts num">${fmt(p.pts)}<small>PTS</small></div>
       <div class="s">${p.tit} ${p.tit===1?"título":"títulos"} · ${p.v}-${p.d} · ${pct(p)}% de victorias</div>
     </article>`).join("");
@@ -940,7 +941,7 @@ let io=null;
 (function(){
   $("#rail").innerHTML = activos.map(([id,p],i)=>`
     <button class="player rv ${i%2?"r":"l"}" style="transition-delay:${i*90}ms" data-id="${id}">
-      <div class="bg"></div>${FOTOS.has(id)?`<img class="pphoto" src="fotos/${id}.jpg" alt="${p.nombre}" loading="lazy"><div class="tint"></div>`:`<div class="mono">${ini(id)}</div>`}
+      <div class="bg"></div>${FOTOS.has(id)?`<img class="pphoto" src="fotos/${id}.jpg${FV}" alt="${p.nombre}" loading="lazy"><div class="tint"></div>`:`<div class="mono">${ini(id)}</div>`}
       <span class="cflag">${wflag(54,12)}</span><span class="seedn">#${i+1}</span>
       <div class="info"><b>${p.nombre}</b><span>${fmt(p.pts)} pts · ${p.tit} ${p.tit===1?"título":"títulos"}</span></div>
     </button>`).join("");
@@ -1053,7 +1054,7 @@ let io=null;
     const r=get(a,b);
     if(!r){o.innerHTML=`<p class="h2h-msg">${P[a].nombre} y ${P[b].nombre} no tienen partidos registrados entre ellos.</p>`;return;}
     const tot=r[0]+r[1];
-    const face = id => FOTOS.has(id) ? `<img src="fotos/${id}-rostro.jpg" alt="${P[id].nombre}">` : `<span class="h2h-ini">${ini(id)}</span>`;
+    const face = id => FOTOS.has(id) ? `<img src="fotos/${id}-rostro.jpg${FV}" alt="${P[id].nombre}">` : `<span class="h2h-ini">${ini(id)}</span>`;
     o.innerHTML=`<div class="h2h-stage">
         <div class="h2h-face a">${face(a)}</div>
         <div class="h2h-mid">

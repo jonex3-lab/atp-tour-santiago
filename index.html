@@ -320,6 +320,12 @@ p{margin:0}
 .palmares{margin-top:30px}
 .palmares h3{font-size:clamp(26px,3vw,36px);margin-bottom:24px}
 .rtable{color:var(--ink)}
+/* ---------- temporada: mapa del mundo de fondo ---------- */
+.map-band{background:#f1ecf9}
+.map-bg{position:absolute;inset:0;background:url(img/mapa.jpg?v=1) center/cover no-repeat;pointer-events:none;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent)}
+.js .map-bg{opacity:0;transform:translateX(18%);transition:opacity 1.6s ease-out,transform 1.8s cubic-bezier(.2,.8,.2,1)}
+.js .map-band.in-view .map-bg{opacity:1;transform:none}
 .mo .place{display:flex;align-items:center;margin-top:8px;font-size:13px;font-weight:600;color:var(--ink);line-height:1.2;min-width:0}
 .mo .place + .cat{margin-top:3px}
 .mo .fmini{flex:none;width:24px;height:16px;margin-right:7px;vertical-align:-2px;box-shadow:0 0 0 1px rgba(26,16,48,.15),0 2px 5px rgba(26,16,48,.15)}
@@ -740,7 +746,8 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
     </div>
   </section>
 
-  <section class="band paper" id="temporada">
+  <section class="band paper map-band" id="temporada">
+    <div class="map-bg" aria-hidden="true"></div>
     <div class="wrap">
       <div class="head">
         <div class="rv l"><span class="kick">Temporada 2026</span><h2 class="fh">Un torneo por mes</h2></div>
@@ -1306,6 +1313,11 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#modal").hidden
   els.forEach(e=>io.observe(e));
   const tb=document.querySelector(".rtable"); if(tb) io.observe(tb);
 })();
+
+/* mapa de la temporada: entra desde la derecha al llegar a la sección */
+(function(){ const sec=$("#temporada"); if(!sec) return;
+  if(reduce||!("IntersectionObserver" in window)){ sec.classList.add("in-view"); return; }
+  const o=new IntersectionObserver(es=>{ if(es[0].isIntersecting){ sec.classList.add("in-view"); o.disconnect(); } },{threshold:.2}); o.observe(sec); })();
 
 /* resaltar la sección visible en el menú */
 (function(){

@@ -146,6 +146,7 @@ p{margin:0}
 .band.img::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,8,23,.55),rgba(12,8,23,.78));pointer-events:none}
 .band > .wrap{position:relative;z-index:1}
 .band.img.scene{background-position:center 55%}
+.fx-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .band.img.scene::before{background:linear-gradient(180deg,rgba(12,8,23,.72) 0%,rgba(12,8,23,.28) 32%,rgba(12,8,23,.22) 70%,rgba(12,8,23,.6) 100%)}
 .band.scene .head p{text-shadow:0 2px 12px rgba(0,0,0,.7)}
 .band.scene .bracket .box:not(.ch){fill:rgba(12,8,23,.78)}
@@ -803,7 +804,7 @@ const DATA = {
      links une cada partido con el lugar al que avanza su ganador. */
   cuadros: {
     kinoshita2026: {
-      titulo:"Kinoshita Group Japan Open", anio:2026, cat:"ATP 500", mes:"Junio 2026", fondo:"img/kinoshita.jpg?v=1",
+      titulo:"Kinoshita Group Japan Open", anio:2026, cat:"ATP 500", mes:"Junio 2026", fondo:"img/kinoshita.jpg?v=1", efecto:"sakura",
       columnas:[["RONDA QUALY","0 PTS"],["SEMIFINALES","125 PTS"],["FINAL","250 PTS"],["CAMPEÓN","500 PTS"]],
       cajas:{
         q1:{col:0,y:110,j:"palma",s:4,win:1}, q2:{col:0,y:170,j:"gatica",s:5,win:0},
@@ -918,12 +919,40 @@ let io=null;
       <div><span class="tagline">${n.tag}</span><h3>${n.titulo}</h3><p>${n.texto}</p></div></article>`}).join("")}</div>`;
 })();
 
+/* ---------- pétalos de cerezo (efecto por torneo) ---------- */
+function sakura(sec){
+  if(reduce||!sec) return;
+  const cv=document.createElement("canvas"); cv.className="fx-canvas"; cv.setAttribute("aria-hidden","true");
+  sec.insertBefore(cv, sec.firstChild);
+  const ctx=cv.getContext("2d"); let W=0,H=0,dpr=Math.min(2,devicePixelRatio||1),run=false,raf=0,last=0;
+  const N=()=>Math.round(Math.min(70,Math.max(26,W/22)));
+  const cols=[["#ffd3e6","#ff8fbf"],["#ffe4ef","#ffadd0"],["#ffc2dc","#ff6fa8"]];
+  let ps=[];
+  const mk=(top)=>({x:Math.random()*W, y:top?-20-Math.random()*H*.3:Math.random()*H, s:6+Math.random()*9,
+    vy:28+Math.random()*42, vx:-18+Math.random()*10, a:Math.random()*6.28, va:-1.5+Math.random()*3,
+    flip:Math.random()*6.28, vf:1.5+Math.random()*2.5, sw:Math.random()*6.28, c:cols[Math.floor(Math.random()*cols.length)], o:.55+Math.random()*.4});
+  function size(){ const r=sec.getBoundingClientRect(); W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=N(); while(ps.length<n) ps.push(mk(false)); ps.length=n; }
+  function petal(p){ ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a); ctx.scale(1,Math.abs(Math.cos(p.flip))*.75+.25);
+    const g=ctx.createLinearGradient(-p.s,0,p.s,0); g.addColorStop(0,p.c[0]); g.addColorStop(1,p.c[1]);
+    ctx.globalAlpha=p.o; ctx.fillStyle=g; ctx.beginPath(); ctx.moveTo(0,-p.s);
+    ctx.bezierCurveTo(p.s*.9,-p.s*.6,p.s*.8,p.s*.6,0,p.s); ctx.bezierCurveTo(-p.s*.8,p.s*.6,-p.s*.9,-p.s*.6,-p.s*.15,-p.s*.85);
+    ctx.lineTo(0,-p.s*.55); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  function frame(t){ if(!run) return; const dt=Math.min(.05,(t-(last||t))/1000); last=t; ctx.clearRect(0,0,W,H);
+    for(const p of ps){ p.sw+=dt*1.3; p.y+=p.vy*dt; p.x+=(p.vx+Math.sin(p.sw)*22)*dt; p.a+=p.va*dt; p.flip+=p.vf*dt;
+      if(p.y>H+20||p.x<-30) Object.assign(p,mk(true),{x:Math.random()*(W+120)}); petal(p); }
+    raf=requestAnimationFrame(frame); }
+  size(); addEventListener("resize",size);
+  new IntersectionObserver(es=>{ const v=es[0].isIntersecting; if(v&&!run){ run=true; last=0; raf=requestAnimationFrame(frame); } else if(!v){ run=false; cancelAnimationFrame(raf); } }).observe(sec);
+}
+
 /* ---------- cuadro del último torneo ---------- */
 (function(){
   const t = DATA.torneos.filter(t=>t.cuadro).sort((a,b)=>b.anio-a.anio||b.m-a.m)[0];
   const c = DATA.cuadros[t.cuadro];
   $("#bkKick").textContent = `Último torneo · ${c.mes}`;
   if(c.fondo){ const sec=$("#ultimo"); sec.style.backgroundImage=`url(${c.fondo})`; sec.classList.add("scene"); }
+  if(c.efecto==="sakura") sakura($("#ultimo"));
   $("#bkTitle").innerHTML = `${c.titulo.replace(/ (\S+)$/," <em>$1</em>")}`;
   $("#bkText").textContent = `${c.cat}. ${P[t.campeon].nombre} se quedó con el título ante ${P[t.finalista].nombre}.`;
   const X=[0,265,530,790], W=215, H=52, WC=210, HC=72;

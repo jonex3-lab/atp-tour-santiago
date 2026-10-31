@@ -320,6 +320,9 @@ p{margin:0}
 .palmares{margin-top:30px}
 .palmares h3{font-size:clamp(26px,3vw,36px);margin-bottom:24px}
 .rtable{color:var(--ink)}
+.mo .place{display:flex;align-items:center;margin-top:8px;font-size:13px;font-weight:600;color:var(--ink);line-height:1.2;min-width:0}
+.mo .place + .cat{margin-top:3px}
+.mo .fmini{flex:none;width:24px;height:16px;margin-right:7px;vertical-align:-2px;box-shadow:0 0 0 1px rgba(26,16,48,.15),0 2px 5px rgba(26,16,48,.15)}
 .history-band .hist-photo{position:absolute;left:-2%;top:0;height:min(1100px,70%);width:52%;object-fit:cover;object-position:45% 15%;opacity:.4;filter:saturate(1.1) contrast(1.05);mix-blend-mode:luminosity;
   -webkit-mask-image:linear-gradient(90deg,#000 20%,transparent 92%),linear-gradient(180deg,#000 40%,transparent 95%);-webkit-mask-composite:source-in;
   mask-image:linear-gradient(90deg,#000 20%,transparent 92%),linear-gradient(180deg,#000 40%,transparent 95%);mask-composite:intersect;animation:leaderDrift 18s ease-in-out infinite alternate}
@@ -823,18 +826,18 @@ const DATA = {
     locomario: {nombre:"Loco Mario",       apodo:"",        estado:"inactivo", pts:0, tit:0, v:0, d:1, tor:1, fin:0, fg:0, mejor:18}
   },
   meses: [
-    {m:1,  nombre:"Abierto de Australia",          lugar:"Melbourne",  fechas:"12–26 ene", cat:"ATP 500"},
-    {m:2,  nombre:"Barcelona Open Banc Sabadell",  lugar:"Barcelona",  fechas:"14–20 feb", cat:"Masters 1000"},
-    {m:3,  nombre:"BMW Open",                      lugar:"Múnich",     fechas:"14–20 mar", cat:"ATP 500"},
-    {m:4,  nombre:"Rolex Monte-Carlo Masters",     lugar:"Montecarlo", fechas:"6–13 abr",  cat:"ATP 500"},
-    {m:5,  nombre:"Roland Garros",                 lugar:"París",      fechas:"8–25 may",  cat:"Masters 1000"},
-    {m:6,  nombre:"Kinoshita Group Japan Open",    lugar:"Tokio",      fechas:"24–30 jun", cat:"ATP 500"},
-    {m:7,  nombre:"Wimbledon",                     lugar:"Londres",    fechas:"13–30 jul", cat:"Grand Slam 2000"},
-    {m:8,  nombre:"Cincinnati Open",               lugar:"Cincinnati", fechas:"7–18 ago",  cat:"ATP 500"},
-    {m:9,  nombre:"US Open",                       lugar:"Nueva York", fechas:"7–24 sep",  cat:"Masters 1000"},
-    {m:10, nombre:"Swiss Indoors Basel",           lugar:"Basilea",    fechas:"20–26 oct", cat:"ATP 500"},
-    {m:11, nombre:"Rolex París Masters",           lugar:"París",      fechas:"2–27 nov",  cat:"Masters 1000"},
-    {m:12, nombre:"Rolex Shanghai Masters",        lugar:"Shanghái",   fechas:"1–12 dic",  cat:"Grand Slam 2000 · Maestros"}
+    {m:1,  nombre:"Abierto de Australia",          lugar:"Melbourne",  fechas:"12–26 ene", pais:"au", cat:"ATP 500"},
+    {m:2,  nombre:"Barcelona Open Banc Sabadell",  lugar:"Barcelona",  fechas:"14–20 feb", pais:"es", cat:"Masters 1000"},
+    {m:3,  nombre:"BMW Open",                      lugar:"Múnich",     fechas:"14–20 mar", pais:"de", cat:"ATP 500"},
+    {m:4,  nombre:"Rolex Monte-Carlo Masters",     lugar:"Montecarlo", fechas:"6–13 abr",  pais:"mc", cat:"ATP 500"},
+    {m:5,  nombre:"Roland Garros",                 lugar:"París",      fechas:"8–25 may",  pais:"fr", cat:"Masters 1000"},
+    {m:6,  nombre:"Kinoshita Group Japan Open",    lugar:"Tokio",      fechas:"24–30 jun", pais:"jp", cat:"ATP 500"},
+    {m:7,  nombre:"Wimbledon",                     lugar:"Londres",    fechas:"13–30 jul", pais:"gb", cat:"Grand Slam 2000"},
+    {m:8,  nombre:"Cincinnati Open",               lugar:"Cincinnati", fechas:"7–18 ago",  pais:"us", cat:"ATP 500"},
+    {m:9,  nombre:"US Open",                       lugar:"Nueva York", fechas:"7–24 sep",  pais:"us", cat:"Masters 1000"},
+    {m:10, nombre:"Swiss Indoors Basel",           lugar:"Basilea",    fechas:"20–26 oct", pais:"ch", cat:"ATP 500"},
+    {m:11, nombre:"Rolex París Masters",           lugar:"París",      fechas:"2–27 nov",  pais:"fr", cat:"Masters 1000"},
+    {m:12, nombre:"Rolex Shanghai Masters",        lugar:"Shanghái",   fechas:"1–12 dic",  pais:"cn", cat:"Grand Slam 2000 · Maestros"}
   ],
   temporada2026: {1:"no",2:"no",3:"no",4:"no",5:"no",6:"jugado",7:"no",8:"no",9:"no",10:"no",11:"pendiente",12:"pendiente"},
   etapas: [
@@ -923,6 +926,9 @@ const FV = "?v=7";
 const bust = id => FOTOS.has(id) ? `fotos/${id}-busto.webp${FV}` : null;
 const cut = id => FOTOS.has(id) ? `fotos/${id}-recorte.webp${FV}` : null;
 const avatar = (id, cls="") => FOTOS.has(id) ? `<img class="av ${cls}" src="fotos/${id}-cara.jpg${FV}" alt="" loading="lazy">` : `<span class="av av-ini ${cls}" aria-hidden="true">${ini(id)}</span>`;
+const PAISES = {au:`<rect width="30" height="20" fill="#012169"/><svg width="15" height="10" viewBox="0 0 15 10"><rect width="15" height="10" fill="#012169"/><path d="M0 0L15 10M15 0L0 10" stroke="#fff" stroke-width="2"/><path d="M0 0L15 10M15 0L0 10" stroke="#C8102E" stroke-width=".8"/><path d="M7.5 0V10M0 5H15" stroke="#fff" stroke-width="3"/><path d="M7.5 0V10M0 5H15" stroke="#C8102E" stroke-width="1.6"/></svg><polygon fill="#fff" points="7.50,12.40 8.15,14.11 9.97,14.20 8.55,15.34 9.03,17.10 7.50,16.10 5.97,17.10 6.45,15.34 5.03,14.20 6.85,14.11"/><polygon fill="#fff" points="23.00,2.80 23.29,3.60 24.14,3.63 23.48,4.15 23.71,4.97 23.00,4.50 22.29,4.97 22.52,4.15 21.86,3.63 22.71,3.60"/><polygon fill="#fff" points="20.00,7.80 20.29,8.60 21.14,8.63 20.48,9.15 20.71,9.97 20.00,9.50 19.29,9.97 19.52,9.15 18.86,8.63 19.71,8.60"/><polygon fill="#fff" points="26.00,6.80 26.29,7.60 27.14,7.63 26.48,8.15 26.71,8.97 26.00,8.50 25.29,8.97 25.52,8.15 24.86,7.63 25.71,7.60"/><polygon fill="#fff" points="23.00,14.70 23.32,15.56 24.24,15.60 23.52,16.17 23.76,17.05 23.00,16.55 22.24,17.05 22.48,16.17 21.76,15.60 22.68,15.56"/>`,es:`<rect width="30" height="20" fill="#AA151B"/><rect y="5" width="30" height="10" fill="#F1BF00"/>`,de:`<rect width="30" height="20" fill="#FFCE00"/><rect width="30" height="13.33" fill="#DD0000"/><rect width="30" height="6.67" fill="#000"/>`,mc:`<rect width="30" height="20" fill="#fff"/><rect width="30" height="10" fill="#CE1126"/>`,fr:`<rect width="30" height="20" fill="#EF4135"/><rect width="20" height="20" fill="#fff"/><rect width="10" height="20" fill="#0055A4"/>`,jp:`<rect width="30" height="20" fill="#fff"/><circle cx="15" cy="10" r="6" fill="#BC002D"/>`,gb:`<svg width="30" height="20" viewBox="0 0 15 10" preserveAspectRatio="none"><rect width="15" height="10" fill="#012169"/><path d="M0 0L15 10M15 0L0 10" stroke="#fff" stroke-width="2"/><path d="M0 0L15 10M15 0L0 10" stroke="#C8102E" stroke-width=".8"/><path d="M7.5 0V10M0 5H15" stroke="#fff" stroke-width="3"/><path d="M7.5 0V10M0 5H15" stroke="#C8102E" stroke-width="1.6"/></svg>`,us:`<rect y="0.000" width="30" height="1.538" fill="#B22234"/><rect y="1.538" width="30" height="1.538" fill="#fff"/><rect y="3.077" width="30" height="1.538" fill="#B22234"/><rect y="4.615" width="30" height="1.538" fill="#fff"/><rect y="6.154" width="30" height="1.538" fill="#B22234"/><rect y="7.692" width="30" height="1.538" fill="#fff"/><rect y="9.231" width="30" height="1.538" fill="#B22234"/><rect y="10.769" width="30" height="1.538" fill="#fff"/><rect y="12.308" width="30" height="1.538" fill="#B22234"/><rect y="13.846" width="30" height="1.538" fill="#fff"/><rect y="15.385" width="30" height="1.538" fill="#B22234"/><rect y="16.923" width="30" height="1.538" fill="#fff"/><rect y="18.462" width="30" height="1.538" fill="#B22234"/><rect width="12" height="10.77" fill="#3C3B6E"/><circle cx="1.20" cy="1.00" r=".38" fill="#fff"/><circle cx="3.40" cy="1.00" r=".38" fill="#fff"/><circle cx="5.60" cy="1.00" r=".38" fill="#fff"/><circle cx="7.80" cy="1.00" r=".38" fill="#fff"/><circle cx="10.00" cy="1.00" r=".38" fill="#fff"/><circle cx="2.30" cy="2.30" r=".38" fill="#fff"/><circle cx="4.50" cy="2.30" r=".38" fill="#fff"/><circle cx="6.70" cy="2.30" r=".38" fill="#fff"/><circle cx="8.90" cy="2.30" r=".38" fill="#fff"/><circle cx="1.20" cy="3.60" r=".38" fill="#fff"/><circle cx="3.40" cy="3.60" r=".38" fill="#fff"/><circle cx="5.60" cy="3.60" r=".38" fill="#fff"/><circle cx="7.80" cy="3.60" r=".38" fill="#fff"/><circle cx="10.00" cy="3.60" r=".38" fill="#fff"/><circle cx="2.30" cy="4.90" r=".38" fill="#fff"/><circle cx="4.50" cy="4.90" r=".38" fill="#fff"/><circle cx="6.70" cy="4.90" r=".38" fill="#fff"/><circle cx="8.90" cy="4.90" r=".38" fill="#fff"/><circle cx="1.20" cy="6.20" r=".38" fill="#fff"/><circle cx="3.40" cy="6.20" r=".38" fill="#fff"/><circle cx="5.60" cy="6.20" r=".38" fill="#fff"/><circle cx="7.80" cy="6.20" r=".38" fill="#fff"/><circle cx="10.00" cy="6.20" r=".38" fill="#fff"/><circle cx="2.30" cy="7.50" r=".38" fill="#fff"/><circle cx="4.50" cy="7.50" r=".38" fill="#fff"/><circle cx="6.70" cy="7.50" r=".38" fill="#fff"/><circle cx="8.90" cy="7.50" r=".38" fill="#fff"/><circle cx="1.20" cy="8.80" r=".38" fill="#fff"/><circle cx="3.40" cy="8.80" r=".38" fill="#fff"/><circle cx="5.60" cy="8.80" r=".38" fill="#fff"/><circle cx="7.80" cy="8.80" r=".38" fill="#fff"/><circle cx="10.00" cy="8.80" r=".38" fill="#fff"/><circle cx="2.30" cy="10.10" r=".38" fill="#fff"/><circle cx="4.50" cy="10.10" r=".38" fill="#fff"/><circle cx="6.70" cy="10.10" r=".38" fill="#fff"/><circle cx="8.90" cy="10.10" r=".38" fill="#fff"/>`,ch:`<rect width="30" height="20" fill="#DA291C"/><rect x="13" y="4" width="4" height="12" fill="#fff"/><rect x="9" y="8" width="12" height="4" fill="#fff"/>`,cn:`<rect width="30" height="20" fill="#EE1C25"/><polygon fill="#FFFF00" points="5.00,2.00 5.68,4.07 7.85,4.07 6.09,5.36 6.76,7.43 5.00,6.15 3.24,7.43 3.91,5.36 2.15,4.07 4.32,4.07"/><polygon fill="#FFFF00" points="10.50,1.13 10.37,1.84 10.98,2.21 10.27,2.30 10.10,2.99 9.80,2.35 9.09,2.41 9.61,1.92 9.33,1.26 9.96,1.60"/><polygon fill="#FFFF00" points="12.26,3.03 12.31,3.75 13.00,3.95 12.34,4.22 12.36,4.93 11.90,4.39 11.22,4.63 11.60,4.02 11.16,3.46 11.86,3.63"/><polygon fill="#FFFF00" points="11.91,6.00 12.21,6.66 12.92,6.61 12.39,7.09 12.66,7.75 12.03,7.40 11.48,7.86 11.63,7.16 11.03,6.78 11.74,6.70"/><polygon fill="#FFFF00" points="9.66,8.06 10.11,8.62 10.79,8.38 10.40,8.99 10.83,9.56 10.14,9.38 9.72,9.96 9.68,9.25 9.00,9.03 9.67,8.78"/>`};
+const PAIS_N = {au:"Australia",es:"España",de:"Alemania",mc:"Mónaco",fr:"Francia",jp:"Japón",gb:"Reino Unido",us:"Estados Unidos",ch:"Suiza",cn:"China"};
+const cflag = c => PAISES[c] ? `<span class="fmini" role="img" aria-label="${PAIS_N[c]}" style="--flag:url(&quot;data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 20'>${PAISES[c]}</svg>`)}&quot;)"></span>` : "";
 const fmini = () => '<span class="fmini" role="img" aria-label="Chile"></span>';
 const wflag = (w, n=12) => { let h=`<span class="wflag" style="--w:${w}px" role="img" aria-label="Bandera de Chile">`;
   for(let i=0;i<n;i++) h+=`<i style="background-position:${-(i*w/n)}px 0;animation-delay:${-(i*0.11).toFixed(2)}s"></i>`; return h+"</span>"; };
@@ -1112,7 +1118,7 @@ function sakura(sec){
     const lab = st==="jugado"?"Disputado":st==="pendiente"?(mm.m===11?"Próximo · por confirmar":"Por confirmar"):"No se disputó";
     return `<div class="mo ${st==="jugado"?"played":""} ${mm.m===11?"next":""}">
       <div class="mn">${MES[mm.m].slice(0,3).toUpperCase()}</div><div class="dt">${mm.fechas}</div><div class="dot"></div>
-      <div class="body"><h3>${mm.nombre}</h3><div class="cat">${mm.lugar} · ${mm.cat}</div>
+      <div class="body"><h3>${mm.nombre}</h3><div class="place">${cflag(mm.pais)}${mm.lugar}</div><div class="cat">${mm.cat}</div>
       <div class="stt">${lab}</div>${t?`<div class="won">🏆 ${P[t.campeon].nombre}</div>`:""}</div>
     </div>`;}).join("");
 })();

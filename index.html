@@ -278,6 +278,36 @@ p{margin:0}
 .palmares{margin-top:30px}
 .palmares h3{font-size:clamp(26px,3vw,36px);margin-bottom:24px}
 .rtable{color:var(--ink)}
+/* fotos */
+.av{display:inline-grid;place-items:center;object-fit:cover;border-radius:50%;flex:none;background:var(--grad-cool);color:#fff;font-family:var(--f-display);font-weight:800;vertical-align:middle}
+.av.sm{width:40px;height:40px;font-size:13px}
+.av.md{width:58px;height:58px;font-size:17px;box-shadow:0 0 0 2px rgba(255,255,255,.15)}
+.av.xl{display:grid;width:118px;height:118px;font-size:36px;margin:0 auto 16px;box-shadow:0 0 0 4px rgba(255,255,255,.25),0 18px 40px rgba(0,0,0,.35)}
+.rtable td.n .av{float:left;margin-right:14px;margin-top:2px}
+.player .pphoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.player:hover .pphoto{transform:scale(1.07)}
+.player .tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(123,60,255,.25),transparent 35%,transparent 55%,rgba(255,46,147,.35) 78%,rgba(12,8,23,.92))}
+.player:nth-child(3n) .tint{background:linear-gradient(180deg,rgba(255,122,26,.28),transparent 35%,transparent 55%,rgba(123,60,255,.4) 78%,rgba(12,8,23,.92))}
+.player .cflag,.player .seedn,.player .info{z-index:2}
+.pod img.mono{object-fit:cover;padding:0;box-shadow:0 0 0 3px rgba(255,255,255,.35)}
+.sheet-top.has-photo{min-height:260px}
+.sheet-top .sheet-photo{position:absolute;right:0;top:0;width:46%;height:100%;object-fit:cover;-webkit-mask-image:linear-gradient(90deg,transparent,#000 45%);mask-image:linear-gradient(90deg,transparent,#000 45%)}
+.sheet-top.has-photo > :not(.sheet-photo):not(.close){max-width:60%;position:relative}
+.ls-main{display:flex;gap:26px;align-items:center}
+.ls-photo{width:150px;height:200px;object-fit:cover;border-radius:20px;flex:none;box-shadow:0 20px 40px rgba(0,0,0,.4)}
+.lg-who{display:flex;align-items:center;gap:14px;min-width:0}
+.whoin{display:flex;align-items:center;gap:14px;min-width:0}
+.lead-story > img.nphoto{position:absolute;right:0;top:0;width:58%;height:100%;object-fit:cover;-webkit-mask-image:linear-gradient(90deg,transparent,#000 40%);mask-image:linear-gradient(90deg,transparent,#000 40%)}
+.lead-story.has-photo h3,.lead-story.has-photo p{max-width:70%;text-shadow:0 2px 14px rgba(0,0,0,.6)}
+@media (max-width:640px){
+  .ls-main{flex-direction:column;align-items:flex-start}
+  .ls-photo{width:120px;height:160px}
+  .sheet-top .sheet-photo{width:55%;opacity:.75}
+  .sheet-top.has-photo > :not(.sheet-photo):not(.close){max-width:75%}
+  .lead-story > img.nphoto{width:100%;height:62%;-webkit-mask-image:linear-gradient(180deg,#000 50%,transparent);mask-image:linear-gradient(180deg,#000 50%,transparent)}
+  .lead-story.has-photo h3,.lead-story.has-photo p{max-width:none}
+  .av.xl{width:84px;height:84px}
+}
 /* banderas */
 .fmini{display:inline-block;width:21px;height:14px;border-radius:2px;background:var(--flag) center/cover;vertical-align:-1px;margin-right:8px;position:relative;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.12)}
 .fmini::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);background-size:300% 100%;animation:shine 3.5s ease-in-out infinite}
@@ -696,8 +726,10 @@ const DATA = {
     ["valenzuela","flores",3,1],["valenzuela","gatica",1,0],
     ["mila","palma",1,0],["richardi","alvaro",1,0],["palma","gatica",2,0]
   ],
+  /* jugadores con foto en la carpeta fotos/ (retrato <id>.jpg y cara <id>-cara.jpg) */
+  fotos: ["nunez","mila","valenzuela","flores","palma","juanito","richardi"],
   noticias: [
-    {fecha:"2026-06-30", tag:"Campeón", destacada:true, titulo:"Sebastián Núñez gana el Kinoshita Group Japan Open",
+    {fecha:"2026-06-30", tag:"Campeón", destacada:true, foto:"nunez", titulo:"Sebastián Núñez gana el Kinoshita Group Japan Open",
      texto:"El primer sembrado venció a Patricio Palma en semifinales y a Mario Valenzuela en la final. Es su sexto título en el circuito y suma 500 puntos."},
     {fecha:"2026-06-27", tag:"Ranking", titulo:"Núñez cierra junio como número 1 con 5.000 puntos",
      texto:"Lo siguen Ignacio Mila con 1.750 y Mario Valenzuela con 1.125."},
@@ -727,6 +759,8 @@ document.documentElement.classList.add("js");
 /* bandera de Chile */
 const FLAG_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20"><rect width="30" height="10" fill="#fff"/><rect y="10" width="30" height="10" fill="#d52b1e"/><rect width="10" height="10" fill="#0039a6"/><polygon fill="#fff" points="5.00,2.50 5.56,4.23 7.38,4.23 5.91,5.30 6.47,7.02 5.00,5.96 3.53,7.02 4.09,5.30 2.62,4.23 4.44,4.23"/></svg>';
 document.documentElement.style.setProperty("--flag", `url("data:image/svg+xml,${encodeURIComponent(FLAG_SVG)}")`);
+const FOTOS = new Set(DATA.fotos||[]);
+const avatar = (id, cls="") => FOTOS.has(id) ? `<img class="av ${cls}" src="fotos/${id}-cara.jpg" alt="" loading="lazy">` : `<span class="av av-ini ${cls}" aria-hidden="true">${ini(id)}</span>`;
 const fmini = () => '<span class="fmini" role="img" aria-label="Chile"></span>';
 const wflag = (w, n=12) => { let h=`<span class="wflag" style="--w:${w}px" role="img" aria-label="Bandera de Chile">`;
   for(let i=0;i<n;i++) h+=`<i style="background-position:${-(i*w/n)}px 0;animation-delay:${-(i*0.11).toFixed(2)}s"></i>`; return h+"</span>"; };
@@ -772,7 +806,8 @@ let io=null;
   const ns=[...DATA.noticias].sort((a,b)=>(b.destacada?1:0)-(a.destacada?1:0) || b.fecha.localeCompare(a.fecha));
   const n0=ns[0]; const [y,m,d]=n0.fecha.split("-").map(Number);
   $("#news").innerHTML = `
-    <article class="lead-story rv l">
+    <article class="lead-story rv l ${n0.foto&&FOTOS.has(n0.foto)?"has-photo":""}">
+      ${n0.foto&&FOTOS.has(n0.foto)?`<img class="nphoto" src="fotos/${n0.foto}.jpg" alt="">`:""}
       <div class="date">${String(d).padStart(2,"0")}<small>${MES[m].toUpperCase()} ${y}</small></div>
       <span class="tagline">${n0.tag}</span><h3>${n0.titulo}</h3><p>${n0.texto}</p>
     </article>
@@ -830,7 +865,7 @@ let io=null;
   $("#rankIntro").textContent = `Puntos acumulados desde 2015. Corte al ${fdate(DATA.actualizado)}.`;
   $("#podium").innerHTML = activos.slice(0,3).map(([id,p],i)=>`
     <article class="pod rv ${["l","u","r"][i]}" style="transition-delay:${i*120}ms" data-id="${id}" tabindex="0" role="button" aria-label="Ver ficha de ${p.nombre}">
-      <div class="pos">${i+1}</div><div class="flagrow"><div class="mono">${ini(id)}</div>${wflag(42,10)}</div>
+      <div class="pos">${i+1}</div><div class="flagrow">${FOTOS.has(id)?`<img class="mono ph" src="fotos/${id}-cara.jpg" alt="">`:`<div class="mono">${ini(id)}</div>`}${wflag(42,10)}</div>
       <h3>${p.nombre}</h3><div class="pts num">${fmt(p.pts)}<small>PTS</small></div>
       <div class="s">${p.tit} ${p.tit===1?"título":"títulos"} · ${p.v}-${p.d} · ${pct(p)}% de victorias</div>
     </article>`).join("");
@@ -838,7 +873,7 @@ let io=null;
   $("#rank").innerHTML = activos.map(([id,p],i)=>`
     <tr data-id="${id}" tabindex="0" aria-label="Ver ficha de ${p.nombre}">
       <td class="p">${i+1}</td>
-      <td class="n">${fmini()}${p.nombre}<small>Mejor ranking: ${p.mejor}°</small></td>
+      <td class="n">${avatar(id,"sm")}${fmini()}${p.nombre}<small>Mejor ranking: ${p.mejor}°</small></td>
       <td class="pt num">${fmt(p.pts)}</td>
       <td style="width:28%"><div class="bar"><i data-w="${Math.max(1.5,p.pts/max*100)}"></i></div></td>
       <td class="c num">${p.tit}</td><td class="c num">${p.v}-${p.d}</td><td class="c num">${pct(p)}%</td>
@@ -854,8 +889,8 @@ let io=null;
 (function(){
   $("#rail").innerHTML = activos.map(([id,p],i)=>`
     <button class="player rv ${i%2?"r":"l"}" style="transition-delay:${i*90}ms" data-id="${id}">
-      <div class="bg"></div><span class="cflag">${wflag(54,12)}</span><span class="seedn">#${i+1}</span>
-      <div class="mono">${ini(id)}</div>
+      <div class="bg"></div>${FOTOS.has(id)?`<img class="pphoto" src="fotos/${id}.jpg" alt="${p.nombre}" loading="lazy"><div class="tint"></div>`:`<div class="mono">${ini(id)}</div>`}
+      <span class="cflag">${wflag(54,12)}</span><span class="seedn">#${i+1}</span>
       <div class="info"><b>${p.nombre}</b><span>${fmt(p.pts)} pts · ${p.tit} ${p.tit===1?"título":"títulos"}</span></div>
     </button>`).join("");
   document.querySelectorAll(".player").forEach(b=>b.onclick=()=>openPlayer(b.dataset.id));
@@ -865,14 +900,14 @@ let io=null;
 (function(){
   const [sid,sp]=leyendas[0];
   $("#legendStar").innerHTML = `
-    <div><span class="tagline">La gran leyenda</span><div style="margin-top:14px">${wflag(56,12)}</div><h3 style="margin-top:12px">${sp.nombre}${sp.apodo?` <span style="opacity:.6">“${sp.apodo}”</span>`:""}</h3>
-      <p class="muted" style="margin-top:10px">Llegó a ser número ${sp.mejor} del circuito y ganó ${sp.tit} de sus ${sp.fin} finales.</p></div>
+    <div class="ls-main">${FOTOS.has(sid)?`<img class="ls-photo" src="fotos/${sid}.jpg" alt="${sp.nombre}">`:""}<div><span class="tagline">La gran leyenda</span><div style="margin-top:14px">${wflag(56,12)}</div><h3 style="margin-top:12px">${sp.nombre}${sp.apodo?` <span style="opacity:.6">“${sp.apodo}”</span>`:""}</h3>
+      <p class="muted" style="margin-top:10px">Llegó a ser número ${sp.mejor} del circuito y ganó ${sp.tit} de sus ${sp.fin} finales.</p></div></div>
     <div class="stats"><div><b class="num">${fmt(sp.pts)}</b><span>Puntos</span></div><div><b class="num">${sp.tit}</b><span>Títulos</span></div>
       <div><b class="num">${sp.v}-${sp.d}</b><span>V-D</span></div><div><b class="num">${pct(sp)}%</b><span>Victorias</span></div></div>`;
   $("#legendStar").style.cursor="pointer"; $("#legendStar").onclick=()=>openPlayer(sid);
   $("#legends").innerHTML = leyendas.slice(1).map(([id,p],i)=>`
     <button class="lg rv ${["l","u","r"][i%3]}" style="transition-delay:${(i%3)*100}ms" data-id="${id}">
-      <span><b>${fmini()}${p.nombre}</b><small>${p.v}-${p.d} · mejor ranking ${p.mejor}°</small></span><span class="st ${p.estado}">${stLabel(p.estado)}</span>
+      <span class="lg-who">${avatar(id,"sm")}<span><b>${fmini()}${p.nombre}</b><small>${p.v}-${p.d} · mejor ranking ${p.mejor}°</small></span></span><span class="st ${p.estado}">${stLabel(p.estado)}</span>
     </button>`).join("");
   document.querySelectorAll(".lg").forEach(b=>b.onclick=()=>openPlayer(b.dataset.id));
 })();
@@ -926,7 +961,7 @@ let io=null;
       const g = c => w.filter(t=>t.cat.startsWith(c)).length;
       return `<div class="prow rv ${i%2?"r":"l"} ${i===0?"top":""}" data-id="${id}" tabindex="0" role="button" aria-label="Ver ficha de ${p.nombre}">
         <div class="pn">${i+1}</div>
-        <div class="who"><b>${fmini()}${p.nombre}</b>${p.estado!=="activo"?`<span class="st ${p.estado}">${stLabel(p.estado)}</span>`:`<span class="st activo">Activo</span>`}</div>
+        <div class="who"><div class="whoin">${avatar(id,"md")}<div><b>${fmini()}${p.nombre}</b>${p.estado!=="activo"?`<span class="st ${p.estado}">${stLabel(p.estado)}</span>`:`<span class="st activo">Activo</span>`}</div></div></div>
         <div class="crowns">${cups}</div>
         <div class="tot"><b class="num">${w.length}</b><span>${w.length===1?"título":"títulos"}</span></div>
         <div class="brk">
@@ -967,8 +1002,8 @@ let io=null;
     const r=get(a,b);
     if(!r){o.innerHTML=`<p class="h2h-msg">${P[a].nombre} y ${P[b].nombre} no tienen partidos registrados entre ellos.</p>`;return;}
     const tot=r[0]+r[1];
-    o.innerHTML=`<div class="h2h-score"><div class="${r[0]>r[1]?"lead":""}"><b class="num">${r[0]}</b><span>${fmini()}${P[a].nombre}</span></div>
-      <div class="dash">–</div><div class="${r[1]>r[0]?"lead":""}"><b class="num">${r[1]}</b><span>${fmini()}${P[b].nombre}</span></div></div>
+    o.innerHTML=`<div class="h2h-score"><div class="${r[0]>r[1]?"lead":""}">${avatar(a,"xl")}<b class="num">${r[0]}</b><span>${fmini()}${P[a].nombre}</span></div>
+      <div class="dash">–</div><div class="${r[1]>r[0]?"lead":""}">${avatar(b,"xl")}<b class="num">${r[1]}</b><span>${fmini()}${P[b].nombre}</span></div></div>
       <div class="h2h-bar"><i style="width:0"></i><i style="width:0"></i></div>
       <p class="h2h-msg">${tot} ${tot===1?"partido registrado":"partidos registrados"}</p>`;
     requestAnimationFrame(()=>requestAnimationFrame(()=>{const i=o.querySelectorAll(".h2h-bar i"); i[0].style.width=r[0]/tot*100+"%"; i[1].style.width=r[1]/tot*100+"%";}));
@@ -987,8 +1022,8 @@ function openPlayer(id){
   const won=DATA.torneos.filter(t=>t.campeon===id), lost=DATA.torneos.filter(t=>t.finalista===id);
   const h=DATA.h2h.filter(r=>r[0]===id||r[1]===id).map(r=>r[0]===id?[r[1],r[2],r[3]]:[r[0],r[3],r[2]]);
   const m=$("#modal");
-  m.innerHTML=`<div class="sheet"><div class="sheet-top"><button class="close" aria-label="Cerrar ficha">×</button>
-      <div class="mono" aria-hidden="true">${ini(id)}</div>
+  m.innerHTML=`<div class="sheet"><div class="sheet-top ${FOTOS.has(id)?"has-photo":""}"><button class="close" aria-label="Cerrar ficha">×</button>
+      ${FOTOS.has(id)?`<img class="sheet-photo" src="fotos/${id}.jpg" alt="">`:`<div class="mono" aria-hidden="true">${ini(id)}</div>`}
       ${wflag(64,14)}<br><span class="tagline">${pos>=0?`Número ${pos+1} del ranking`:stLabel(p.estado)}</span>
       <h3 id="mName">${p.nombre}</h3>${p.apodo&&p.apodo!==p.nombre?`<div class="nick">“${p.apodo}”</div>`:""}
       <div class="big num">${fmt(p.pts)}<small>PUNTOS</small></div></div>

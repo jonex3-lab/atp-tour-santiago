@@ -319,7 +319,31 @@ p{margin:0}
 @keyframes wave{from{transform:translateY(-7%);filter:brightness(1.08)}to{transform:translateY(7%);filter:brightness(.86)}}
 .player .cflag{position:absolute;top:18px;left:18px;z-index:1}
 .pod .flagrow{display:flex;align-items:center;gap:14px}
-.pod.has-cut{min-height:250px}
+.pod.has-cut{min-height:260px}
+.pod .pod-photo{position:absolute;right:0;top:0;height:100%;width:62%;object-fit:cover;object-position:center 30%;-webkit-mask-image:linear-gradient(90deg,transparent,#000 55%);mask-image:linear-gradient(90deg,transparent,#000 55%);transition:transform .7s}
+.pod:hover .pod-photo{transform:scale(1.06)}
+.pod .posn{font-family:var(--f-display);font-weight:900;font-size:62px;line-height:.8;letter-spacing:-.03em}
+.pod.has-cut h3,.pod.has-cut .pts,.pod.has-cut .s{text-shadow:0 2px 16px rgba(0,0,0,.25)}
+/* head to head: escenario con rostros a los costados */
+.h2h-stage{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;height:380px;margin-top:40px;border-radius:28px;overflow:hidden;background:rgba(12,8,23,.35)}
+.h2h-face{position:relative;height:100%;overflow:hidden}
+.h2h-face img{width:100%;height:100%;object-fit:cover;object-position:center 35%;transition:transform .8s}
+.h2h-stage:hover .h2h-face img{transform:scale(1.04)}
+.h2h-face.a img{-webkit-mask-image:linear-gradient(90deg,#000 45%,transparent);mask-image:linear-gradient(90deg,#000 45%,transparent)}
+.h2h-face.b img{-webkit-mask-image:linear-gradient(270deg,#000 45%,transparent);mask-image:linear-gradient(270deg,#000 45%,transparent)}
+.h2h-ini{display:grid;place-items:center;height:100%;font-family:var(--f-display);font-weight:900;font-size:110px;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.35)}
+.h2h-mid{position:relative;z-index:2;text-align:center;padding-inline:10px}
+.h2h-nums{display:flex;align-items:center;justify-content:center;gap:18px}
+.h2h-nums b{font-family:var(--f-display);font-weight:900;font-size:clamp(80px,11vw,150px);line-height:.9;text-shadow:0 10px 40px rgba(0,0,0,.45)}
+.h2h-nums b.lead{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 10px 30px rgba(0,0,0,.45))}
+.h2h-nums .dash{font-family:var(--f-display);font-size:50px;color:rgba(255,255,255,.5)}
+.h2h-names{display:flex;justify-content:space-between;gap:24px;margin-top:14px;font-size:15px;font-weight:600;color:#f3ecff;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+@media (max-width:640px){
+  .h2h-stage{height:230px;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+  .h2h-nums{gap:8px}.h2h-nums b{font-size:64px}.h2h-nums .dash{font-size:30px}
+  .h2h-names{flex-direction:column;gap:2px;font-size:12px}
+  .h2h-mid{padding-inline:4px}
+}
 .pod .pod-cut{position:absolute;right:4px;bottom:0;height:224px;width:auto;max-width:52%;object-fit:contain;object-position:bottom right;-webkit-mask-image:linear-gradient(180deg,#000 68%,transparent);mask-image:linear-gradient(180deg,#000 68%,transparent);filter:drop-shadow(0 10px 24px rgba(0,0,0,.35));transition:transform .6s}
 .pod:hover .pod-cut{transform:scale(1.05) translateY(-4px)}
 .pod.has-cut .pos{right:16px;top:auto;bottom:-14px;font-size:120px;z-index:3;opacity:1;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.85);text-shadow:0 6px 24px rgba(0,0,0,.25)}
@@ -889,7 +913,7 @@ let io=null;
   $("#rankIntro").textContent = `Puntos acumulados desde 2015. Corte al ${fdate(DATA.actualizado)}.`;
   $("#podium").innerHTML = activos.slice(0,3).map(([id,p],i)=>`
     <article class="pod rv ${["l","u","r"][i]} ${cut(id)?"has-cut":""}" style="transition-delay:${i*120}ms" data-id="${id}" tabindex="0" role="button" aria-label="Ver ficha de ${p.nombre}">
-      <div class="pos">${i+1}</div>${bust(id)?`<img class="pod-cut" src="${bust(id)}" alt="">`:""}<div class="flagrow">${cut(id)?"":`<div class="mono">${ini(id)}</div>`}${wflag(42,10)}</div>
+      ${FOTOS.has(id)?`<img class="pod-photo" src="fotos/${id}-rostro.jpg" alt="">`:`<div class="pos">${i+1}</div>`}<div class="flagrow">${FOTOS.has(id)?`<span class="posn">${i+1}</span>`:`<div class="mono">${ini(id)}</div>`}${wflag(42,10)}</div>
       <h3>${p.nombre}</h3><div class="pts num">${fmt(p.pts)}<small>PTS</small></div>
       <div class="s">${p.tit} ${p.tit===1?"título":"títulos"} · ${p.v}-${p.d} · ${pct(p)}% de victorias</div>
     </article>`).join("");
@@ -1026,8 +1050,15 @@ let io=null;
     const r=get(a,b);
     if(!r){o.innerHTML=`<p class="h2h-msg">${P[a].nombre} y ${P[b].nombre} no tienen partidos registrados entre ellos.</p>`;return;}
     const tot=r[0]+r[1];
-    o.innerHTML=`<div class="h2h-score"><div class="${r[0]>r[1]?"lead":""}">${bust(a)?`<img class="h2h-cut" src="${bust(a)}" alt="">`:avatar(a,"xl")}<b class="num">${r[0]}</b><span>${fmini()}${P[a].nombre}</span></div>
-      <div class="dash">–</div><div class="${r[1]>r[0]?"lead":""}">${bust(b)?`<img class="h2h-cut" src="${bust(b)}" alt="">`:avatar(b,"xl")}<b class="num">${r[1]}</b><span>${fmini()}${P[b].nombre}</span></div></div>
+    const face = id => FOTOS.has(id) ? `<img src="fotos/${id}-rostro.jpg" alt="${P[id].nombre}">` : `<span class="h2h-ini">${ini(id)}</span>`;
+    o.innerHTML=`<div class="h2h-stage">
+        <div class="h2h-face a">${face(a)}</div>
+        <div class="h2h-mid">
+          <div class="h2h-nums"><b class="num ${r[0]>r[1]?"lead":""}">${r[0]}</b><span class="dash">–</span><b class="num ${r[1]>r[0]?"lead":""}">${r[1]}</b></div>
+          <div class="h2h-names"><span>${fmini()}${P[a].nombre}</span><span>${fmini()}${P[b].nombre}</span></div>
+        </div>
+        <div class="h2h-face b">${face(b)}</div>
+      </div>
       <div class="h2h-bar"><i style="width:0"></i><i style="width:0"></i></div>
       <p class="h2h-msg">${tot} ${tot===1?"partido registrado":"partidos registrados"}</p>`;
     requestAnimationFrame(()=>requestAnimationFrame(()=>{const i=o.querySelectorAll(".h2h-bar i"); i[0].style.width=r[0]/tot*100+"%"; i[1].style.width=r[1]/tot*100+"%";}));

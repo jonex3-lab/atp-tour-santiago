@@ -365,6 +365,26 @@ p{margin:0}
 .sheet-body ul{list-style:none;margin:0;padding:0}
 .sheet-body li{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}
 .sheet-body li span:last-child{color:var(--muted);text-align:right}
+:root{--g-win:linear-gradient(120deg,#1fd17a,#7dffb0);--g-lose:linear-gradient(120deg,#ff2e4d,#ff7a59);--g-draw:linear-gradient(120deg,#ffb020,#ffe066)}
+.h2h-sum{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.h2h-sum span{font-size:12px;font-weight:700;letter-spacing:.06em;padding:5px 12px;border-radius:999px;color:#14061a}
+.h2h-sum .win{background:var(--g-win)}.h2h-sum .lose{background:var(--g-lose);color:#fff}.h2h-sum .draw{background:var(--g-draw)}
+.sheet-body .h2h-list li{display:grid;grid-template-columns:minmax(0,1fr) 90px 58px 92px;align-items:center;gap:12px;padding:12px 14px;margin-bottom:8px;border:0;border-radius:14px;position:relative;overflow:hidden}
+.sheet-body .h2h-list li::before{content:"";position:absolute;inset:0;opacity:.16}
+.sheet-body .h2h-list li::after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
+.h2h-list li.win::before,.h2h-list li.win::after{background:var(--g-win)}
+.h2h-list li.lose::before,.h2h-list li.lose::after{background:var(--g-lose)}
+.h2h-list li.draw::before,.h2h-list li.draw::after{background:var(--g-draw)}
+.h2h-list li > *{position:relative}
+.h2h-list .opp{min-width:0}
+.h2h-list .mini-bar{height:6px;border-radius:999px;background:var(--g-lose);overflow:hidden}
+.h2h-list .mini-bar i{display:block;height:100%;background:var(--g-win)}
+.h2h-list li.draw .mini-bar i{background:var(--g-draw)}.h2h-list li.draw .mini-bar{background:rgba(255,224,102,.35)}
+.h2h-list .rec{font-family:var(--f-display);font-weight:800;font-size:18px;text-align:center;-webkit-background-clip:text;background-clip:text;color:transparent}
+.h2h-list li.win .rec{background-image:var(--g-win)}.h2h-list li.lose .rec{background-image:var(--g-lose)}.h2h-list li.draw .rec{background-image:var(--g-draw)}
+.sheet-body .h2h-list .lab{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-align:right;color:var(--fg)}
+.h2h-list li.win .lab{color:#7dffb0}.h2h-list li.lose .lab{color:#ff8a8a}.h2h-list li.draw .lab{color:#ffe066}
+@media (max-width:560px){.sheet-body .h2h-list li{grid-template-columns:minmax(0,1fr) 50px;gap:6px 10px}.h2h-list .mini-bar{grid-column:1 / -1;grid-row:2}.sheet-body .h2h-list .lab{display:none}}
 
 /* ---------- pie ---------- */
 footer{background:var(--night);padding-block:90px 50px;position:relative;overflow:hidden}
@@ -946,7 +966,17 @@ function openPlayer(id){
       <div><b class="num">${p.m1000||0}</b><span>Masters 1000</span></div><div><b class="num">${p.gs||0}</b><span>Grand Slam</span></div></div>
       ${won.length?`<h4>Títulos</h4><ul>${won.map(t=>`<li><span>🏆 ${t.nombre} ${t.anio}</span><span>${t.cat} · ante ${P[t.finalista].nombre}</span></li>`).join("")}</ul>`:""}
       ${lost.length?`<h4>Finales perdidas</h4><ul>${lost.map(t=>`<li><span>${t.nombre} ${t.anio}</span><span>${t.cat} · ante ${P[t.campeon].nombre}</span></li>`).join("")}</ul>`:""}
-      ${h.length?`<h4>Head to head</h4><ul>${h.map(([o,w,l])=>`<li><span>vs ${P[o].nombre}</span><span class="num">${w}-${l}</span></li>`).join("")}</ul>`:""}
+      ${h.length?(()=>{
+        const hs=[...h].sort((x,y)=>(y[1]+y[2])-(x[1]+x[2])||(y[1]-y[2])-(x[1]-x[2]));
+        const st=([,w,l])=>w>l?"win":w<l?"lose":"draw";
+        const c={win:0,lose:0,draw:0}; hs.forEach(r=>c[st(r)]++);
+        return `<h4>Head to head</h4>
+        <div class="h2h-sum"><span class="win">${c.win} a favor</span><span class="draw">${c.draw} igualados</span><span class="lose">${c.lose} en contra</span></div>
+        <ul class="h2h-list">${hs.map(r=>{const [o,w,l]=r,k=st(r),t=w+l;
+          return `<li class="${k}"><span class="opp">${fmini()}vs ${P[o].nombre}</span>
+            <span class="mini-bar" aria-hidden="true"><i style="width:${w/t*100}%"></i></span>
+            <span class="rec num">${w}-${l}</span>
+            <span class="lab">${k==="win"?"Ventaja":k==="lose"?"Desventaja":"Igualados"}</span></li>`;}).join("")}</ul>`;})():""}
     </div></div>`;
   m.hidden=false; document.body.style.overflow="hidden";
   const cl=m.querySelector(".close"); cl.focus(); cl.onclick=closePlayer;

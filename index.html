@@ -320,19 +320,12 @@ p{margin:0}
 .palmares{margin-top:30px}
 .palmares h3{font-size:clamp(26px,3vw,36px);margin-bottom:24px}
 .rtable{color:var(--ink)}
-/* ---------- temporada: foto a la izquierda que se desvanece en el blanco ---------- */
-.season-band{overflow:hidden}
-.season-photo{position:absolute;left:0;top:0;width:50%;height:640px;object-fit:cover;object-position:45% 15%;pointer-events:none;
-  -webkit-mask-image:linear-gradient(90deg,#000 30%,transparent 82%),linear-gradient(180deg,#000 55%,transparent 96%);-webkit-mask-composite:source-in;
-  mask-image:linear-gradient(90deg,#000 30%,transparent 82%),linear-gradient(180deg,#000 55%,transparent 96%);mask-composite:intersect;
-  animation:seasonIn 1.4s cubic-bezier(.2,.8,.2,1) both}
-@keyframes seasonIn{from{transform:translateX(-60px);opacity:0}}
-.season-band .head{grid-template-columns:1fr;padding-left:42%;min-height:400px;align-content:center}
-.season-band .head p{max-width:46ch}
-@media (max-width:980px){
-  .season-photo{width:100%;height:420px;opacity:.9;-webkit-mask-image:linear-gradient(180deg,#000 40%,transparent 98%);mask-image:linear-gradient(180deg,#000 40%,transparent 98%)}
-  .season-band .head{padding-left:0;padding-top:260px;min-height:0}
-}
+.history-band .hist-photo{position:absolute;left:-2%;top:0;height:min(1100px,70%);width:52%;object-fit:cover;object-position:45% 15%;opacity:.4;filter:saturate(1.1) contrast(1.05);mix-blend-mode:luminosity;
+  -webkit-mask-image:linear-gradient(90deg,#000 20%,transparent 92%),linear-gradient(180deg,#000 40%,transparent 95%);-webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,#000 20%,transparent 92%),linear-gradient(180deg,#000 40%,transparent 95%);mask-composite:intersect;animation:leaderDrift 18s ease-in-out infinite alternate}
+.history-band{background:radial-gradient(110% 70% at 0% 0%,#2e0f52 0%,transparent 55%),var(--night)}
+@media (max-width:640px){.history-band .hist-photo{width:100%;height:520px;opacity:.25}}
+
 /* ---------- ranking: escenario del líder ---------- */
 .band.stage{background:radial-gradient(120% 90% at 0% 0%,#3a1366 0%,transparent 55%),radial-gradient(90% 80% at 100% 100%,rgba(255,46,147,.32) 0%,transparent 60%),linear-gradient(160deg,#150b2c,#0c0817 60%,#1d0a24);color:var(--fg)}
 .rank-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
@@ -718,8 +711,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
     </div>
   </section>
 
-  <section class="band paper season-band" id="temporada">
-    <img class="season-photo" src="img/temporada-flores.jpg?v=1" alt="" aria-hidden="true">
+  <section class="band paper" id="temporada">
     <div class="wrap">
       <div class="head">
         <div class="rv l"><span class="kick">Temporada 2026</span><h2 class="fh">Un torneo por mes</h2></div>
@@ -729,7 +721,8 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
     </div>
   </section>
 
-  <section class="band" id="historia">
+  <section class="band history-band" id="historia">
+    <div class="rank-bg" aria-hidden="true"><img class="hist-photo" src="img/temporada-flores.jpg?v=1" alt=""><i class="glow g2"></i></div>
     <div class="wrap">
       <div class="head">
         <div class="rv l"><span class="kick">Desde 2015</span><h2 class="fh">La <em>historia</em></h2></div>

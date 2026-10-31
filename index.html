@@ -380,6 +380,12 @@ tr:hover .av.ring,.lg:hover .av.ring{transform:scale(1.08)}
 .sheet-top{overflow:hidden}
 .sheet-top.has-photo > :not(.sheet-photo):not(.close){max-width:60%;position:relative}
 .ls-main{display:flex;gap:26px;align-items:center}
+.ls-art{position:relative;flex:none;width:250px;margin-right:30px;display:grid;place-items:end center}
+.ls-art .ls-photo{position:relative;z-index:1;margin:-34px 0 -34px 0}
+.ls-emblem{position:absolute;z-index:0;left:50%;top:50%;width:300px;max-width:none;transform:translate(-58%,-58%);opacity:.9;pointer-events:none;
+  filter:drop-shadow(0 0 18px rgba(255,190,40,.55));animation:lionGlow 4.5s ease-in-out infinite alternate}
+@keyframes lionGlow{from{opacity:.7;filter:drop-shadow(0 0 10px rgba(255,190,40,.35)) brightness(.95);transform:translate(-58%,-58%) scale(.97)}to{opacity:1;filter:drop-shadow(0 0 30px rgba(255,170,30,.75)) brightness(1.12);transform:translate(-58%,-58%) scale(1.03)}}
+.legend-star{overflow:visible}
 .ls-photo{width:190px;height:240px;object-fit:contain;object-position:bottom;flex:none;margin:-34px 0 -34px -10px;-webkit-mask-image:linear-gradient(180deg,#000 72%,transparent);mask-image:linear-gradient(180deg,#000 72%,transparent);filter:drop-shadow(0 16px 30px rgba(0,0,0,.45))}
 .lg-who{display:flex;align-items:center;gap:14px;min-width:0}
 .whoin{display:flex;align-items:center;gap:14px;min-width:0}
@@ -388,6 +394,7 @@ tr:hover .av.ring,.lg:hover .av.ring{transform:scale(1.08)}
 @media (max-width:640px){
   .ls-main{flex-direction:column;align-items:flex-start}
   .ls-photo{width:150px;height:190px;margin:-20px 0 0}
+  .ls-art{width:200px;margin:0 0 26px}.ls-emblem{width:240px}
   .sheet-top .sheet-photo{width:62%;opacity:.8}
   .sheet-top.has-photo > :not(.sheet-photo):not(.close){max-width:75%}
   .lead-story > img.nphoto{width:100%;height:62%;-webkit-mask-image:linear-gradient(180deg,#000 50%,transparent);mask-image:linear-gradient(180deg,#000 50%,transparent)}
@@ -816,7 +823,7 @@ const DATA = {
     palma:     {nombre:"Patricio Palma",   apodo:"",        estado:"activo", seed:5, pts:250,  tit:0, v:2,  d:2,  tor:2,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:5},
     gatica:    {nombre:"José Gatica",      apodo:"",        estado:"activo", seed:6, pts:0,    tit:0, v:0,  d:3,  tor:3,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:6},
     vilaza:    {nombre:"Darío Vilaza",     apodo:"",        estado:"activo", seed:7, pts:0,    tit:0, v:0,  d:0,  tor:0,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:7},
-    juanito:   {alias:"El León", nombre:"Juan",             apodo:"Juanito", estado:"inactivo", pts:3250, tit:4, v:16, d:2, tor:6, fin:6, fg:4, t500:2, m1000:1, gs:1, mejor:1},
+    juanito:   {emblema:"img/leon.webp?v=1", alias:"El León", nombre:"Juan",             apodo:"Juanito", estado:"inactivo", pts:3250, tit:4, v:16, d:2, tor:6, fin:6, fg:4, t500:2, m1000:1, gs:1, mejor:1},
     richardi:  {nombre:"Richardi",         apodo:"",        estado:"retirado", pts:125, tit:0, v:2, d:5, tor:4, fin:0, fg:0, mejor:6},
     miguel:    {nombre:"Miguel",           apodo:"",        estado:"inactivo", pts:0, tit:0, v:3, d:4, tor:4, fin:0, fg:0, mejor:5},
     ian:       {nombre:"Ian",              apodo:"",        estado:"inactivo", pts:0, tit:0, v:1, d:3, tor:3, fin:0, fg:0, mejor:7},
@@ -1128,7 +1135,7 @@ function sakura(sec){
 (function(){
   const [sid,sp]=leyendas[0];
   $("#legendStar").innerHTML = `
-    <div class="ls-main">${cut(sid)?`<img class="ls-photo" src="${cut(sid)}" alt="${sp.nombre}">`:""}<div><span class="tagline">La gran leyenda</span><div style="margin-top:14px">${wflag(56,12)}</div><h3 style="margin-top:12px">${sp.nombre}${sp.alias?`, <span class="ls-alias">${sp.alias}</span>`:""}</h3>${sp.apodo?`<div class="muted" style="margin-top:6px">“${sp.apodo}”</div>`:""}
+    <div class="ls-main">${cut(sid)?`<div class="ls-art">${sp.emblema?`<img class="ls-emblem" src="${sp.emblema}" alt="">`:""}<img class="ls-photo" src="${cut(sid)}" alt="${sp.nombre}"></div>`:""}<div><span class="tagline">La gran leyenda</span><div style="margin-top:14px">${wflag(56,12)}</div><h3 style="margin-top:12px">${sp.nombre}${sp.alias?`, <span class="ls-alias">${sp.alias}</span>`:""}</h3>${sp.apodo?`<div class="muted" style="margin-top:6px">“${sp.apodo}”</div>`:""}
       <p class="muted" style="margin-top:10px">Llegó a ser número ${sp.mejor} del circuito y ganó ${sp.tit} de sus ${sp.fin} finales.</p></div></div>
     <div class="stats"><div><b class="num">${fmt(sp.pts)}</b><span>Puntos</span></div><div><b class="num">${sp.tit}</b><span>Títulos</span></div>
       <div><b class="num">${sp.v}-${sp.d}</b><span>V-D</span></div><div><b class="num">${pct(sp)}%</b><span>Victorias</span></div></div>`;

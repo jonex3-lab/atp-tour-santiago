@@ -519,6 +519,8 @@ tr:hover .av.ring,.lg:hover .av.ring{transform:scale(1.08)}
 .sheet-top .tagline{color:#fff}
 .sheet-top h3{font-size:clamp(28px,4vw,40px);margin-top:10px;position:relative}
 .sheet-top .nick{margin-top:6px;color:#fbe9ff;position:relative}
+.sheet-top .alias{position:relative;display:table;margin:12px 0 2px;font-family:var(--f-display);font-weight:800;font-size:clamp(15px,2vw,19px);letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border-radius:999px;background:linear-gradient(100deg,#ffd76a,#ff9a2e);color:#2a1400;box-shadow:0 6px 20px rgba(255,170,40,.35);animation:aliasIn .7s .15s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes aliasIn{from{transform:scale(.6) translateX(-20px);opacity:0}}
 .sheet-top .big{font-family:var(--f-display);font-weight:900;font-size:44px;margin-top:16px;position:relative}
 .sheet-top .big small{font-family:var(--f-body);font-size:13px;font-weight:600;letter-spacing:.14em;margin-left:8px}
 .close{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(0,0,0,.3);color:#fff;font-size:22px;cursor:pointer;z-index:2}
@@ -773,14 +775,14 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
 const DATA = {
   actualizado: "2026-06-27",
   jugadores: {
-    nunez:     {nombre:"Sebastián Núñez",  apodo:"Tano",    estado:"activo", seed:1, pts:5000, tit:6, v:20, d:6,  tor:12, fin:10, fg:6, t500:3, m1000:3, gs:0, mejor:1},
-    mila:      {nombre:"Ignacio Mila",     apodo:"",        estado:"activo", seed:2, pts:1750, tit:1, v:11, d:11, tor:12, fin:3,  fg:1, t500:1, m1000:0, gs:0, mejor:2},
-    valenzuela:{nombre:"Mario Valenzuela", apodo:"Mario",   estado:"activo", seed:3, pts:1125, tit:1, v:12, d:10, tor:11, fin:4,  fg:1, t500:1, m1000:0, gs:0, mejor:2},
-    flores:    {nombre:"Hugo Flores",      apodo:"Hugo",    estado:"activo", seed:4, pts:875,  tit:0, v:5,  d:11, tor:10, fin:1,  fg:0, t500:0, m1000:0, gs:0, mejor:3},
+    nunez:     {alias:"The King", nombre:"Sebastián Núñez",  apodo:"Tano",    estado:"activo", seed:1, pts:5000, tit:6, v:20, d:6,  tor:12, fin:10, fg:6, t500:3, m1000:3, gs:0, mejor:1},
+    mila:      {alias:"El Asesino de Leyendas", nombre:"Ignacio Mila",     apodo:"",        estado:"activo", seed:2, pts:1750, tit:1, v:11, d:11, tor:12, fin:3,  fg:1, t500:1, m1000:0, gs:0, mejor:2},
+    valenzuela:{alias:"El Lobo Solitario", nombre:"Mario Valenzuela", apodo:"Mario",   estado:"activo", seed:3, pts:1125, tit:1, v:12, d:10, tor:11, fin:4,  fg:1, t500:1, m1000:0, gs:0, mejor:2},
+    flores:    {alias:"Pistol Flores", nombre:"Hugo Flores",      apodo:"Hugo",    estado:"activo", seed:4, pts:875,  tit:0, v:5,  d:11, tor:10, fin:1,  fg:0, t500:0, m1000:0, gs:0, mejor:3},
     palma:     {nombre:"Patricio Palma",   apodo:"",        estado:"activo", seed:5, pts:250,  tit:0, v:2,  d:2,  tor:2,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:5},
     gatica:    {nombre:"José Gatica",      apodo:"",        estado:"activo", seed:6, pts:0,    tit:0, v:0,  d:3,  tor:3,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:6},
     vilaza:    {nombre:"Darío Vilaza",     apodo:"",        estado:"activo", seed:7, pts:0,    tit:0, v:0,  d:0,  tor:0,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:7},
-    juanito:   {nombre:"Juan",             apodo:"Juanito", estado:"inactivo", pts:3250, tit:4, v:16, d:2, tor:6, fin:6, fg:4, t500:2, m1000:1, gs:1, mejor:1},
+    juanito:   {alias:"El León", nombre:"Juan",             apodo:"Juanito", estado:"inactivo", pts:3250, tit:4, v:16, d:2, tor:6, fin:6, fg:4, t500:2, m1000:1, gs:1, mejor:1},
     richardi:  {nombre:"Richardi",         apodo:"",        estado:"retirado", pts:125, tit:0, v:2, d:5, tor:4, fin:0, fg:0, mejor:6},
     miguel:    {nombre:"Miguel",           apodo:"",        estado:"inactivo", pts:0, tit:0, v:3, d:4, tor:4, fin:0, fg:0, mejor:5},
     ian:       {nombre:"Ian",              apodo:"",        estado:"inactivo", pts:0, tit:0, v:1, d:3, tor:3, fin:0, fg:0, mejor:7},
@@ -1198,7 +1200,7 @@ function openPlayer(id){
   m.innerHTML=`<div class="sheet"><div class="sheet-top ${FOTOS.has(id)?"has-photo":""}"><button class="close" aria-label="Cerrar ficha">×</button>
       ${FOTOS.has(id)?`<img class="sheet-photo" src="fotos/${id}-rostro.jpg${FV}" alt="">`:`<div class="mono" aria-hidden="true">${ini(id)}</div>`}
       ${wflag(64,14)}<br><span class="tagline">${pos>=0?`Número ${pos+1} del ranking`:stLabel(p.estado)}</span>
-      <h3 id="mName">${p.nombre}</h3>${p.apodo&&p.apodo!==p.nombre?`<div class="nick">“${p.apodo}”</div>`:""}
+      ${p.alias?`<div class="alias">${p.alias}</div>`:""}<h3 id="mName">${p.nombre}</h3>${p.apodo&&p.apodo!==p.nombre?`<div class="nick">“${p.apodo}”</div>`:""}
       <div class="big num">${fmt(p.pts)}<small>PUNTOS</small></div></div>
     <div class="sheet-body"><div class="kv">
       <div><b class="num">${p.tit}</b><span>Títulos</span></div><div><b class="num">${p.v}-${p.d}</b><span>Victorias-derrotas</span></div>

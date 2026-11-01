@@ -274,7 +274,9 @@ p{margin:0}
 .st.inactivo{color:var(--warn)}.st.retirado{color:var(--muted)}.st.activo{color:var(--ok)}
 .legend-star{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:50px;align-items:center;margin-bottom:56px;padding:34px;border-radius:28px;background:rgba(255,255,255,.06);border:1px solid var(--line);backdrop-filter:blur(6px)}
 .legend-star h3{font-size:clamp(30px,4vw,48px)}
-.legend-star .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.legend-star .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 28px}
+.legend-star .stats > div{padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);min-width:0}
+.legend-star .stats b{white-space:nowrap}
 .legend-star .stats b{display:block;font-family:var(--f-display);font-size:32px;font-weight:800}
 .legend-star .stats span{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 

@@ -297,6 +297,36 @@ p{margin:0}
 @keyframes ping{0%{box-shadow:0 0 0 0 rgba(255,46,147,.5)}100%{box-shadow:0 0 0 16px rgba(255,46,147,0)}}
 .mo .won{margin-top:8px;font-size:13px;font-weight:700}
 
+
+/* ---------- cuadros históricos ---------- */
+.sheet.wide{width:min(1240px,100%)}
+.sheet.wide .bracket-wrap{margin:0 -6px}
+.llave .nm{font-size:14.5px;font-weight:600;fill:rgba(255,255,255,.92)}
+.llave .nm.w{font-weight:800;fill:#fff}
+.llave .nm.free{font-style:italic;fill:rgba(255,255,255,.35)}
+.llave .nm.chn{fill:#2a1600;font-weight:800;font-size:17px}
+.llave .seed{fill:url(#gSeed2)}.llave .seed.lo{fill:rgba(255,255,255,.1);stroke:rgba(255,255,255,.2)}
+.llave .seedt.sm{font-size:12.5px}.llave .seed.lo+.seedt{fill:#cfc4ec}
+.llave .box.ch{fill:url(#gGold2)}
+.llave .lose .nm{fill:rgba(255,255,255,.4)}
+.llave .gm{font-size:12.5px;fill:rgba(255,255,255,.85)}.llave .gm.na{fill:rgba(255,255,255,.4);font-style:italic}
+.llave path.c.dash{stroke:rgba(255,120,170,.6);stroke-dasharray:6 5;stroke-dashoffset:0}
+.llave-nota{margin-top:14px;font-size:14px}
+.ver-cuadro{margin-top:14px;display:inline-flex;gap:8px;align-items:center;padding:9px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:linear-gradient(120deg,rgba(255,46,147,.22),rgba(255,154,46,.22));color:#fff;font:600 13px var(--f-body);letter-spacing:.04em;cursor:pointer;transition:transform .25s,background .25s}
+.ver-cuadro:hover{transform:translateY(-2px);background:linear-gradient(120deg,rgba(255,46,147,.45),rgba(255,154,46,.45))}
+.ver-cuadro span{transition:transform .25s}.ver-cuadro:hover span{transform:translateX(4px)}
+/* ---------- ranking histórico ---------- */
+.rtable.hist td.c,.rtable.hist th.c{text-align:center}
+.rtable.hist small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#ffcf6a;margin-top:2px}
+/* ---------- datos curiosos ---------- */
+.curio-band{background:radial-gradient(1200px 600px at 10% 0%,rgba(255,46,147,.22),transparent 60%),radial-gradient(900px 500px at 100% 100%,rgba(124,58,237,.3),transparent 60%),var(--night)}
+.curio{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.cu{position:relative;overflow:hidden;padding:26px 24px 24px;border-radius:24px;background:rgba(255,255,255,.05);border:1px solid var(--line);cursor:pointer;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s,background .35s}
+.cu:hover{transform:translateY(-6px) rotate(-.4deg);border-color:rgba(255,200,61,.55);background:rgba(255,255,255,.08)}
+.cu-n{position:absolute;right:18px;top:8px;font-family:var(--f-display);font-weight:900;font-size:64px;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.55}
+.cu .av{width:46px;height:46px}
+.cu h3{font-size:19px;margin:16px 0 8px;line-height:1.15;max-width:85%}
+.cu p{margin:0;color:var(--muted);font-size:15px;line-height:1.55}
 /* ---------- historia ---------- */
 .chapters{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:60px}
 .chapters a{text-decoration:none;padding:10px 18px;border-radius:999px;border:1px solid var(--line);font-size:14px;font-weight:600;transition:.3s}
@@ -663,6 +693,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
       <a href="#temporada">Temporada</a>
       <a href="#historia">Historia</a>
       <a href="#h2h">Head to Head</a>
+      <a href="#curiosidades">Curiosidades</a>
     </nav>
   </div>
 </header>
@@ -730,6 +761,13 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
         </table>
       </div>
       <p class="note muted" id="rankNote"></p>
+      <div class="hist-rank">
+        <div class="head" style="margin-top:70px"><div class="rv l"><span class="kick">Toda la carrera</span><h3 class="fh" style="font-size:clamp(28px,4vw,44px)">Ranking <em>histórico</em></h3></div>
+        <p class="rv r" style="color:#e9e1ff">Todos los que pisaron la cancha desde 2015, ordenados por títulos, finales y victorias. Esta tabla no se mueve con la defensa de puntos.</p></div>
+        <div class="tscroll glass rv u">
+          <table class="rtable hist"><thead><tr><th>Pos.</th><th>Jugador</th><th class="c">Títulos</th><th class="c">Finales</th><th class="c">V-D</th><th class="c">Mejor ranking</th><th class="c">Estado</th></tr></thead><tbody id="rankHist"></tbody></table>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -784,6 +822,16 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
     </div>
   </section>
 
+  <section class="band curio-band" id="curiosidades">
+    <div class="wrap">
+      <div class="head">
+        <div class="rv l"><span class="kick">Para la sobremesa</span><h2 class="fh">Datos <em>curiosos</em></h2></div>
+        <p class="muted rv r">Rachas, maldiciones y revanchas que dejó el circuito desde 2015.</p>
+      </div>
+      <div class="curio" id="curio"></div>
+    </div>
+  </section>
+
   <section class="band img" id="h2h" style="background-image:url(img/band2.jpg)">
     <div class="wrap">
       <div class="head">
@@ -819,28 +867,28 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
 const DATA = {
   actualizado: "2026-06-27",
   jugadores: {
-    nunez:     {alias:"The King", nombre:"Sebastián Núñez",  apodo:"Tano",    estado:"activo", seed:1, pts:5000, tit:6, v:20, d:6,  tor:12, fin:10, fg:6, t500:3, m1000:3, gs:0, mejor:1},
-    mila:      {alias:"El Asesino de Leyendas", nombre:"Ignacio Mila",     apodo:"",        estado:"activo", seed:2, pts:1750, tit:1, v:11, d:11, tor:12, fin:3,  fg:1, t500:1, m1000:0, gs:0, mejor:2},
-    valenzuela:{alias:"El Lobo Solitario", nombre:"Mario Valenzuela", apodo:"Mario",   estado:"activo", seed:3, pts:1125, tit:1, v:12, d:10, tor:11, fin:4,  fg:1, t500:1, m1000:0, gs:0, mejor:2},
+    nunez:     {alias:"The King", nombre:"Sebastián Núñez",  apodo:"Tano",    estado:"activo", seed:1, pts:4250, tit:6, v:20, d:6,  tor:12, fin:10, fg:6, t500:3, m1000:3, gs:0, mejor:1},
+    mila:      {alias:"El Asesino de Leyendas", nombre:"Ignacio Mila",     apodo:"",        estado:"activo", seed:2, pts:1625, tit:1, v:11, d:11, tor:12, fin:3,  fg:1, t500:1, m1000:0, gs:0, mejor:3},
+    valenzuela:{alias:"El Lobo Solitario", nombre:"Mario Valenzuela", apodo:"Mario",   estado:"activo", seed:3, pts:1250, tit:1, v:12, d:10, tor:11, fin:4,  fg:1, t500:1, m1000:0, gs:0, mejor:2},
     flores:    {alias:"Pistol Flores", nombre:"Hugo Flores",      apodo:"Hugo",    estado:"activo", seed:4, pts:875,  tit:0, v:5,  d:11, tor:10, fin:1,  fg:0, t500:0, m1000:0, gs:0, mejor:3},
-    palma:     {nombre:"Patricio Palma",   apodo:"",        estado:"activo", seed:5, pts:250,  tit:0, v:2,  d:2,  tor:2,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:5},
-    gatica:    {nombre:"José Gatica",      apodo:"",        estado:"activo", seed:6, pts:0,    tit:0, v:0,  d:3,  tor:3,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:6},
-    vilaza:    {nombre:"Darío Vilaza",     apodo:"",        estado:"activo", seed:7, pts:0,    tit:0, v:0,  d:0,  tor:0,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:7},
-    juanito:   {emblema:"img/leon.webp?v=1", alias:"El León", nombre:"Juan",             apodo:"Juanito", estado:"inactivo", pts:3250, tit:4, v:16, d:2, tor:6, fin:6, fg:4, t500:2, m1000:1, gs:1, mejor:1},
-    richardi:  {nombre:"Richardi",         apodo:"",        estado:"retirado", pts:125, tit:0, v:2, d:5, tor:4, fin:0, fg:0, mejor:6},
-    miguel:    {nombre:"Miguel",           apodo:"",        estado:"inactivo", pts:0, tit:0, v:3, d:4, tor:4, fin:0, fg:0, mejor:5},
-    ian:       {nombre:"Ian",              apodo:"",        estado:"inactivo", pts:0, tit:0, v:1, d:3, tor:3, fin:0, fg:0, mejor:7},
-    ivan:      {nombre:"Iván",             apodo:"",        estado:"inactivo", pts:0, tit:0, v:1, d:4, tor:4, fin:0, fg:0, mejor:13},
-    jaime:     {nombre:"Jaime",            apodo:"",        estado:"retirado", pts:0, tit:0, v:1, d:3, tor:2, fin:0, fg:0, mejor:6},
-    ricardito: {nombre:"Ricardito",        apodo:"",        estado:"inactivo", pts:0, tit:0, v:0, d:3, tor:3, fin:0, fg:0, mejor:12},
-    rhurtado:  {nombre:"Ricardo Hurtado",  apodo:"",        estado:"inactivo", pts:0, tit:0, v:1, d:1, tor:1, fin:0, fg:0, mejor:19},
-    maestrito: {nombre:"Rodrigo",          apodo:"Maestrito", estado:"retirado", pts:0, tit:0, v:1, d:1, tor:1, fin:0, fg:0, mejor:15},
-    alvaro:    {nombre:"Álvaro",           apodo:"",        estado:"retirado", pts:0, tit:0, v:0, d:2, tor:1, fin:0, fg:0, mejor:14},
-    nico:      {nombre:"Nico",             apodo:"",        estado:"inactivo", pts:0, tit:0, v:0, d:1, tor:1, fin:0, fg:0, mejor:8},
-    primojaime:{nombre:"Primo Jaime",      apodo:"",        estado:"retirado", pts:0, tit:0, v:0, d:1, tor:1, fin:0, fg:0, mejor:10},
-    luciano:   {nombre:"Luciano",          apodo:"",        estado:"retirado", pts:0, tit:0, v:0, d:1, tor:1, fin:0, fg:0, mejor:16},
-    benjamin:  {nombre:"Benjamín",         apodo:"",        estado:"retirado", pts:0, tit:0, v:0, d:1, tor:1, fin:0, fg:0, mejor:17},
-    locomario: {nombre:"Loco Mario",       apodo:"",        estado:"inactivo", pts:0, tit:0, v:0, d:1, tor:1, fin:0, fg:0, mejor:18}
+    palma:     {nombre:"Patricio Palma",   apodo:"",        estado:"activo", seed:5, pts:250,  tit:0, v:2,  d:2,  tor:2,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:6},
+    gatica:    {nombre:"José Gatica",      apodo:"",        estado:"activo", seed:6, pts:0,    tit:0, v:0,  d:3,  tor:3,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:null},
+    vilaza:    {nombre:"Darío Vilaza",     apodo:"",        estado:"activo", seed:7, pts:0,    tit:0, v:0,  d:0,  tor:0,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:null},
+    juanito:   {emblema:"img/leon.webp?v=1", alias:"El León", nombre:"Juan",             apodo:"Juanito", estado:"inactivo", pts:3250, tit:4, v:16, d:2, tor:6, fin:6, fg:4, t500:2, m1000:1, gs:1, mejor:1, retiro:{pos:1, pts:3750, ult:"Maipú 2017"}},
+    richardi:  {nombre:"Richardi",         apodo:"",        estado:"retirado", pts:185, tit:0, v:2, d:5, tor:4, fin:0, fg:0, mejor:6, retiro:{pos:6, pts:185, ult:"Chépica 2017"}},
+    miguel:    {alias:"El Ángel Malo", nombre:"Miguel Flores", apodo:"Miguel", estado:"inactivo", pts:185, tit:0, v:3, d:4, tor:4, fin:0, fg:0, mejor:5, retiro:{pos:7, pts:185, ult:"Maipú 2017"}},
+    ian:       {nombre:"Ian",              apodo:"",        estado:"inactivo", pts:125, tit:0, v:1, d:3, tor:3, fin:0, fg:0, mejor:9, retiro:{pos:9, pts:125, ult:"Maipú 2017"}},
+    ivan:      {nombre:"Iván",             apodo:"",        estado:"inactivo", pts:60, tit:0, v:1, d:4, tor:4, fin:0, fg:0, mejor:11, retiro:{pos:11, pts:60, ult:"Maipú 2017"}},
+    jaime:     {nombre:"Jaime",            apodo:"",        estado:"retirado", pts:0, tit:0, v:1, d:3, tor:2, fin:0, fg:0, mejor:4, retiro:{pos:null, pts:0, ult:"La Cisterna 2016"}},
+    ricardito: {nombre:"Ricardito",        apodo:"",        estado:"inactivo", pts:0, tit:0, v:0, d:3, tor:3, fin:0, fg:0, mejor:null},
+    rhurtado:  {nombre:"Ricardo Hurtado",  apodo:"",        estado:"inactivo", pts:125, tit:0, v:1, d:1, tor:1, fin:0, fg:0, mejor:10, retiro:{pos:10, pts:125, ult:"Maipú 2017"}},
+    maestrito: {nombre:"Rodrigo",          apodo:"Maestrito", estado:"retirado", pts:125, tit:0, v:1, d:1, tor:1, fin:0, fg:0, mejor:8, retiro:{pos:8, pts:125, ult:"Maipú 2017"}},
+    alvaro:    {nombre:"Álvaro Paredes",   apodo:"Álvaro",  estado:"retirado", pts:0, tit:0, v:0, d:2, tor:1, fin:0, fg:0, mejor:null},
+    nico:      {alias:"El Ángel Bueno", nombre:"Nicolás Flores", apodo:"Nico", estado:"inactivo", pts:0, tit:0, v:0, d:1, tor:1, fin:0, fg:0, mejor:null},
+    primojaime:{nombre:"Primo Jaime",      apodo:"",        estado:"retirado", pts:0, tit:0, v:0, d:1, tor:1, fin:0, fg:0, mejor:null},
+    luciano:   {nombre:"Luciano",          apodo:"",        estado:"retirado", pts:0, tit:0, v:0, d:1, tor:1, fin:0, fg:0, mejor:null},
+    benjamin:  {nombre:"Benjamín",         apodo:"",        estado:"retirado", pts:0, tit:0, v:0, d:1, tor:1, fin:0, fg:0, mejor:null},
+    locomario: {nombre:"Loco Mario",       apodo:"",        estado:"inactivo", pts:0, tit:0, v:0, d:1, tor:1, fin:0, fg:0, mejor:null}
   },
   meses: [
     {m:1,  nombre:"Abierto de Australia",          lugar:"Melbourne",  fechas:"12–26 ene", pais:"au", cat:"ATP 500"},
@@ -866,18 +914,18 @@ const DATA = {
      desc:"Los torneos toman el nombre de los grandes escenarios del tenis mundial, con el mismo ritmo de siempre: uno por mes."}
   ],
   torneos: [
-    {etapa:"historica", nombre:"La Cisterna",          anio:2015, m:3,  cat:"ATP 500",         campeon:"juanito", finalista:"valenzuela"},
-    {etapa:"historica", nombre:"Lo Prado",             anio:2015, m:4,  cat:"ATP 500",         campeon:"juanito", finalista:"valenzuela"},
-    {etapa:"historica", nombre:"Maipú",                anio:2015, m:5,  cat:"Masters 1000",    campeon:"nunez",   finalista:"juanito"},
-    {etapa:"historica", nombre:"San Alberto Hurtado",  anio:2015, m:11, cat:"Masters 1000",    campeon:"nunez",   finalista:"flores"},
-    {etapa:"historica", nombre:"Santiago",             anio:2015, m:12, cat:"Grand Slam 2000", campeon:"juanito", finalista:"nunez", extra:"Torneo de Maestros"},
-    {etapa:"historica", nombre:"La Cisterna",          anio:2016, m:3,  cat:"ATP 500",         campeon:"nunez",   finalista:"juanito"},
-    {etapa:"historica", nombre:"Chépica",              anio:2017, m:1,  cat:"ATP 500",         campeon:"nunez",   finalista:"mila", extra:"Formato round robin"},
-    {etapa:"historica", nombre:"El Tabo",              anio:2017, m:2,  cat:"Masters 1000",    campeon:"nunez",   finalista:"mila"},
-    {etapa:"historica", nombre:"Maipú",                anio:2017, m:5,  cat:"Masters 1000",    campeon:"juanito", finalista:"nunez"},
-    {etapa:"transicion",nombre:"Lo Prado",             anio:2023, m:4,  cat:"ATP 500",         campeon:"valenzuela", finalista:"nunez"},
-    {etapa:"nueva",     nombre:"Rolex Monte-Carlo Masters", anio:2025, m:4, cat:"ATP 500",     campeon:"mila",    finalista:"nunez", extra:"Jugado en Lo Prado"},
-    {etapa:"nueva",     nombre:"Kinoshita Group Japan Open", anio:2026, m:6, cat:"ATP 500",    campeon:"nunez",   finalista:"valenzuela", cuadro:"kinoshita2026"}
+    {etapa:"historica", nombre:"La Cisterna",          anio:2015, llave:"cis15", m:3,  cat:"ATP 500",         campeon:"juanito", finalista:"valenzuela"},
+    {etapa:"historica", nombre:"Lo Prado",             anio:2015, llave:"lp15", m:4,  cat:"ATP 500",         campeon:"juanito", finalista:"valenzuela"},
+    {etapa:"historica", nombre:"Maipú",                anio:2015, llave:"mai15", m:5,  cat:"Masters 1000",    campeon:"nunez",   finalista:"juanito"},
+    {etapa:"historica", nombre:"San Alberto Hurtado",  anio:2015, llave:"sah15", m:11, cat:"Masters 1000",    campeon:"nunez",   finalista:"flores"},
+    {etapa:"historica", nombre:"Santiago",             anio:2015, llave:"stg15", m:12, cat:"Grand Slam 2000", campeon:"juanito", finalista:"nunez", extra:"Torneo de Maestros"},
+    {etapa:"historica", nombre:"La Cisterna",          anio:2016, llave:"cis16", m:3,  cat:"ATP 500",         campeon:"nunez",   finalista:"juanito"},
+    {etapa:"historica", nombre:"Chépica",              anio:2017, llave:"che17", m:1,  cat:"ATP 500",         campeon:"nunez",   finalista:"mila", extra:"Formato round robin"},
+    {etapa:"historica", nombre:"El Tabo",              anio:2017, llave:"tab17", m:2,  cat:"Masters 1000",    campeon:"nunez",   finalista:"mila"},
+    {etapa:"historica", nombre:"Maipú",                anio:2017, llave:"mai17", m:5,  cat:"Masters 1000",    campeon:"juanito", finalista:"nunez"},
+    {etapa:"transicion",nombre:"Lo Prado",             anio:2023, llave:"lp23", m:4,  cat:"ATP 500",         campeon:"valenzuela", finalista:"nunez"},
+    {etapa:"nueva",     nombre:"Rolex Monte-Carlo Masters", anio:2025, llave:"lp25", m:4, cat:"ATP 500",     campeon:"mila",    finalista:"nunez", extra:"Jugado en Lo Prado"},
+    {etapa:"nueva",     nombre:"Kinoshita Group Japan Open", anio:2026, llave:"kin26", m:6, cat:"ATP 500",    campeon:"nunez",   finalista:"valenzuela", cuadro:"kinoshita2026"}
   ],
   /* Cuadro: cada caja tiene columna (0 qualy … 3 campeón), posición vertical (y) y si ganó.
      links une cada partido con el lugar al que avanza su ganador. */
@@ -895,13 +943,10 @@ const DATA = {
       partidos:[["q1","q2","s2"],["s1","s2","f1"],["s3","s4","f2"],["f1","f2","ch"]]
     }
   },
+  llaves: {"cis15":{"rondas":[{"n":"Octavos","p":"0 pts","m":[{"id":"o1","a":["nunez",1],"b":["primojaime",12],"w":"a","to":"c1"},{"id":"o2","a":["jaime",6],"b":["ricardito",8],"w":"a","to":"c1"},{"id":"o3","a":["miguel",7],"b":["ian",5],"w":"a","to":"c2"},{"id":"o4","a":["mila",9],"b":["juanito",4],"w":"b","to":"c2"},{"id":"o5","a":["valenzuela",3],"b":["nico",10],"w":"a","to":"c3"},{"id":"o6","a":["ivan",11],"b":["flores",2],"w":"b","to":"c3"}]},{"n":"Cuartos","p":"60 pts","m":[{"id":"c1","a":["nunez",1],"b":["jaime",6],"w":"a","to":"s1"},{"id":"c2","a":["miguel",7],"b":["juanito",4],"w":"b","to":"s1"},{"id":"c3","a":["valenzuela",3],"b":["flores",2],"w":"a","to":"f1"}]},{"n":"Semifinal","p":"125 pts","m":[{"id":"s1","a":["nunez",1],"b":["juanito",4],"w":"b","to":"f1"}]},{"n":"Final","p":"250 pts","m":[{"id":"f1","a":["juanito",4],"b":["valenzuela",3],"w":"a"}]}],"ptsc":"500 pts","ch":"juanito","nota":"Mario Valenzuela pasó de cuartos directo a la final."},"lp15":{"rondas":[{"n":"Ronda qualy","p":"0 pts","m":[{"id":"q1","a":["mila",8],"b":["richardi",9],"w":"a","to":"c1"}]},{"n":"Cuartos","p":"60 pts","m":[{"id":"c1","a":["nunez",1],"b":["mila",8],"w":"b","to":"s1"},{"id":"c2","a":["ricardito",5],"b":["juanito",4],"w":"b","to":"s1"},{"id":"c3","a":["valenzuela",3],"b":["ivan",6],"w":"a","to":"s2"},{"id":"c4","a":["ian",7],"b":["flores",2],"w":"b","to":"s2"}]},{"n":"Semifinal","p":"125 pts","m":[{"id":"s1","a":["mila",8],"b":["juanito",4],"w":"b","to":"f1"},{"id":"s2","a":["valenzuela",3],"b":["flores",2],"w":"a","to":"f1"}]},{"n":"Final","p":"250 pts","m":[{"id":"f1","a":["juanito",4],"b":["valenzuela",3],"w":"a"}]}],"ptsc":"500 pts","ch":"juanito"},"mai15":{"rondas":[{"n":"Cuartos","p":"0 pts","m":[{"id":"c1","fila":1.6,"a":["mila",5],"b":["valenzuela",2],"w":"a","to":"s2"}]},{"n":"Semifinal","p":"250 pts","m":[{"id":"s1","fila":0,"a":["nunez",1],"b":["flores",4],"w":"a","to":"f1"},{"id":"s2","fila":1.6,"a":["juanito",3],"b":["mila",5],"w":"a","to":"f1"}]},{"n":"Final","p":"500 pts","m":[{"id":"f1","fila":0.8,"a":["nunez",1],"b":["juanito",3],"w":"a"}]}],"ptsc":"1000 pts","ch":"nunez","nota":"Núñez, Hugo Flores y Juan entraron directo en semifinales."},"sah15":{"rondas":[{"n":"Ronda qualy","p":"0 pts","m":[{"id":"q1","fila":1,"a":["ivan",7],"b":["miguel",6],"w":"b","to":"c2"}]},{"n":"Cuartos","p":"125 pts","m":[{"id":"c1","fila":0,"a":["nunez",1],"b":["mila",4],"w":"a","to":"s1"},{"id":"c2","fila":1,"a":["miguel",6],"b":["valenzuela",2],"w":"b","to":"s1"}]},{"n":"Semifinal","p":"250 pts","m":[{"id":"s1","fila":0.5,"a":["nunez",1],"b":["valenzuela",2],"w":"a","to":"f1"},{"id":"s2","fila":2.2,"a":["flores",3],"b":["richardi",5],"w":"a","to":"f1"}]},{"n":"Final","p":"500 pts","m":[{"id":"f1","fila":1.35,"a":["nunez",1],"b":["flores",3],"w":"a"}]}],"ptsc":"1000 pts","ch":"nunez"},"stg15":{"rondas":[{"n":"Cuartos","p":"0 pts","m":[{"id":"c1","fila":0,"a":["mila",5],"b":["valenzuela",4],"w":"b","to":"s1"},{"id":"c2","fila":1,"a":["flores",3],"b":["juanito",2],"w":"b","to":"s1"}]},{"n":"Semifinal","p":"500 pts","m":[{"id":"s1","fila":0.5,"a":["valenzuela",4],"b":["juanito",2],"w":"b","to":"f1"}]},{"n":"Final","p":"1000 pts","m":[{"id":"f1","fila":0.5,"a":["nunez",1],"b":["juanito",2],"w":"b"}]}],"ptsc":"2000 pts","ch":"juanito","nota":"Sebastián Núñez entró directo a la final."},"cis16":{"rondas":[{"n":"Qualy","p":"0 pts","m":[{"id":"q1","fila":0.5,"a":["alvaro",9],"b":["richardi",5],"w":"b","to":"c2","lto":"c1"},{"id":"q2","fila":2.5,"a":["miguel",6],"b":["jaime",10],"w":"a","to":"c3","lto":"c4"}]},{"n":"Cuartos","p":"60 pts","m":[{"id":"c1","fila":0,"a":["nunez",1],"b":["alvaro",8],"w":"a","to":"s1"},{"id":"c2","fila":1,"a":["richardi",5],"b":["mila",4],"w":"b","to":"s1"},{"id":"c3","fila":2,"a":["flores",3],"b":["miguel",6],"w":"a","to":"s2"},{"id":"c4","fila":3,"a":["jaime",7],"b":["juanito",2],"w":"b","to":"s2"}]},{"n":"Semifinal","p":"125 pts","m":[{"id":"s1","a":["nunez",1],"b":["mila",4],"w":"a","to":"f1"},{"id":"s2","a":["flores",3],"b":["juanito",2],"w":"b","to":"f1"}]},{"n":"Final","p":"250 pts","m":[{"id":"f1","a":["nunez",1],"b":["juanito",2],"w":"a"}]}],"ptsc":"500 pts","ch":"nunez","nota":"Qualy de posicionamiento: el ganador obtuvo el cruce más accesible en cuartos y el perdedor (línea punteada), el más difícil."},"che17":{"rondas":[{"n":"Semifinal","p":"125 pts","m":[{"id":"s1","fila":0.6,"a":["nunez",1],"b":["richardi",5],"w":"a","to":"f1"},{"id":"s2","fila":2.6,"a":["mila",4],"b":["valenzuela",3],"w":"a","to":"f1"}]},{"n":"Final","p":"250 pts","m":[{"id":"f1","a":["nunez",1],"b":["mila",4],"w":"a"}]}],"ptsc":"500 pts","ch":"nunez","nota":"Pasaron a semifinales los dos primeros de cada grupo.","grupos":[{"n":"Grupo A","t":[["nunez",1,1,0,true],["valenzuela",3,1,0,true],["flores",2,0,2,false]],"m":["Sebastián Núñez def. Hugo Flores","Mario Valenzuela def. Hugo Flores","Sebastián Núñez vs Mario Valenzuela · no se jugó"]},{"n":"Grupo B","t":[["mila",4,1,0,true],["richardi",5,1,1,true],["ricardito",6,0,1,false]],"m":["Ignacio Mila def. Richardi","Richardi def. Ricardito","Ignacio Mila vs Ricardito · no se jugó"]}]},"tab17":{"rondas":[{"n":"Semifinal","p":"0 pts","m":[{"id":"s1","a":["nunez",1],"b":["flores",2],"w":"a","to":"f1"},{"id":"s2","a":["mila",4],"b":["valenzuela",3],"w":"a","to":"f1"}]},{"n":"Final","p":"500 pts","m":[{"id":"f1","a":["nunez",1],"b":["mila",4],"w":"a"}]}],"ptsc":"1000 pts","ch":"nunez"},"mai17":{"rondas":[{"n":"Qualy 1","p":"0 pts","m":[{"id":"a1","fila":3,"a":["ivan",8],"b":["locomario",11],"w":"a","to":"b4"}]},{"n":"Qualy 2","p":"60 pts","m":[{"id":"b1","fila":0,"a":["maestrito",10],"b":["luciano",12],"w":"a","to":"c1"},{"id":"b2","fila":1,"a":["benjamin",13],"b":["ian",7],"w":"b","to":"c2"},{"id":"b3","fila":2,"a":["miguel",6],"b":["valenzuela",5],"w":"b","to":"c3"},{"id":"b4","fila":3,"a":["ivan",8],"b":["rhurtado",9],"w":"b","to":"c4"}]},{"n":"Cuartos","p":"125 pts","m":[{"id":"c1","fila":0,"a":["nunez",1],"b":["maestrito",10],"w":"a","to":"s1"},{"id":"c2","fila":1,"a":["ian",7],"b":["mila",4],"w":"b","to":"s1"},{"id":"c3","fila":2,"a":["flores",3],"b":["valenzuela",5],"w":"a","to":"s2"},{"id":"c4","fila":3,"a":["rhurtado",9],"b":["juanito",2],"w":"b","to":"s2"}]},{"n":"Semifinal","p":"250 pts","m":[{"id":"s1","a":["nunez",1],"b":["mila",4],"w":"a","to":"f1"},{"id":"s2","a":["flores",3],"b":["juanito",2],"w":"b","to":"f1"}]},{"n":"Final","p":"500 pts","m":[{"id":"f1","a":["nunez",1],"b":["juanito",2],"w":"b"}]}],"ptsc":"1000 pts","ch":"juanito","nota":"Qualy en dos rondas."},"lp23":{"rondas":[{"n":"Cuartos","p":"0 pts","m":[{"id":"c1","fila":0,"a":["flores",4],"b":["mila",3],"w":"b","to":"s1"},{"id":"c2","fila":1,"a":["gatica",5],"b":["valenzuela",2],"w":"b","to":"s1"}]},{"n":"Semifinal","p":"125 pts","m":[{"id":"s1","fila":0.5,"a":["mila",3],"b":["valenzuela",2],"w":"b","to":"f1"}]},{"n":"Final","p":"250 pts","m":[{"id":"f1","fila":0.5,"a":["nunez",1],"b":["valenzuela",2],"w":"b"}]}],"ptsc":"500 pts","ch":"valenzuela","nota":"Sebastián Núñez entró directo a la final."},"lp25":{"rondas":[{"n":"Qualy","p":"0 pts","m":[{"id":"q1","fila":1,"a":["palma",4],"b":["gatica",5],"w":"a","to":"s2"}]},{"n":"Semifinal","p":"125 pts","m":[{"id":"s1","fila":0,"a":["nunez",1],"b":["valenzuela",2],"w":"a","to":"f1"},{"id":"s2","fila":1.5,"a":["palma",4],"b":["mila",3],"w":"b","to":"f1"}]},{"n":"Final","p":"250 pts","m":[{"id":"f1","a":["nunez",1],"b":["mila",3],"w":"b"}]}],"ptsc":"500 pts","ch":"mila"},"kin26":{"rondas":[{"n":"Qualy","p":"0 pts","m":[{"id":"q1","fila":0.5,"a":["palma",4],"b":["gatica",5],"w":"a","to":"s1"}]},{"n":"Semifinal","p":"125 pts","m":[{"id":"s1","fila":0,"a":["nunez",1],"b":["palma",4],"w":"a","to":"f1"},{"id":"s2","fila":1.5,"a":["valenzuela",3],"b":["mila",2],"w":"a","to":"f1"}]},{"n":"Final","p":"250 pts","m":[{"id":"f1","a":["nunez",1],"b":["valenzuela",3],"w":"a"}]}],"ptsc":"500 pts","ch":"nunez"}},
+  curiosidades: [{"t": "La maldición de la final directa", "x": "Dos veces entró Sebastián Núñez directo a una final sin jugar antes, y las dos la perdió: Santiago 2015 ante Juan y Lo Prado 2023 ante Mario Valenzuela.", "j": "nunez"}, {"t": "El clásico Núñez–Juan", "x": "Cuatro finales entre ellos y empate perfecto, 2-2: Maipú 2015, Santiago 2015, La Cisterna 2016 y Maipú 2017.", "j": "juanito"}, {"t": "Casi invencible", "x": "Juan perdió solo 2 partidos en toda su carrera, ambos en finales ante Núñez. Nunca cayó contra Mila, Valenzuela ni Hugo Flores.", "j": "juanito"}, {"t": "Se fue en la cima", "x": "Juan dejó de jugar siendo número 1 del circuito, con 3.750 puntos tras ganar Maipú 2017.", "j": "juanito"}, {"t": "La racha de The King", "x": "Núñez encadenó tres títulos seguidos: La Cisterna 2016, Chépica 2017 y El Tabo 2017.", "j": "nunez"}, {"t": "Nace el Asesino de Leyendas", "x": "En Lo Prado 2015, Ignacio Mila entró desde la qualy como sembrado 8 y eliminó en cuartos al número 1, Sebastián Núñez.", "j": "mila"}, {"t": "La maldición, rota", "x": "Tras perder ante Núñez las finales de Chépica 2017 y El Tabo 2017, Mila por fin le ganó una final a The King: Lo Prado 2025.", "j": "mila"}, {"t": "El León de 2015", "x": "Juan ganó 3 de los 5 torneos de 2015 y venció a Mario Valenzuela en las dos finales de ATP 500 de ese año.", "j": "juanito"}, {"t": "La espera del Lobo Solitario", "x": "Mario Valenzuela perdió sus dos primeras finales en 2015 y esperó ocho años, hasta Lo Prado 2023, para levantar su primer título.", "j": "valenzuela"}, {"t": "Defensas perfectas", "x": "Mila repitió exactamente la semifinal en Maipú (2015 y 2017) y en Lo Prado (2015 y 2023): ni un punto ganado ni perdido.", "j": "mila"}, {"t": "Duelo de debutantes", "x": "Patricio Palma le ganó la qualy a José Gatica dos años seguidos, en Lo Prado 2025 y en el Kinoshita 2026.", "j": "palma"}],
   h2h: [
-    ["nunez","juanito",2,3],["nunez","valenzuela",3,1],["nunez","flores",3,0],["nunez","mila",5,2],
-    ["nunez","richardi",1,0],["nunez","primojaime",1,0],["nunez","jaime",1,0],["nunez","alvaro",1,0],
-    ["nunez","maestrito",1,0],["nunez","palma",1,0],
-    ["juanito","valenzuela",3,0],["juanito","flores",3,0],["juanito","mila",3,0],
-    ["valenzuela","flores",3,1],["valenzuela","gatica",1,0],
-    ["mila","palma",1,0],["richardi","alvaro",1,0],["palma","gatica",2,0]
+    ["nunez", "juanito", 2, 3],["nunez", "valenzuela", 3, 1],["nunez", "flores", 4, 0],["nunez", "mila", 5, 2],["nunez", "richardi", 1, 0],["nunez", "primojaime", 1, 0],["nunez", "jaime", 1, 0],["nunez", "alvaro", 1, 0],["nunez", "maestrito", 1, 0],["nunez", "palma", 1, 0],["juanito", "valenzuela", 3, 0],["juanito", "flores", 3, 0],["juanito", "mila", 3, 0],["juanito", "miguel", 1, 0],["juanito", "ricardito", 1, 0],["juanito", "jaime", 1, 0],["juanito", "rhurtado", 1, 0],["mila", "valenzuela", 3, 3],["valenzuela", "flores", 3, 1],["valenzuela", "miguel", 2, 0],["valenzuela", "nico", 1, 0],["valenzuela", "ivan", 1, 0],["valenzuela", "gatica", 1, 0],["mila", "richardi", 3, 0],["mila", "flores", 1, 0],["mila", "ian", 1, 0],["mila", "palma", 1, 0],["flores", "ivan", 1, 0],["flores", "ian", 1, 0],["flores", "richardi", 1, 0],["flores", "miguel", 1, 0],["palma", "gatica", 2, 0],["miguel", "ian", 1, 0],["miguel", "ivan", 1, 0],["miguel", "jaime", 1, 0],["jaime", "ricardito", 1, 0],["richardi", "alvaro", 1, 0],["richardi", "ricardito", 1, 0],["ivan", "locomario", 1, 0],["maestrito", "luciano", 1, 0],["ian", "benjamin", 1, 0],["rhurtado", "ivan", 1, 0]
   ],
   /* jugadores con foto en la carpeta fotos/ (retrato <id>.jpg y cara <id>-cara.jpg) */
   fotos: ["nunez","mila","valenzuela","flores","palma","gatica","juanito","richardi"],
@@ -910,8 +955,8 @@ const DATA = {
   noticias: [
     {fecha:"2026-06-30", tag:"Campeón", destacada:true, foto:"nunez", titulo:"Sebastián Núñez gana el Kinoshita Group Japan Open",
      texto:"El primer sembrado venció a Patricio Palma en semifinales y a Mario Valenzuela en la final. Es su sexto título en el circuito y suma 500 puntos."},
-    {fecha:"2026-06-27", tag:"Ranking", titulo:"Núñez cierra junio como número 1 con 5.000 puntos",
-     texto:"Lo siguen Ignacio Mila con 1.750 y Mario Valenzuela con 1.125."},
+    {fecha:"2026-06-27", tag:"Ranking", titulo:"Núñez cierra junio como número 1 con 4.250 puntos",
+     texto:"Lo siguen Ignacio Mila con 1.625 y Mario Valenzuela con 1.250."},
     {fecha:"2026-06-24", tag:"Cuadro", titulo:"Valenzuela elimina a Mila y llega a la final de Tokio",
      texto:"En la ronda qualy, Patricio Palma había dejado en el camino a José Gatica."},
     {fecha:"2025-04-13", tag:"Historia", titulo:"Mila conquista Monte-Carlo 2025 ante Núñez",
@@ -931,8 +976,9 @@ const last = id => { const n=P[id].nombre.split(" "); return n.length>1?n.slice(
 const first = id => { const n=P[id].nombre.split(" "); return n.length>1?n[0]:""; };
 const short = id => { const n=P[id].nombre.split(" "); return n.length>1 ? n[0][0]+". "+n.slice(1).join(" ") : n[0]; };
 const stLabel = e => ({activo:"Activo",inactivo:"Inactivo",retirado:"Retirado"})[e];
+const mr = p => p.mejor ? p.mejor+"°" : "—";
 const activos = Object.entries(P).filter(([,p])=>p.estado==="activo").sort((a,b)=>b[1].pts-a[1].pts || a[1].seed-b[1].seed);
-const leyendas = Object.entries(P).filter(([,p])=>p.estado!=="activo").sort((a,b)=>b[1].pts-a[1].pts || b[1].v-a[1].v || a[1].mejor-b[1].mejor);
+const leyendas = Object.entries(P).filter(([,p])=>p.estado!=="activo").sort((a,b)=>b[1].tit-a[1].tit || ((a[1].retiro&&a[1].retiro.pos)||99)-((b[1].retiro&&b[1].retiro.pos)||99) || b[1].v-a[1].v);
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 document.documentElement.classList.add("js");
 /* bandera de Chile */
@@ -1099,7 +1145,7 @@ function sakura(sec){
 
 /* ---------- ranking ---------- */
 (function(){
-  $("#rankIntro").textContent = `Puntos acumulados desde 2015. Corte al ${fdate(DATA.actualizado)}.`;
+  $("#rankIntro").textContent = `Cada mes del calendario aporta su resultado más reciente: el campeón defiende sus puntos cuando el torneo vuelve. Corte al ${fdate(DATA.actualizado)}.`;
   { const [lid]=activos[0]; const bg=$("#rankBg"); if(FOTOS.has(lid)) bg.src=`fotos/${lid}.jpg${FV}`; else bg.remove(); }
   $("#podium").innerHTML = activos.slice(0,3).map(([id,p],i)=>`
     <article class="pod rv ${["l","u","r"][i]} ${cut(id)?"has-cut":""}" style="transition-delay:${i*120}ms" data-id="${id}" tabindex="0" role="button" aria-label="Ver ficha de ${p.nombre}">
@@ -1111,7 +1157,7 @@ function sakura(sec){
   $("#rank").innerHTML = activos.map(([id,p],i)=>`
     <tr data-id="${id}" tabindex="0" aria-label="Ver ficha de ${p.nombre}">
       <td class="p">${i+1}</td>
-      <td class="n"><div class="nwrap">${avatar(id,"ring")}<div>${fmini()}${p.nombre}<small>Mejor ranking: ${p.mejor}°</small></div></div></td>
+      <td class="n"><div class="nwrap">${avatar(id,"ring")}<div>${fmini()}${p.nombre}<small>Mejor ranking: ${mr(p)}</small></div></div></td>
       <td class="pt num">${fmt(p.pts)}</td>
       <td style="width:28%"><div class="bar"><i data-w="${Math.max(1.5,p.pts/max*100)}"></i></div></td>
       <td class="c num">${p.tit}</td><td class="c num">${p.v}-${p.d}</td><td class="c num">${pct(p)}%</td>
@@ -1139,13 +1185,13 @@ function sakura(sec){
   const [sid,sp]=leyendas[0];
   $("#legendStar").innerHTML = `
     <div class="ls-main">${cut(sid)?`<div class="ls-art">${sp.emblema?`<img class="ls-emblem" src="${sp.emblema}" alt="">`:""}<img class="ls-photo" src="${cut(sid)}" alt="${sp.nombre}"></div>`:""}<div><span class="tagline">La gran leyenda</span><div style="margin-top:14px">${wflag(56,12)}</div><h3 style="margin-top:12px">${sp.nombre}${sp.alias?`, <span class="ls-alias">${sp.alias}</span>`:""}</h3>${sp.apodo?`<div class="muted" style="margin-top:6px">“${sp.apodo}”</div>`:""}
-      <p class="muted" style="margin-top:10px">Llegó a ser número ${sp.mejor} del circuito y ganó ${sp.tit} de sus ${sp.fin} finales.</p></div></div>
-    <div class="stats"><div><b class="num">${fmt(sp.pts)}</b><span>Puntos</span></div><div><b class="num">${sp.tit}</b><span>Títulos</span></div>
+      <p class="muted" style="margin-top:10px">${sp.retiro?`Dejó el circuito como número ${sp.retiro.pos}, con ${fmt(sp.retiro.pts)} puntos tras ${sp.retiro.ult}. `:""}Ganó ${sp.tit} de sus ${sp.fin} finales.</p></div></div>
+    <div class="stats"><div><b class="num">${sp.retiro&&sp.retiro.pos?"N.º "+sp.retiro.pos:mr(sp)}</b><span>Al retirarse</span></div><div><b class="num">${sp.tit}</b><span>Títulos</span></div>
       <div><b class="num">${sp.v}-${sp.d}</b><span>V-D</span></div><div><b class="num">${pct(sp)}%</b><span>Victorias</span></div></div>`;
   $("#legendStar").style.cursor="pointer"; $("#legendStar").onclick=()=>openPlayer(sid);
   $("#legends").innerHTML = leyendas.slice(1).map(([id,p],i)=>`
     <button class="lg rv ${["l","u","r"][i%3]}" style="transition-delay:${(i%3)*100}ms" data-id="${id}">
-      <span class="lg-who">${avatar(id,"ring")}<span><b>${fmini()}${p.nombre}</b><small>${p.v}-${p.d} · mejor ranking ${p.mejor}°</small></span></span><span class="st ${p.estado}">${stLabel(p.estado)}</span>
+      <span class="lg-who">${avatar(id,"ring")}<span><b>${fmini()}${p.nombre}</b><small>${p.retiro&&p.retiro.pos?`Se retiró como N.º ${p.retiro.pos} · `:""}${p.v}-${p.d}${p.tit?` · ${p.tit} ${p.tit===1?"título":"títulos"}`:""}</small></span></span><span class="st ${p.estado}">${stLabel(p.estado)}</span>
     </button>`).join("");
   document.querySelectorAll(".lg").forEach(b=>b.onclick=()=>openPlayer(b.dataset.id));
 })();
@@ -1177,6 +1223,7 @@ function sakura(sec){
           ${t.extra?`<div class="x">${t.extra}</div>`:""}
           ${e.id!=="nueva"?`<div class="x">Hoy equivale a <b>${DATA.meses[t.m-1].nombre}</b></div>`:""}
           <div class="res"><span class="cw">🏆 ${P[t.campeon].nombre}</span> <span class="muted">venció a ${P[t.finalista].nombre} en la final</span></div>
+          ${t.llave?`<button class="ver-cuadro" data-llave="${t.llave}">Ver cuadro <span aria-hidden="true">→</span></button>`:""}
         </article>`).join("")}</div></div>`;
   }).join("");
   const catCls = c => c.startsWith("Grand")?"c2000":c.startsWith("Masters")?"c1000":"c500";
@@ -1300,12 +1347,12 @@ function openPlayer(id){
   const m=$("#modal");
   m.innerHTML=`<div class="sheet"><div class="sheet-top ${FOTOS.has(id)?"has-photo":""}"><button class="close" aria-label="Cerrar ficha">×</button>
       ${FOTOS.has(id)?`<img class="sheet-photo" src="fotos/${id}-rostro.jpg${FV}" alt="">`:`<div class="mono" aria-hidden="true">${ini(id)}</div>`}
-      ${wflag(64,14)}<br><span class="tagline">${pos>=0?`Número ${pos+1} del ranking`:stLabel(p.estado)}</span>
+      ${wflag(64,14)}<br><span class="tagline">${pos>=0?`Número ${pos+1} del ranking`:stLabel(p.estado)+(p.retiro&&p.retiro.pos?` · se retiró como N.º ${p.retiro.pos}`:"")}</span>
       ${p.alias?`<div class="alias">${p.alias}</div>`:""}<h3 id="mName">${p.nombre}</h3>${p.apodo&&p.apodo!==p.nombre?`<div class="nick">“${p.apodo}”</div>`:""}
-      <div class="big num">${fmt(p.pts)}<small>PUNTOS</small></div></div>
+      ${pos>=0?`<div class="big num">${fmt(p.pts)}<small>PUNTOS</small></div>`:p.retiro&&p.retiro.pos?`<div class="big num">${fmt(p.retiro.pts)}<small>PTS AL RETIRARSE · ${p.retiro.ult.toUpperCase()}</small></div>`:`<div class="big num">${p.v}-${p.d}<small>PARTIDOS</small></div>`}</div>
     <div class="sheet-body"><div class="kv">
       <div><b class="num">${p.tit}</b><span>Títulos</span></div><div><b class="num">${p.v}-${p.d}</b><span>Victorias-derrotas</span></div>
-      <div><b class="num">${pct(p)}%</b><span>Efectividad</span></div><div><b class="num">${p.mejor}°</b><span>Mejor ranking</span></div>
+      <div><b class="num">${pct(p)}%</b><span>Efectividad</span></div><div><b class="num">${mr(p)}</b><span>Mejor ranking</span></div>
       <div><b class="num">${p.tor}</b><span>Torneos</span></div><div><b class="num">${p.fg}/${p.fin}</b><span>Finales ganadas</span></div>
       <div><b class="num">${p.m1000||0}</b><span>Masters 1000</span></div><div><b class="num">${p.gs||0}</b><span>Grand Slam</span></div></div>
       ${won.length?`<h4>Títulos</h4><ul>${won.map(t=>`<li><span>🏆 ${t.nombre} ${t.anio}</span><span>${t.cat} · ante ${P[t.finalista].nombre}</span></li>`).join("")}</ul>`:""}
@@ -1328,6 +1375,70 @@ function openPlayer(id){
 function closePlayer(){const m=$("#modal"); m.hidden=true; m.innerHTML=""; document.body.style.overflow=""; lastFocus&&lastFocus.focus&&lastFocus.focus();}
 $("#modal").addEventListener("click",e=>{if(e.target.id==="modal")closePlayer();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#modal").hidden)closePlayer();});
+
+
+/* ---------- ranking histórico ---------- */
+(function(){
+  const all=Object.entries(P).filter(([,p])=>p.v+p.d>0).sort((a,b)=>b[1].tit-a[1].tit||b[1].fin-a[1].fin||b[1].v-a[1].v||(b[1].v-b[1].d)-(a[1].v-a[1].d));
+  $("#rankHist").innerHTML=all.map(([id,p],i)=>`<tr data-id="${id}" tabindex="0" aria-label="Ver ficha de ${p.nombre}">
+    <td class="p">${i+1}</td><td class="n"><div class="nwrap">${avatar(id,"ring")}<div>${fmini()}${p.nombre}${p.alias?`<small>${p.alias}</small>`:""}</div></div></td>
+    <td class="c num">${p.tit}</td><td class="c num">${p.fin}</td><td class="c num">${p.v}-${p.d}</td><td class="c num">${mr(p)}</td><td class="c"><span class="st ${p.estado}">${stLabel(p.estado)}</span></td></tr>`).join("");
+  document.querySelectorAll("#rankHist tr").forEach(el=>{el.onclick=()=>openPlayer(el.dataset.id);el.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();openPlayer(el.dataset.id)}};});
+})();
+
+/* ---------- datos curiosos ---------- */
+(function(){
+  $("#curio").innerHTML=DATA.curiosidades.map((c,i)=>`<article class="cu rv ${["l","u","r"][i%3]}" style="transition-delay:${(i%3)*110}ms" data-id="${c.j}">
+    <span class="cu-n num">${String(i+1).padStart(2,"0")}</span>${avatar(c.j,"ring")}<h3>${c.t}</h3><p>${c.x}</p></article>`).join("");
+  document.querySelectorAll(".cu").forEach(el=>el.onclick=()=>openPlayer(el.dataset.id));
+})();
+
+/* ---------- cuadros de la historia ---------- */
+function llaveSVG(c){
+  const BW=236,BH=72,SH=36,GX=292,TOP=46,GAP=20, G=c.grupos, X0=G?392:0, R=c.rondas, pos={};
+  R.forEach((r,ri)=>{const x=X0+ri*GX; r.m.forEach((m,mi)=>{
+    const fe=Object.values(pos).filter(v=>v.m.to===m.id); let y;
+    if(ri===0||!fe.length) y=TOP+mi*(BH+GAP); else y=fe.length===1?fe[0].y:fe.reduce((a,v)=>a+v.y,0)/fe.length;
+    if(m.fila!=null) y=TOP+m.fila*(BH+GAP); pos[m.id]={x,y,m};});});
+  const cx=X0+R.length*GX, fin=R[R.length-1].m[0], cy=pos[fin.id].y+BH/2-26;
+  let H=Math.max(...Object.values(pos).map(v=>v.y))+BH+16; if(G) H=Math.max(H,TOP+G.length*256);
+  const W=cx+BW+6, nm=id=>P[id].nombre;
+  const sy=(id,n)=>{const p=pos[id];return p.m.a&&p.m.a[0]===n?p.y+SH/2:p.y+SH+SH/2;};
+  let o=`<svg class="bracket llave" viewBox="0 0 ${W} ${H}" style="min-width:${Math.round(W*.72)}px" role="img"><defs><linearGradient id="gSeed2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff2e93"/><stop offset="1" stop-color="#ffc83d"/></linearGradient><linearGradient id="gGold2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd76a"/><stop offset="1" stop-color="#ff9a2e"/></linearGradient></defs>`;
+  R.forEach((r,ri)=>o+=`<text class="lbl" x="${X0+ri*GX}" y="${TOP-16}">${r.n.toUpperCase()} · <tspan class="p">${r.p.toUpperCase()}</tspan></text>`);
+  o+=`<text class="lbl" x="${cx}" y="${TOP-16}">CAMPEÓN · <tspan class="p">${c.ptsc.toUpperCase()}</tspan></text>`;
+  Object.values(pos).forEach(v=>{const m=v.m, wn=(m.w==="a"?m.a:m.b)[0], lo=m.w==="a"?m.b:m.a;
+    const x1=v.x+BW, y1=v.y+(m.w==="a"?SH/2:SH+SH/2); let x2,y2;
+    if(m.to){x2=pos[m.to].x;y2=sy(m.to,wn);}else{x2=cx;y2=cy+26;}
+    const xm=(x1+x2)/2, ly=v.y+(m.w==="a"?SH+SH/2:SH/2);
+    if(lo&&m.lto){const x3=pos[m.lto].x,y3=sy(m.lto,lo[0]),xm3=xm+14; o+=`<path class="c dash" d="M${x1} ${ly} H${xm3} V${y3} H${x3}"/>`;}
+    else if(lo) o+=`<path class="c" d="M${x1} ${ly} H${xm} V${y1}"/>`;
+    o+=`<path class="c ${wn===c.ch?"win":""}" d="M${x1} ${y1} H${xm} V${y2} H${x2}"/>`;});
+  const slot=(x,y,p,win)=>{ if(!p) return `<text class="nm free" x="${x+16}" y="${y+SH/2+5}">— libre —</text>`;
+    const top=p[1]<=4; return `<g class="${win?"":"lose"}"><rect class="seed ${top?"":"lo"}" x="${x+8}" y="${y+6}" width="24" height="24" rx="7"/><text class="seedt sm" x="${x+20}" y="${y+23}" text-anchor="middle">${p[1]}</text><text class="nm ${win?"w":""}" x="${x+42}" y="${y+SH/2+5}">${nm(p[0])}</text></g>`;};
+  if(G) G.forEach((g,gi)=>{const gx=0,gy=TOP+gi*256;
+    o+=`<g class="g"><rect class="box" x="${gx}" y="${gy}" width="350" height="236" rx="14"/><text class="nm w" x="${gx+16}" y="${gy+28}">${g.n}</text><text class="lbl" x="${gx+334}" y="${gy+28}" text-anchor="end">G · P</text>`;
+    g.t.forEach((r,ri)=>{const yy=gy+42+ri*34; o+=slot(gx+4,yy-1,[r[0],r[1]],r[4])+`<text class="nm ${r[4]?"w":""}" x="${gx+334}" y="${yy+22}" text-anchor="end">${r[2]} · ${r[3]}</text>`;});
+    g.m.forEach((t,mi)=>o+=`<text class="gm ${t.includes("def.")?"":"na"}" x="${gx+16}" y="${gy+166+mi*21}">${t}</text>`); o+=`</g>`;});
+  Object.values(pos).forEach((v,i)=>{const m=v.m;
+    o+=`<g class="g" style="transition-delay:${150+R.findIndex(r=>r.m.includes(m))*200+i*30}ms"><rect class="box w" x="${v.x}" y="${v.y}" width="${BW}" height="${BH}" rx="12"/><line x1="${v.x}" y1="${v.y+SH}" x2="${v.x+BW}" y2="${v.y+SH}" stroke="rgba(255,255,255,.08)"/>${slot(v.x,v.y,m.a,m.w==="a")}${slot(v.x,v.y+SH,m.b,m.w==="b")}</g>`;});
+  o+=`<g class="g" style="transition-delay:${200+R.length*220}ms"><rect class="box ch" x="${cx}" y="${cy}" width="${BW}" height="52" rx="12"/><text class="nm chn" x="${cx+16}" y="${cy+32}">🏆 ${nm(c.ch)}</text></g></svg>`;
+  return o;
+}
+function openBracket(k){
+  const t=DATA.torneos.find(x=>x.llave===k), c=DATA.llaves[k]; lastFocus=document.activeElement;
+  const titulo=t.etapa==="nueva"?`${t.nombre} ${t.anio}`:`${t.nombre} ${t.anio}`;
+  const m=$("#modal");
+  m.innerHTML=`<div class="sheet wide"><div class="sheet-top"><button class="close" aria-label="Cerrar cuadro">×</button>
+    <span class="tagline">${MES[t.m]} ${t.anio} · ${t.cat}${t.etapa!=="nueva"?` · hoy ${DATA.meses[t.m-1].nombre}`:""}</span><h3 id="mName">${titulo}</h3>
+    <div class="nick">🏆 ${P[t.campeon].nombre} venció a ${P[t.finalista].nombre} en la final</div></div>
+    <div class="sheet-body"><div class="bracket-wrap">${llaveSVG(c)}</div>${c.nota?`<p class="muted llave-nota">${c.nota}</p>`:""}
+    <div class="bracket-legend" style="color:var(--muted)"><span><i></i>Camino del campeón</span><span><i class="d"></i>Avance en el cuadro</span></div></div></div>`;
+  m.hidden=false; document.body.style.overflow="hidden";
+  const cl=m.querySelector(".close"); cl.focus(); cl.onclick=closePlayer;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>m.querySelector(".bracket").classList.add("in")));
+}
+document.addEventListener("click",e=>{const b=e.target.closest(".ver-cuadro"); if(b) openBracket(b.dataset.llave);});
 
 /* ---------- animaciones de entrada ---------- */
 (function(){

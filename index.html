@@ -324,7 +324,7 @@ p{margin:0}
 .cu{position:relative;overflow:hidden;min-height:300px;padding:34px 36px;border-radius:30px;background:linear-gradient(135deg,rgba(124,58,237,.28),rgba(255,46,147,.12) 55%,rgba(255,154,46,.08));border:1px solid var(--line);cursor:pointer;isolation:isolate;transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .45s,box-shadow .45s}
 .cu:first-child{grid-column:1/-1;min-height:340px}
 .cu:hover{transform:translateY(-8px);border-color:rgba(255,200,61,.6);box-shadow:0 30px 60px -30px rgba(255,46,147,.6)}
-.cu-ph{position:absolute;right:-10px;bottom:0;height:92%;max-height:340px;width:auto;z-index:-1;opacity:.95;-webkit-mask-image:linear-gradient(to left,#000 55%,transparent 98%),linear-gradient(to top,transparent,#000 22%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to left,#000 55%,transparent 98%);transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.cu-ph{position:absolute;right:0;bottom:0;height:96%;max-height:360px;width:auto;z-index:-1;opacity:.95;-webkit-mask-image:linear-gradient(to left,#000 55%,transparent 98%),linear-gradient(to top,transparent,#000 22%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to left,#000 55%,transparent 98%);transition:transform .6s cubic-bezier(.2,.8,.2,1)}
 .cu:hover .cu-ph{transform:translateX(-10px) scale(1.04)}
 .cu-in{position:relative;max-width:64%}
 .cu:first-child .cu-in{max-width:58%}
@@ -999,7 +999,8 @@ document.documentElement.classList.add("js");
 const FLAG_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20"><rect width="30" height="10" fill="#fff"/><rect y="10" width="30" height="10" fill="#d52b1e"/><rect width="10" height="10" fill="#0039a6"/><polygon fill="#fff" points="5.00,2.50 5.56,4.23 7.38,4.23 5.91,5.30 6.47,7.02 5.00,5.96 3.53,7.02 4.09,5.30 2.62,4.23 4.44,4.23"/></svg>';
 document.documentElement.style.setProperty("--flag", `url("data:image/svg+xml,${encodeURIComponent(FLAG_SVG)}")`);
 const FOTOS = new Set(DATA.fotos||[]);
-const FV = "?v=8";
+const FV = "?v=9";
+const curioPh = id => FOTOS.has(id) ? `fotos/${id}-curio.webp${FV}` : null;
 const bust = id => FOTOS.has(id) ? `fotos/${id}-busto.webp${FV}` : null;
 const cut = id => FOTOS.has(id) ? `fotos/${id}-recorte.webp${FV}` : null;
 const avatar = (id, cls="") => FOTOS.has(id) ? `<img class="av ${cls}" src="fotos/${id}-cara.jpg${FV}" alt="" loading="lazy">` : `<span class="av av-ini ${cls}" aria-hidden="true">${ini(id)}</span>`;
@@ -1403,7 +1404,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#modal").hidden
 /* ---------- datos curiosos ---------- */
 (function(){
   $("#curio").innerHTML=DATA.curiosidades.map((c,i)=>`<article class="cu rv ${["l","u","r"][i%3]}" style="transition-delay:${(i%3)*110}ms" data-id="${c.j}">
-    ${bust(c.j)?`<img class="cu-ph" src="${bust(c.j)}" alt="" loading="lazy">`:""}<div class="cu-in"><span class="cu-n num">${String(i+1).padStart(2,"0")}</span><span class="cu-who">${fmini()}${P[c.j].nombre}</span><h3>${c.t}</h3><p>${c.x}</p></div></article>`).join("");
+    ${curioPh(c.j)?`<img class="cu-ph" src="${curioPh(c.j)}" alt="" loading="lazy">`:""}<div class="cu-in"><span class="cu-n num">${String(i+1).padStart(2,"0")}</span><span class="cu-who">${fmini()}${P[c.j].nombre}</span><h3>${c.t}</h3><p>${c.x}</p></div></article>`).join("");
   document.querySelectorAll(".cu").forEach(el=>el.onclick=()=>openPlayer(el.dataset.id));
 })();
 

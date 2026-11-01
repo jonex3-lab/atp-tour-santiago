@@ -320,13 +320,27 @@ p{margin:0}
 .rtable.hist small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#ffcf6a;margin-top:2px}
 /* ---------- datos curiosos ---------- */
 .curio-band{background:radial-gradient(1200px 600px at 10% 0%,rgba(255,46,147,.22),transparent 60%),radial-gradient(900px 500px at 100% 100%,rgba(124,58,237,.3),transparent 60%),var(--night)}
-.curio{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-.cu{position:relative;overflow:hidden;padding:26px 24px 24px;border-radius:24px;background:rgba(255,255,255,.05);border:1px solid var(--line);cursor:pointer;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s,background .35s}
-.cu:hover{transform:translateY(-6px) rotate(-.4deg);border-color:rgba(255,200,61,.55);background:rgba(255,255,255,.08)}
-.cu-n{position:absolute;right:18px;top:8px;font-family:var(--f-display);font-weight:900;font-size:64px;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.55}
-.cu .av{width:46px;height:46px}
-.cu h3{font-size:19px;margin:16px 0 8px;line-height:1.15;max-width:85%}
-.cu p{margin:0;color:var(--muted);font-size:15px;line-height:1.55}
+.curio{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.cu{position:relative;overflow:hidden;min-height:300px;padding:34px 36px;border-radius:30px;background:linear-gradient(135deg,rgba(124,58,237,.28),rgba(255,46,147,.12) 55%,rgba(255,154,46,.08));border:1px solid var(--line);cursor:pointer;isolation:isolate;transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .45s,box-shadow .45s}
+.cu:first-child{grid-column:1/-1;min-height:340px}
+.cu:hover{transform:translateY(-8px);border-color:rgba(255,200,61,.6);box-shadow:0 30px 60px -30px rgba(255,46,147,.6)}
+.cu-ph{position:absolute;right:-10px;bottom:0;height:92%;max-height:340px;width:auto;z-index:-1;opacity:.95;-webkit-mask-image:linear-gradient(to left,#000 55%,transparent 98%),linear-gradient(to top,transparent,#000 22%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to left,#000 55%,transparent 98%);transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.cu:hover .cu-ph{transform:translateX(-10px) scale(1.04)}
+.cu-in{position:relative;max-width:64%}
+.cu:first-child .cu-in{max-width:58%}
+.cu-n{display:block;font-family:var(--f-display);font-weight:900;font-size:clamp(56px,7vw,88px);line-height:.9;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cu-who{display:block;margin-top:14px;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#ffcf6a}
+.cu h3{font-size:clamp(22px,2.4vw,30px);margin:8px 0 12px;line-height:1.1}
+.cu:first-child h3{font-size:clamp(26px,3.2vw,40px)}
+.cu p{margin:0;color:#e3dbf7;font-size:clamp(15px,1.3vw,17.5px);line-height:1.6}
+@media (max-width:760px){.curio{grid-template-columns:1fr}.cu{min-height:0;padding:28px 24px}.cu-in,.cu:first-child .cu-in{max-width:72%}.cu-ph{height:70%;opacity:.55;right:-30px}}
+/* rostro del campeón en el cuadro */
+.sheet-top.has-champ{overflow:hidden}
+.sheet-top .champ-in{position:absolute;right:70px;bottom:-34%;height:134%;width:auto;pointer-events:none;-webkit-mask-image:linear-gradient(to top,transparent 0,#000 30%);mask-image:linear-gradient(to top,transparent 0,#000 30%);animation:champIn 1.1s cubic-bezier(.16,1,.3,1) .25s both}
+@keyframes champIn{from{transform:translateX(140px);opacity:0}to{transform:none;opacity:1}}
+.sheet-top.has-champ h3,.sheet-top.has-champ .nick,.sheet-top.has-champ .tagline{position:relative;z-index:1;max-width:70%}
+@media (max-width:640px){.sheet-top .champ-in{right:-10px;height:100%;opacity:.5}}
+@media (prefers-reduced-motion:reduce){.sheet-top .champ-in{animation:none}}
 /* ---------- historia ---------- */
 .chapters{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:60px}
 .chapters a{text-decoration:none;padding:10px 18px;border-radius:999px;border:1px solid var(--line);font-size:14px;font-weight:600;transition:.3s}
@@ -690,7 +704,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
       <a href="#noticias">Noticias</a>
       <a href="#ranking">Ranking</a>
       <a href="#jugadores">Jugadores</a>
-      <a href="#temporada">Temporada</a>
+      <a href="#temporada">Circuito</a>
       <a href="#historia">Historia</a>
       <a href="#h2h">Head to Head</a>
       <a href="#curiosidades">Curiosidades</a>
@@ -763,9 +777,9 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
       <p class="note muted" id="rankNote"></p>
       <div class="hist-rank">
         <div class="head" style="margin-top:70px"><div class="rv l"><span class="kick">Toda la carrera</span><h3 class="fh" style="font-size:clamp(28px,4vw,44px)">Ranking <em>histórico</em></h3></div>
-        <p class="rv r" style="color:#e9e1ff">Todos los que pisaron la cancha desde 2015, ordenados por títulos, finales y victorias. Esta tabla no se mueve con la defensa de puntos.</p></div>
+        <p class="rv r" style="color:#e9e1ff">Todos los que pisaron la cancha desde 2015, ordenados por títulos, finales y victorias. La posición es su lugar en la historia; el mejor puesto es el más alto que alcanzó en el ranking de puntos.</p></div>
         <div class="tscroll glass rv u">
-          <table class="rtable hist"><thead><tr><th>Pos.</th><th>Jugador</th><th class="c">Títulos</th><th class="c">Finales</th><th class="c">V-D</th><th class="c">Mejor ranking</th><th class="c">Estado</th></tr></thead><tbody id="rankHist"></tbody></table>
+          <table class="rtable hist"><thead><tr><th>Pos.</th><th>Jugador</th><th class="c">Títulos</th><th class="c">Finales</th><th class="c">V-D</th><th class="c">Mejor puesto<br>en el ranking</th><th class="c">Estado</th></tr></thead><tbody id="rankHist"></tbody></table>
         </div>
       </div>
     </div>
@@ -798,8 +812,8 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
     <div class="map-bg" aria-hidden="true"></div>
     <div class="wrap">
       <div class="head">
-        <div class="rv l"><span class="kick">Temporada 2026</span><h2 class="fh">Un torneo por mes</h2></div>
-        <p class="muted rv r">Doce meses, doce torneos. De Melbourne a Shanghái.</p>
+        <div class="rv l"><span class="kick">Temporada 2026</span><h2 class="fh">El <em>circuito</em></h2></div>
+        <p class="muted rv r">Doce escenarios a lo largo del año, de Melbourne a Shanghái.</p>
       </div>
       <div class="season rv u" id="season"></div>
     </div>
@@ -985,7 +999,7 @@ document.documentElement.classList.add("js");
 const FLAG_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20"><rect width="30" height="10" fill="#fff"/><rect y="10" width="30" height="10" fill="#d52b1e"/><rect width="10" height="10" fill="#0039a6"/><polygon fill="#fff" points="5.00,2.50 5.56,4.23 7.38,4.23 5.91,5.30 6.47,7.02 5.00,5.96 3.53,7.02 4.09,5.30 2.62,4.23 4.44,4.23"/></svg>';
 document.documentElement.style.setProperty("--flag", `url("data:image/svg+xml,${encodeURIComponent(FLAG_SVG)}")`);
 const FOTOS = new Set(DATA.fotos||[]);
-const FV = "?v=7";
+const FV = "?v=8";
 const bust = id => FOTOS.has(id) ? `fotos/${id}-busto.webp${FV}` : null;
 const cut = id => FOTOS.has(id) ? `fotos/${id}-recorte.webp${FV}` : null;
 const avatar = (id, cls="") => FOTOS.has(id) ? `<img class="av ${cls}" src="fotos/${id}-cara.jpg${FV}" alt="" loading="lazy">` : `<span class="av av-ini ${cls}" aria-hidden="true">${ini(id)}</span>`;
@@ -1389,7 +1403,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#modal").hidden
 /* ---------- datos curiosos ---------- */
 (function(){
   $("#curio").innerHTML=DATA.curiosidades.map((c,i)=>`<article class="cu rv ${["l","u","r"][i%3]}" style="transition-delay:${(i%3)*110}ms" data-id="${c.j}">
-    <span class="cu-n num">${String(i+1).padStart(2,"0")}</span>${avatar(c.j,"ring")}<h3>${c.t}</h3><p>${c.x}</p></article>`).join("");
+    ${bust(c.j)?`<img class="cu-ph" src="${bust(c.j)}" alt="" loading="lazy">`:""}<div class="cu-in"><span class="cu-n num">${String(i+1).padStart(2,"0")}</span><span class="cu-who">${fmini()}${P[c.j].nombre}</span><h3>${c.t}</h3><p>${c.x}</p></div></article>`).join("");
   document.querySelectorAll(".cu").forEach(el=>el.onclick=()=>openPlayer(el.dataset.id));
 })();
 
@@ -1401,12 +1415,13 @@ function llaveSVG(c){
     if(ri===0||!fe.length) y=TOP+mi*(BH+GAP); else y=fe.length===1?fe[0].y:fe.reduce((a,v)=>a+v.y,0)/fe.length;
     if(m.fila!=null) y=TOP+m.fila*(BH+GAP); pos[m.id]={x,y,m};});});
   const cx=X0+R.length*GX, fin=R[R.length-1].m[0], cy=pos[fin.id].y+BH/2-26;
-  let H=Math.max(...Object.values(pos).map(v=>v.y))+BH+16; if(G) H=Math.max(H,TOP+G.length*256);
+  let H=Math.max(Math.max(...Object.values(pos).map(v=>v.y))+BH+16,cy+92); if(G) H=Math.max(H,TOP+G.length*256);
+  const ty=cy-90, Y0=Math.min(0,ty-8); H-=Y0;
   const W=cx+BW+6, nm=id=>P[id].nombre;
   const sy=(id,n)=>{const p=pos[id];return p.m.a&&p.m.a[0]===n?p.y+SH/2:p.y+SH+SH/2;};
-  let o=`<svg class="bracket llave" viewBox="0 0 ${W} ${H}" style="min-width:${Math.round(W*.72)}px" role="img"><defs><linearGradient id="gSeed2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff2e93"/><stop offset="1" stop-color="#ffc83d"/></linearGradient><linearGradient id="gGold2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd76a"/><stop offset="1" stop-color="#ff9a2e"/></linearGradient></defs>`;
+  let o=`<svg class="bracket llave" viewBox="0 ${Y0} ${W} ${H}" style="min-width:${Math.round(W*.72)}px" role="img"><defs><linearGradient id="gSeed2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff2e93"/><stop offset="1" stop-color="#ffc83d"/></linearGradient><linearGradient id="gGold2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd76a"/><stop offset="1" stop-color="#ff9a2e"/></linearGradient>${TROPHY_DEFS}</defs>`;
   R.forEach((r,ri)=>o+=`<text class="lbl" x="${X0+ri*GX}" y="${TOP-16}">${r.n.toUpperCase()} · <tspan class="p">${r.p.toUpperCase()}</tspan></text>`);
-  o+=`<text class="lbl" x="${cx}" y="${TOP-16}">CAMPEÓN · <tspan class="p">${c.ptsc.toUpperCase()}</tspan></text>`;
+  
   Object.values(pos).forEach(v=>{const m=v.m, wn=(m.w==="a"?m.a:m.b)[0], lo=m.w==="a"?m.b:m.a;
     const x1=v.x+BW, y1=v.y+(m.w==="a"?SH/2:SH+SH/2); let x2,y2;
     if(m.to){x2=pos[m.to].x;y2=sy(m.to,wn);}else{x2=cx;y2=cy+26;}
@@ -1422,14 +1437,14 @@ function llaveSVG(c){
     g.m.forEach((t,mi)=>o+=`<text class="gm ${t.includes("def.")?"":"na"}" x="${gx+16}" y="${gy+166+mi*21}">${t}</text>`); o+=`</g>`;});
   Object.values(pos).forEach((v,i)=>{const m=v.m;
     o+=`<g class="g" style="transition-delay:${150+R.findIndex(r=>r.m.includes(m))*200+i*30}ms"><rect class="box w" x="${v.x}" y="${v.y}" width="${BW}" height="${BH}" rx="12"/><line x1="${v.x}" y1="${v.y+SH}" x2="${v.x+BW}" y2="${v.y+SH}" stroke="rgba(255,255,255,.08)"/>${slot(v.x,v.y,m.a,m.w==="a")}${slot(v.x,v.y+SH,m.b,m.w==="b")}</g>`;});
-  o+=`<g class="g" style="transition-delay:${200+R.length*220}ms"><rect class="box ch" x="${cx}" y="${cy}" width="${BW}" height="52" rx="12"/><text class="nm chn" x="${cx+16}" y="${cy+32}">🏆 ${nm(c.ch)}</text></g></svg>`;
+  o+=`<g class="g" style="transition-delay:${200+R.length*220}ms"><rect class="box ch" x="${cx}" y="${cy}" width="${BW}" height="52" rx="12"/><text class="nm chn" x="${cx+16}" y="${cy+32}">${nm(c.ch)}</text></g><text class="lbl" x="${cx}" y="${cy+78}">CAMPEÓN · <tspan class="p">${c.ptsc.toUpperCase()}</tspan></text><g transform="translate(${cx+BW/2-34} ${ty}) scale(.62)"><g class="g trophy" style="transition-delay:${500+R.length*220}ms">${TROPHY}</g></g></svg>`;
   return o;
 }
 function openBracket(k){
   const t=DATA.torneos.find(x=>x.llave===k), c=DATA.llaves[k]; lastFocus=document.activeElement;
   const titulo=t.etapa==="nueva"?`${t.nombre} ${t.anio}`:`${t.nombre} ${t.anio}`;
   const m=$("#modal");
-  m.innerHTML=`<div class="sheet wide"><div class="sheet-top"><button class="close" aria-label="Cerrar cuadro">×</button>
+  m.innerHTML=`<div class="sheet wide"><div class="sheet-top ${bust(t.campeon)?"has-champ":""}"><button class="close" aria-label="Cerrar cuadro">×</button>${bust(t.campeon)?`<img class="champ-in" src="${bust(t.campeon)}" alt="">`:""}
     <span class="tagline">${MES[t.m]} ${t.anio} · ${t.cat}${t.etapa!=="nueva"?` · hoy ${DATA.meses[t.m-1].nombre}`:""}</span><h3 id="mName">${titulo}</h3>
     <div class="nick">🏆 ${P[t.campeon].nombre} venció a ${P[t.finalista].nombre} en la final</div></div>
     <div class="sheet-body"><div class="bracket-wrap">${llaveSVG(c)}</div>${c.nota?`<p class="muted llave-nota">${c.nota}</p>`:""}

@@ -1247,7 +1247,7 @@ let io=null;
 /* ---------- noticias: portada tipo carrusel ---------- */
 const NIMG={cancha:"img/hero-cancha.jpg",kinoshita:"img/kinoshita.jpg",flores:"img/temporada-flores.jpg",mapa:"img/mapa.jpg",fuego:"img/band1.jpg",aurora:"img/band2.jpg",noche:"img/band3.jpg"};
 const newsBg=n=>NIMG[n.imagen]||(n.torneo==="kin26"?NIMG.kinoshita:NIMG[{Campeón:"cancha",Ranking:"fuego",Cuadro:"noche",Historia:"aurora",Circuito:"mapa"}[n.tag]||"cancha"]);
-const EMB={nunez:"#ffc83d",valenzuela:"#9fd3ff",mila:"#b57bff",palma:"#bfe6ff"};
+const EMB={nunez:"#ffc83d",valenzuela:"#9fd3ff",mila:"#b57bff",palma:"#bfe6ff",juanito:"#ffb300"};
 function newsWho(n){ const c=newsCut(n); const m=c&&c.match(/fotos\/([a-z]+)-curio/); return m?m[1]:null; }
 const embImg=(n,cls)=>{ const id=newsWho(n); return id&&EMB[id]?`<img class="${cls}" src="img/emblemas/${id}.webp${FV}" alt="" style="--ec:${EMB[id]}">`:""; };
 function newsCut(n){ if(n.jugador==="none") return null; if(n.jugador&&FOTOS.has(n.jugador)) return `fotos/${n.jugador}-curio.webp${FV}`;

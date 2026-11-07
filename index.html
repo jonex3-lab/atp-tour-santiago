@@ -59,7 +59,7 @@ p{margin:0}
 .wrap{max-width:1240px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
 .num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
 :focus-visible{outline:2px solid var(--ball);outline-offset:3px;border-radius:4px}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.mcard .sr,.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
 /* ---------- navegación ---------- */
 .nav{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:50;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
@@ -716,6 +716,13 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
 }
 
 /* ---------- carrera del año ---------- */
+.mcard.has-afiche{padding:0;display:block;background:#1a0b2e}
+.mcard.has-afiche::before{display:none}
+.mcard .mafiche{display:block;width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:inherit;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.mcard.has-afiche:hover .mafiche{transform:scale(1.03)}
+.mcard .sr,.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.race-top>*{min-width:0}
+@media (max-width:1100px){.mcard.has-afiche{width:100%;max-width:420px;margin:0 auto}.mcard .mafiche{height:auto}}
 .hist-band{position:relative;overflow:clip}
 .hist-band .wrap{position:relative;z-index:1}
 .hist-band,.hist-bg{overflow:clip}
@@ -1011,7 +1018,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
 const DATA = {
   actualizado: "2026-06-27",
   carrera: {
-    anio: 2026, cupos: 4, foto: "valenzuela",
+    anio: 2026, cupos: 4, foto: "valenzuela", afiche: "img/maestros-2026.jpg",
     torneo: {nombre:"Rolex Shanghai Masters", mes:"Diciembre", fecha:"1–12 de diciembre", lugar:"Shanghái", pais:"cn", cat:"Grand Slam 2000"},
     jugados: ["Kinoshita Group Japan Open"], quedan: ["Rolex París Masters"],
     desempate: "partidos jugados en el circuito",
@@ -1333,7 +1340,9 @@ function sakura(sec){
     <path d="M56 40h48v22c0 18-10 30-24 32-14-2-24-14-24-32z" fill="url(#mg)"/><path d="M56 46H44c0 14 6 22 14 24M104 46h12c0 14-6 22-14 24" fill="none" stroke="url(#mg)" stroke-width="5" stroke-linecap="round"/>
     <rect x="75" y="94" width="10" height="14" rx="2" fill="url(#mg)"/><rect x="62" y="108" width="36" height="10" rx="3" fill="url(#mg)"/><rect x="56" y="118" width="48" height="7" rx="3" fill="#c46a00"/>
     <path d="M80 50l3.5 7.2 7.9 1.1-5.7 5.6 1.3 7.9-7-3.7-7 3.7 1.3-7.9-5.7-5.6 7.9-1.1z" fill="#fff8dd" opacity=".9"/></svg>`;
-  $("#mcard").innerHTML=`<div class="mk">${cflag(T.pais)}Torneo de Maestros · ${C.anio}</div>${emb}
+  if(C.afiche){ const mc=$("#mcard"); mc.classList.add("has-afiche");
+    mc.innerHTML=`<img class="mafiche" src="${C.afiche}${FV}" alt="Afiche del Torneo de Maestros ${C.anio}, ${T.nombre}: ${T.fecha} en ${T.lugar}, ${T.cat}"><span class="sr">${T.nombre} · ${T.fecha} · ${T.lugar} · ${T.cat} · ${N} cupos</span>`; }
+  else $("#mcard").innerHTML=`<div class="mk">${cflag(T.pais)}Torneo de Maestros · ${C.anio}</div>${emb}
     <div class="mtxt"><h3 class="mname"><span>${T.nombre}</span></h3><div class="mmeta">${T.fecha} · ${T.lugar}, ${PAIS_N[T.pais]||""}<br><span class="mpill">${T.cat}</span></div></div>
     <div class="mfoot">${[...Array(N)].map((_,k)=>`<span class="mseat">${k+1}</span>`).join("")}<small>${N} cupos · se los llevan los ${N} primeros de la carrera</small></div>`;
   const L=C.lista, q=L.slice(0,N);

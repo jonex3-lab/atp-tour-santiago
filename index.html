@@ -275,7 +275,8 @@ p{margin:0}
 .temb{position:absolute;right:-6%;top:50%;height:120%;width:auto;z-index:-1;transform:translateY(-50%);opacity:.4;filter:drop-shadow(0 0 22px var(--ec));transition:opacity .5s,transform .6s;pointer-events:none}
 .ntile:hover .temb{opacity:.6;transform:translateY(-50%) scale(1.05)}
 @media (max-width:640px){.semb{right:-25%;opacity:.35!important}}
-.svid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.svid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#07040d}
+.nhero:has(.slide.on.has-vid){aspect-ratio:16/9;height:auto}
 .slide.has-vid .sshade{background:linear-gradient(0deg,rgba(7,4,13,.7),transparent 22%)}
 .slide.has-vid .sin{left:auto;right:clamp(20px,4%,40px);bottom:46px}
 .slide.has-vid .shl,.slide.has-vid .sin p{display:none}
@@ -1267,7 +1268,9 @@ const DATA = {
   /* próximo torneo: fecha en formato "2026-11-14T10:00" (hora de Santiago) o null si está por confirmar */
   proximo: {nombre:"Rolex París Masters", lugar:"París", fecha:null},
   noticias: [
-    {fecha:"2026-11-07", tag:"Maestros", destacada:true, jugador:"none", video:"video/rumbo-a-shanghai.mp4", poster:"video/rumbo-poster.jpg", titulo:"Rumbo a Shanghái: los cuatro maestros",
+    {fecha:"2026-11-07", orden:1, tag:"Circuito", destacada:true, jugador:"none", video:"video/intro-siete.mp4", poster:"video/intro-poster.jpg", titulo:"Siete jugadores. Una sola cima.",
+     texto:"Los siete del circuito actual, en orden de ranking."},
+    {fecha:"2026-11-07", orden:2, tag:"Maestros", destacada:true, jugador:"none", video:"video/rumbo-a-shanghai.mp4", poster:"video/rumbo-poster.jpg", titulo:"Rumbo a Shanghái: los cuatro maestros",
      texto:"The King, el Lobo Solitario, el Tigre Blanco y el Asesino de Leyendas tienen hoy su lugar en el Torneo de Maestros, del 1 al 12 de diciembre."},
     {fecha:"2026-06-30", tag:"Campeón", destacada:true, foto:"nunez", torneo:"kin26", titulo:"Sebastián Núñez gana el Kinoshita Group Japan Open",
      texto:"El primer sembrado venció a Patricio Palma en semifinales y a Mario Valenzuela en la final. Es su sexto título en el circuito y suma 500 puntos."},
@@ -1362,7 +1365,7 @@ function newsCut(n){ if(n.jugador==="none") return null; if(n.jugador&&FOTOS.has
   return hit?`fotos/${hit.id}-curio.webp${FV}`:null; }
 const nfecha=f=>{ const [y,m,d]=f.split("-").map(Number); return `${d} de ${MES[m].toLowerCase()} de ${y}`; };
 (function(){
-  const ns=[...DATA.noticias].sort((a,b)=>(b.destacada?1:0)-(a.destacada?1:0) || b.fecha.localeCompare(a.fecha));
+  const ns=[...DATA.noticias].sort((a,b)=>(a.orden||99)-(b.orden||99) || (b.destacada?1:0)-(a.destacada?1:0) || b.fecha.localeCompare(a.fecha));
   const hero=ns.slice(0,4), byDate=[...DATA.noticias].sort((a,b)=>b.fecha.localeCompare(a.fecha));
   const btn=n=>n.torneo&&DATA.torneos.some(t=>t.llave===n.torneo)?`<div class="sacts"><button class="ver-cuadro" data-llave="${n.torneo}">Ver cuadro <span aria-hidden="true">→</span></button></div>`:"";
   const slide=(n,i)=>{ const c=newsCut(n); return `<article class="slide ${i===0?"on":""} ${n.video?"has-vid":""}">${n.video?`<video class="svid" src="${n.video}" poster="${n.poster||""}" muted loop playsinline autoplay preload="auto"></video>`:`<div class="sbg" style="background-image:url('${newsBg(n)}')"></div>`}<div class="sshade"></div>
@@ -1378,7 +1381,7 @@ const nfecha=f=>{ const [y,m,d]=f.split("-").map(Number); return `${d} de ${MES[
     ${rest.length?`<div class="tiles g3">${rest.map(tile).join("")}</div>`:""}`;
   const h=$("#nhero"); let timer=null, cur=0;
   const show=k=>{ const sl=h.querySelectorAll(".slide"), n=sl.length; cur=(k+n)%n; sl.forEach((x,i)=>x.classList.toggle("on",i===cur)); h.querySelectorAll(".ndots button").forEach((x,i)=>x.setAttribute("aria-current",i===cur)); restart(); };
-  const restart=()=>{ clearInterval(timer); if(reduce||hero.length<2){ const v=h.querySelector(".slide.on video"); if(v&&!reduce) v.play().catch(()=>{}); return; } const sl=h.querySelectorAll(".slide")[cur], v=sl&&sl.querySelector("video"), ms=v?30000:7000; h.querySelectorAll(".slide video").forEach(x=>{ if(x!==v) x.pause(); }); if(v){ try{ v.currentTime=0; v.play().catch(()=>{}); }catch(_){} } timer=setInterval(()=>show(cur+1),ms); const p=h.querySelector(".nprog i"); if(p){ p.style.animation="none"; void p.offsetWidth; p.style.animation=""; p.style.animationDuration=ms+"ms"; } };
+  const restart=()=>{ clearInterval(timer); if(reduce||hero.length<2){ const v=h.querySelector(".slide.on video"); if(v&&!reduce) v.play().catch(()=>{}); return; } const sl=h.querySelectorAll(".slide")[cur], v=sl&&sl.querySelector("video"), ms=v?(v.duration?Math.round(v.duration*1000)+600:30000):7000; h.querySelectorAll(".slide video").forEach(x=>{ if(x!==v) x.pause(); }); if(v){ try{ v.currentTime=0; v.play().catch(()=>{}); }catch(_){} } timer=setInterval(()=>show(cur+1),ms); const p=h.querySelector(".nprog i"); if(p){ p.style.animation="none"; void p.offsetWidth; p.style.animation=""; p.style.animationDuration=ms+"ms"; } };
   h.addEventListener("click",e=>{ const b=e.target.closest("[data-slide],[data-dot]"); if(!b) return; if(b.dataset.slide) show(cur+ +b.dataset.slide); else show(+b.dataset.dot); });
   let sx=null; h.addEventListener("touchstart",e=>sx=e.touches[0].clientX,{passive:true}); h.addEventListener("touchend",e=>{ if(sx==null) return; const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>50) show(cur+(dx<0?1:-1)); sx=null; });
   restart();

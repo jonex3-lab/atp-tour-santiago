@@ -715,6 +715,9 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
 }
 
 /* ---------- carrera del año ---------- */
+.hist-band{position:relative;overflow:clip}
+.hist-band .wrap{position:relative;z-index:1}
+.hist-bg img{height:min(1000px,100%);object-position:center 15%}
 .race-bg img{left:auto;right:-2%;width:48%;height:min(920px,100%);object-position:44% 20%;opacity:.55;
   -webkit-mask-image:linear-gradient(270deg,#000 30%,transparent 95%),linear-gradient(180deg,#000 55%,transparent 98%);
   mask-image:linear-gradient(270deg,#000 30%,transparent 95%),linear-gradient(180deg,#000 55%,transparent 98%);animation-name:raceDrift}
@@ -879,6 +882,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
   </section>
 
   <section class="band stage hist-band" id="historico">
+    <div class="rank-bg hist-bg" aria-hidden="true"><img id="histBg" alt=""><i class="glow g1"></i></div>
     <div class="wrap">
       <div class="hist-rank">
         <div class="head"><div class="rv l"><span class="kick">Toda la carrera</span><h3 class="fh" style="font-size:clamp(28px,4vw,44px)">Ranking <em>histórico</em></h3></div>
@@ -1324,6 +1328,7 @@ function sakura(sec){
 /* ---------- ranking ---------- */
 (function(){
   $("#rankIntro").textContent = `Cada mes del calendario aporta su resultado más reciente: el campeón defiende sus puntos cuando el torneo vuelve. Corte al ${fdate(DATA.actualizado)}.`;
+  { const hb=$("#histBg"); if(FOTOS.has("mila")) hb.src=`fotos/mila.jpg${FV}`; else hb.remove(); }
   { const [lid]=activos[0]; const bg=$("#rankBg"); if(FOTOS.has(lid)) bg.src=`fotos/${lid}.jpg${FV}`; else bg.remove(); }
   $("#podium").innerHTML = activos.slice(0,3).map(([id,p],i)=>`
     <article class="pod rv ${["l","u","r"][i]} ${cut(id)?"has-cut":""}" style="transition-delay:${i*120}ms" data-id="${id}" tabindex="0" role="button" aria-label="Ver ficha de ${p.nombre}">

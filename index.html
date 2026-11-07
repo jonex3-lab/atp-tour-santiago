@@ -342,6 +342,12 @@ p{margin:0}
 .rtable.hist td.c,.rtable.hist th.c{text-align:center}
 .rtable.hist small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#ffcf6a;margin-top:2px}
 /* ---------- datos curiosos ---------- */
+.curio-band{position:relative;overflow:clip}
+.curio-band .wrap{position:relative;z-index:1}
+.rank-bg.curio-bg{overflow:clip}
+.rank-bg.curio-bg img{position:sticky;display:block;left:auto;right:auto;margin-left:auto;margin-right:-2%;top:0;height:100vh;max-height:1000px;object-position:44% 20%;opacity:.5;
+  -webkit-mask-image:linear-gradient(270deg,#000 25%,transparent 92%),linear-gradient(180deg,#000 50%,transparent 96%);mask-image:linear-gradient(270deg,#000 25%,transparent 92%),linear-gradient(180deg,#000 50%,transparent 96%);animation-name:raceDrift}
+@media (max-width:640px){.rank-bg.curio-bg img{width:104%;margin-right:-2%;opacity:.25}}
 .curio-band{background:radial-gradient(1200px 600px at 10% 0%,rgba(255,46,147,.22),transparent 60%),radial-gradient(900px 500px at 100% 100%,rgba(124,58,237,.3),transparent 60%),var(--night)}
 .curio{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
 .cu{position:relative;overflow:hidden;min-height:300px;padding:34px 36px;border-radius:30px;background:linear-gradient(135deg,rgba(124,58,237,.28),rgba(255,46,147,.12) 55%,rgba(255,154,46,.08));border:1px solid var(--line);cursor:pointer;isolation:isolate;transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .45s,box-shadow .45s}
@@ -980,6 +986,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
   </section>
 
   <section class="band curio-band" id="curiosidades">
+    <div class="rank-bg curio-bg" aria-hidden="true"><img src="fotos/valenzuela.jpg?v=27" alt=""></div>
     <div class="wrap">
       <div class="head">
         <div class="rv l"><span class="kick">Para la sobremesa</span><h2 class="fh">Datos <em>curiosos</em></h2></div>

@@ -176,6 +176,9 @@ p{margin:0}
 .arc-end .row2{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px}
 .arc-end,.arc-gate{transition:opacity .4s}
 .arc-end[hidden],.arc-gate[hidden]{display:none}
+.nav-intro{font:inherit;font-size:13px;font-weight:800;letter-spacing:.08em;color:#1a0010;background:linear-gradient(100deg,#ff2e93,#ff7a1a 55%,#ffc83d);border:0;border-radius:999px;padding:7px 14px;cursor:pointer;margin-left:6px}
+.nav-intro:hover{filter:brightness(1.1)}
+@media (max-width:760px){.nav-intro{order:-1;margin:0 2px 0 0;padding:6px 11px;white-space:nowrap;flex:0 0 auto}}
 .arc-replay{background:none;border:0;color:inherit;font:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px;opacity:.75}
 .arc-replay:hover{opacity:1;color:#ffc83d}
 /* versión vertical (celular) */
@@ -958,6 +961,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
       <a href="#historia">Historia</a>
       <a href="#curiosidades">Curiosidades</a>
       <a href="#h2h">Head to Head</a>
+      <button class="nav-intro" data-intro aria-label="Ver la intro">▶ Intro</button>
     </nav>
   </div>
 </header>

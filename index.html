@@ -780,8 +780,8 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
       <a href="#jugadores">Jugadores</a>
       <a href="#temporada">Circuito</a>
       <a href="#historia">Historia</a>
-      <a href="#h2h">Head to Head</a>
       <a href="#curiosidades">Curiosidades</a>
+      <a href="#h2h">Head to Head</a>
     </nav>
   </div>
 </header>
@@ -849,13 +849,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
         </table>
       </div>
       <p class="note muted" id="rankNote"></p>
-      <div class="hist-rank">
-        <div class="head" style="margin-top:70px"><div class="rv l"><span class="kick">Toda la carrera</span><h3 class="fh" style="font-size:clamp(28px,4vw,44px)">Ranking <em>histórico</em></h3></div>
-        <p class="rv r" style="color:#e9e1ff">Todos los que pisaron la cancha desde 2015, ordenados por títulos, finales y victorias. La posición es su lugar en la historia; el mejor puesto es el más alto que alcanzó en el ranking de puntos.</p></div>
-        <div class="tscroll glass rv u">
-          <table class="rtable hist"><thead><tr><th>Pos.</th><th>Jugador</th><th class="c">Títulos</th><th class="c">Finales</th><th class="c">V-D</th><th class="c">Mejor puesto<br>en el ranking</th><th class="c">Estado</th></tr></thead><tbody id="rankHist"></tbody></table>
-        </div>
-      </div>
+
     </div>
   </section>
 
@@ -871,6 +865,18 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
         <div class="qual4" id="qual4"></div>
       </div>
       <div class="race-rest rv u" id="raceRest"></div>
+    </div>
+  </section>
+
+  <section class="band stage hist-band" id="historico">
+    <div class="wrap">
+      <div class="hist-rank">
+        <div class="head"><div class="rv l"><span class="kick">Toda la carrera</span><h3 class="fh" style="font-size:clamp(28px,4vw,44px)">Ranking <em>histórico</em></h3></div>
+        <p class="rv r" style="color:#e9e1ff">Todos los que pisaron la cancha desde 2015, ordenados por títulos, finales y victorias. La posición es su lugar en la historia; el mejor puesto es el más alto que alcanzó en el ranking de puntos.</p></div>
+        <div class="tscroll glass rv u">
+          <table class="rtable hist"><thead><tr><th>Pos.</th><th>Jugador</th><th class="c">Títulos</th><th class="c">Finales</th><th class="c">V-D</th><th class="c">Mejor puesto<br>en el ranking</th><th class="c">Estado</th></tr></thead><tbody id="rankHist"></tbody></table>
+        </div>
+      </div>
     </div>
   </section>
 

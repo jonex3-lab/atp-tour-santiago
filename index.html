@@ -751,7 +751,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
 .qcard{position:relative;border-radius:24px;overflow:hidden;min-height:420px;cursor:pointer;background:linear-gradient(180deg,rgba(255,200,61,.20),rgba(123,60,255,.25) 55%,#140a28);border:1px solid rgba(255,255,255,.12);isolation:isolate;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
 .qcard:hover,.qcard:focus-visible{transform:translateY(-6px)}
 .qcard{transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s,border-color .45s}
-.qcard:hover,.qcard:focus-visible{transform:translateY(-12px) scale(1.07);z-index:3;border-color:rgba(255,200,61,.7);box-shadow:0 30px 60px -18px rgba(255,200,61,.45),0 0 0 1px rgba(255,200,61,.35)}
+.js .qcard.rv.in:hover,.js .qcard.rv.in:focus-visible,.qcard:hover,.qcard:focus-visible{transform:translateY(-12px) scale(1.07);z-index:3;border-color:rgba(255,200,61,.7);box-shadow:0 30px 60px -18px rgba(255,200,61,.45),0 0 0 1px rgba(255,200,61,.35)}
 .qcard img.qcut{transition:filter .45s}
 .qcard:hover img.qcut{filter:drop-shadow(0 24px 36px rgba(0,0,0,.6)) brightness(1.06)}
 .qcard:hover .qn{-webkit-text-stroke-color:rgba(255,200,61,.8)}
@@ -1331,6 +1331,7 @@ function sakura(sec){
   const last=q[q.length-1].pts, tie=L.slice(N).some(r=>r.pts===last);
   $("#raceRest").innerHTML=(L.length>N?`<div class="cutline">Línea de clasificación</div>`+L.slice(N).map((r,i)=>{ const p=P[r.id], gap=last-r.pts; return `<div class="rrow" data-id="${r.id}" tabindex="0" role="button" aria-label="Ver ficha de ${p.nombre}"><span class="rp">${N+i+1}</span><span class="rw">${avatar(r.id)}${p.nombre}</span><span class="rx"><b class="num">${fmt(r.pts)}</b>${gap>0?`a ${fmt(gap)} pts del ${N}.º`:"igualado con el "+N+".º"}</span></div>`; }).join(""):"")+
     `<p class="race-note">Torneos que ya suman: ${C.jugados.join(", ")}.${tie?` Con puntos iguales, el desempate es por ${C.desempate}.`:""}</p>`;
+  document.querySelectorAll("#qual4 .qcard").forEach(el=>el.addEventListener("transitionend",()=>{ if(el.classList.contains("in")) el.style.transitionDelay="0s"; }));
   document.querySelectorAll("#carrera [data-id]").forEach(el=>{ el.onclick=()=>openPlayer(el.dataset.id); el.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();openPlayer(el.dataset.id)} }; });
 })();
 

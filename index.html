@@ -358,6 +358,9 @@ p{margin:0}
 .cu{position:relative;overflow:hidden;min-height:300px;padding:34px 36px;border-radius:30px;background:linear-gradient(135deg,rgba(124,58,237,.28),rgba(255,46,147,.12) 55%,rgba(255,154,46,.08));border:1px solid var(--line);cursor:pointer;isolation:isolate;transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .45s,box-shadow .45s}
 .cu:first-child{grid-column:1/-1;min-height:340px}
 .cu:hover{transform:translateY(-8px);border-color:rgba(255,200,61,.6);box-shadow:0 30px 60px -30px rgba(255,46,147,.6)}
+.cu-emb{position:absolute;right:-4%;top:50%;height:115%;max-height:420px;width:auto;z-index:-2;transform:translateY(-50%);opacity:.45;filter:drop-shadow(0 0 24px var(--ec));transition:opacity .5s,transform .7s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.cu:hover .cu-emb{opacity:.7;transform:translateY(-50%) scale(1.06) rotate(-3deg)}
+@media (max-width:760px){.cu-emb{opacity:.3;right:-15%}}
 .cu-ph{position:absolute;right:0;bottom:0;height:96%;max-height:360px;width:auto;z-index:-1;opacity:.95;-webkit-mask-image:linear-gradient(to left,#000 55%,transparent 98%),linear-gradient(to top,transparent,#000 22%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to left,#000 55%,transparent 98%);transition:transform .6s cubic-bezier(.2,.8,.2,1)}
 .cu:hover .cu-ph{transform:translateX(-10px) scale(1.04)}
 .cu-in{position:relative;max-width:64%}
@@ -1669,7 +1672,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#modal").hidden
 /* ---------- datos curiosos ---------- */
 (function(){
   $("#curio").innerHTML=DATA.curiosidades.map((c,i)=>`<article class="cu rv ${["l","u","r"][i%3]}" style="transition-delay:${(i%3)*110}ms" data-id="${c.j}">
-    ${curioPh(c.j)?`<img class="cu-ph" src="${curioPh(c.j)}" alt="" loading="lazy">`:""}<div class="cu-in"><span class="cu-n num">${String(i+1).padStart(2,"0")}</span><span class="cu-who">${fmini()}${P[c.j].nombre}</span><h3>${c.t}</h3><p>${c.x}</p></div></article>`).join("");
+    ${EMB[c.j]?`<img class="cu-emb" src="img/emblemas/${c.j}.webp${FV}" alt="" loading="lazy" style="--ec:${EMB[c.j]}">`:""}${curioPh(c.j)?`<img class="cu-ph" src="${curioPh(c.j)}" alt="" loading="lazy">`:""}<div class="cu-in"><span class="cu-n num">${String(i+1).padStart(2,"0")}</span><span class="cu-who">${fmini()}${P[c.j].nombre}</span><h3>${c.t}</h3><p>${c.x}</p></div></article>`).join("");
   document.querySelectorAll(".cu").forEach(el=>el.onclick=()=>openPlayer(el.dataset.id));
 })();
 

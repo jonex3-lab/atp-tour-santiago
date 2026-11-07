@@ -130,7 +130,7 @@ p{margin:0}
 .a-title i{display:block;font-style:normal;font-weight:400;font-size:clamp(46px,9vmin,120px);color:transparent;-webkit-text-stroke:3px #ff2e93;margin-top:.12em}
 .a-pl{inset:0;overflow:hidden}
 .a-band{inset:0;clip-path:polygon(0 0,0 0,0 100%,0 100%)}
-.a-emb{height:72vh;width:auto;max-width:none;bottom:12vh;pointer-events:none}
+.a-emb{height:118vh;width:auto;max-width:none;bottom:-10vh;pointer-events:none}
 .a-ph{bottom:0;height:86vh;width:auto;max-width:none;filter:drop-shadow(0 26px 40px rgba(0,0,0,.6))}
 .a-mono{bottom:16vh;width:min(44vh,70vw);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-family:Anton,Impact,sans-serif;font-size:min(22vh,34vw);color:transparent;-webkit-text-stroke:3px rgba(255,255,255,.85);background:radial-gradient(circle,rgba(255,255,255,.14),transparent 70%);border:2px solid rgba(255,255,255,.25)}
 .a-rank{font-family:Anton,Impact,sans-serif;font-size:clamp(120px,30vh,320px);line-height:1;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.3);top:4vh}
@@ -184,7 +184,7 @@ p{margin:0}
 /* versión vertical (celular) */
 @media (max-aspect-ratio:1/1){
   .a-ph{height:60vh;bottom:30vh}
-  .a-emb{height:52vh;bottom:34vh}
+  .a-emb{height:min(78vh,115vw);bottom:24vh}
   .a-mono{bottom:36vh}
   .a-txt{max-width:none;left:6vw!important;right:6vw!important;bottom:7vh;text-align:center}
   .a-rank{top:9vh}
@@ -1268,9 +1268,9 @@ const DATA = {
   /* próximo torneo: fecha en formato "2026-11-14T10:00" (hora de Santiago) o null si está por confirmar */
   proximo: {nombre:"Rolex París Masters", lugar:"París", fecha:null},
   noticias: [
-    {fecha:"2026-11-07", orden:1, tag:"Circuito", destacada:true, jugador:"none", video:"video/intro-siete.mp4", poster:"video/intro-poster.jpg", titulo:"Siete jugadores. Una sola cima.",
+    {fecha:"2026-11-07", orden:1, tag:"Circuito", destacada:true, jugador:"none", video:"video/intro-siete-v2.mp4", poster:"video/intro-poster.jpg", titulo:"Siete jugadores. Una sola cima.",
      texto:"Los siete del circuito actual, en orden de ranking."},
-    {fecha:"2026-11-07", orden:2, tag:"Maestros", destacada:true, jugador:"none", video:"video/rumbo-a-shanghai.mp4", poster:"video/rumbo-poster.jpg", titulo:"Rumbo a Shanghái: los cuatro maestros",
+    {fecha:"2026-11-07", orden:2, tag:"Maestros", destacada:true, jugador:"none", video:"video/rumbo-a-shanghai-v2.mp4", poster:"video/rumbo-poster.jpg", titulo:"Rumbo a Shanghái: los cuatro maestros",
      texto:"The King, el Lobo Solitario, el Tigre Blanco y el Asesino de Leyendas tienen hoy su lugar en el Torneo de Maestros, del 1 al 12 de diciembre."},
     {fecha:"2026-06-30", tag:"Campeón", destacada:true, foto:"nunez", torneo:"kin26", titulo:"Sebastián Núñez gana el Kinoshita Group Japan Open",
      texto:"El primer sembrado venció a Patricio Palma en semifinales y a Mario Valenzuela en la final. Es su sexto título en el circuito y suma 500 puntos."},
@@ -1994,9 +1994,9 @@ document.addEventListener("click",e=>{const b=e.target.closest(".ver-cuadro"); i
       o.ph.style.left=px+"px"; o.ph._s=cam;
       const sx=dir*(-W*.7*(1-pin)+W*.9*pout*pout)+(P?0:dir*-18*u);
       o.ph.style.transform=`translateX(${sx}px) scale(${cam})`; o.ph.style.transformOrigin="50% 100%"; o.ph.style.opacity=lin(u,.05,.16)*(1-lin(u,.92,1));
-      if(o.emb){ const ew=o.emb.offsetWidth||400; const ex=P?(W-ew)/2:(mode==="c"?W*.5-ew/2:(dir>0?W*.66-ew*.2:W*.34-ew*.8));
-        o.emb.style.left=ex+"px"; const ee=eo(lin(u,.18,.5)); o.emb._s=.7+.3*ee;
-        o.emb.style.transform=`scale(${.7+.3*ee}) rotate(${-8*dir*(1-ee)}deg) translateY(${Math.sin(u*4)*6}px)`; o.emb.style.opacity=.55*ee*(1-bo); }
+      if(o.emb){ const ew=o.emb.offsetWidth||400; const ex=P?(W-ew)/2:(mode==="c"?W*.5-ew/2:(dir>0?W*.62-ew*.5:W*.38-ew*.5));
+        o.emb.style.left=ex+"px"; const ee=eo(lin(u,.14,.42)); o.emb._s=.7+.3*ee;
+        o.emb.style.transform=`scale(${.7+.3*ee}) rotate(${-8*dir*(1-ee)}deg) translateY(${Math.sin(u*4)*6}px)`; o.emb.style.opacity=.85*ee*(1-bo); }
       const tx=eo(lin(u,.22,.42));
       if(P){ o.txt.style.left="6vw"; o.txt.style.right="6vw"; }
       else if(mode==="c"){ o.txt.style.left="5vw"; o.txt.style.right="auto"; o.txt.style.textAlign="left"; }

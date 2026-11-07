@@ -269,6 +269,7 @@ p{margin:0}
 .note{font-size:14px;margin-top:20px}
 
 /* ---------- jugadores ---------- */
+.rail.auto{scroll-snap-type:none}
 .rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(250px,1fr);gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:16px;scrollbar-width:thin}
 .player{scroll-snap-align:start;position:relative;border:0;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer;border-radius:26px;overflow:hidden;aspect-ratio:3/4.2;max-width:100%;background:var(--night-2);transition:transform .45s}
 .player:hover{transform:translateY(-8px)}
@@ -749,10 +750,12 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
 .qual4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .qcard{position:relative;border-radius:24px;overflow:hidden;min-height:420px;cursor:pointer;background:linear-gradient(180deg,rgba(255,200,61,.20),rgba(123,60,255,.25) 55%,#140a28);border:1px solid rgba(255,255,255,.12);isolation:isolate;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
 .qcard:hover,.qcard:focus-visible{transform:translateY(-6px)}
-.qcard img.qcut{transform-origin:50% 100%;transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .45s}
-.qcard:hover img.qcut,.qcard:focus-visible img.qcut{transform:translateX(-50%) scale(1.1);filter:drop-shadow(0 24px 36px rgba(0,0,0,.6)) brightness(1.06)}
+.qcard{transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s,border-color .45s}
+.qcard:hover,.qcard:focus-visible{transform:translateY(-12px) scale(1.07);z-index:3;border-color:rgba(255,200,61,.7);box-shadow:0 30px 60px -18px rgba(255,200,61,.45),0 0 0 1px rgba(255,200,61,.35)}
+.qcard img.qcut{transition:filter .45s}
+.qcard:hover img.qcut{filter:drop-shadow(0 24px 36px rgba(0,0,0,.6)) brightness(1.06)}
 .qcard:hover .qn{-webkit-text-stroke-color:rgba(255,200,61,.8)}
-@media (prefers-reduced-motion:reduce){.qcard img.qcut{transition:none}}
+@media (prefers-reduced-motion:reduce){.qcard{transition:none}}
 .qcard.p1{background:linear-gradient(180deg,rgba(255,200,61,.55),rgba(255,122,26,.25) 45%,#1b0c2e)}
 .qcard .qn{position:absolute;top:6px;left:14px;font-family:var(--f-display);font-weight:900;font-size:120px;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.35);z-index:0}
 .qcard.p1 .qn{-webkit-text-stroke-color:rgba(255,255,255,.7)}
@@ -1129,7 +1132,7 @@ document.documentElement.classList.add("js");
 const FLAG_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20"><rect width="30" height="10" fill="#fff"/><rect y="10" width="30" height="10" fill="#d52b1e"/><rect width="10" height="10" fill="#0039a6"/><polygon fill="#fff" points="5.00,2.50 5.56,4.23 7.38,4.23 5.91,5.30 6.47,7.02 5.00,5.96 3.53,7.02 4.09,5.30 2.62,4.23 4.44,4.23"/></svg>';
 document.documentElement.style.setProperty("--flag", `url("data:image/svg+xml,${encodeURIComponent(FLAG_SVG)}")`);
 const FOTOS = new Set(DATA.fotos||[]);
-const FV = "?v=24";
+const FV = "?v=25";
 const curioPh = id => FOTOS.has(id) ? `fotos/${id}-curio.webp${FV}` : null;
 const bust = id => FOTOS.has(id) ? `fotos/${id}-busto.webp${FV}` : null;
 const cut = id => FOTOS.has(id) ? `fotos/${id}-recorte.webp${FV}` : null;
@@ -1367,6 +1370,21 @@ function sakura(sec){
       <div class="info">${p.alias?`<em class="card-alias">${p.alias}</em>`:""}<b>${p.nombre}</b><span>${fmt(p.pts)} pts · ${p.tit} ${p.tit===1?"título":"títulos"}</span></div>
     </button>`).join("");
   document.querySelectorAll(".player").forEach(b=>b.onclick=()=>openPlayer(b.dataset.id));
+  // la banda avanza sola, en bucle; se detiene al pasar el cursor o tocarla
+  const rail=$("#rail"); if(reduce||!rail) return;
+  const orig=[...rail.children]; orig.forEach(c=>{ const k=c.cloneNode(true); k.setAttribute("aria-hidden","true"); k.tabIndex=-1; k.classList.add("clone","in"); k.onclick=()=>openPlayer(k.dataset.id); rail.appendChild(k); });
+  rail.classList.add("auto");
+  let paused=false, last=0, pos=0, resumeT=null; const SPEED=70;
+  const half=()=>rail.scrollWidth/2;
+  const pause=()=>{ paused=true; clearTimeout(resumeT); }, resume=(ms)=>{ clearTimeout(resumeT); resumeT=setTimeout(()=>{ paused=false; pos=rail.scrollLeft; },ms); };
+  rail.addEventListener("mouseenter",pause); rail.addEventListener("mouseleave",()=>resume(300));
+  rail.addEventListener("touchstart",pause,{passive:true}); rail.addEventListener("touchend",()=>resume(2500));
+  rail.addEventListener("focusin",pause); rail.addEventListener("focusout",()=>resume(800));
+  let vis=true; new IntersectionObserver(es=>{ vis=es[0].isIntersecting; },{threshold:0}).observe(rail);
+  const step=t=>{ const dt=last?Math.min(64,t-last):0; last=t;
+    if(!paused&&vis&&!document.hidden){ pos+=SPEED*dt/1000; if(pos>=half()) pos-=half(); rail.scrollLeft=pos; } else pos=rail.scrollLeft>=half()?rail.scrollLeft-half():rail.scrollLeft;
+    requestAnimationFrame(step); };
+  requestAnimationFrame(step);
 })();
 
 /* ---------- leyendas ---------- */

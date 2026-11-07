@@ -725,6 +725,30 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
 @media (max-width:900px){.players-band{background:#07040d url(img/cancha-noche.jpg?v=1) center bottom/cover no-repeat}}
 .players-band::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,6,18,.55),rgba(10,6,18,.05) 45%,rgba(10,6,18,.35));pointer-events:none}
 .players-band>*{position:relative}
+/* emblemas de la carrera */
+.emb-stage{display:none}
+@media (min-width:761px) and (hover:hover){
+  .qual4{position:relative}
+  .emb-stage{display:block;position:absolute;inset:0;pointer-events:none;z-index:0}
+  .qual4 .qcard{position:relative;z-index:1}
+  .qual4[data-focus]{gap:0}
+  .qual4[data-focus] .qcard{flex:0 0 0;min-width:0;opacity:0;margin:0;border-width:0;padding:0;transform:scale(.9);pointer-events:none}
+  .qual4[data-focus="nunez"] .qcard[data-id="nunez"],.qual4[data-focus="valenzuela"] .qcard[data-id="valenzuela"],.qual4[data-focus="mila"] .qcard[data-id="mila"],.qual4[data-focus="palma"] .qcard[data-id="palma"]{flex:0 0 38%;opacity:1;border-width:1px;transform:translateY(-8px);pointer-events:auto;filter:none}
+  .qual4[data-focus]:hover .qcard:not(:hover){filter:none}
+  .emb{position:absolute;left:38%;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:flex-end;padding-right:2%;opacity:0;visibility:hidden;transition:opacity .4s,visibility 0s .4s}
+  .emb img{position:relative;height:118%;max-width:none;width:auto;transform:scale(.4) rotate(-10deg);opacity:0;filter:drop-shadow(0 0 30px var(--ec)) drop-shadow(0 0 70px var(--ec));transition:transform .8s cubic-bezier(.2,1.4,.4,1),opacity .5s}
+  .emb-ring{position:absolute;right:4%;width:70%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--ec) 45%,transparent) 0%,transparent 65%);transform:scale(.2);opacity:0;transition:transform 1s cubic-bezier(.2,.8,.2,1),opacity .6s}
+  .emb-txt{position:absolute;left:5%;bottom:6%;max-width:60%;z-index:2;text-align:left;opacity:0;transform:translateX(-30px);transition:opacity .5s .25s,transform .6s .25s cubic-bezier(.2,.8,.2,1)}
+  .emb-txt small{display:block;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.7);font-weight:700}
+  .emb-txt b{display:block;font-family:var(--f-display);font-weight:900;font-size:clamp(26px,2.6vw,40px);line-height:1.02;color:var(--ec);text-shadow:0 2px 0 rgba(0,0,0,.55),0 0 28px rgba(0,0,0,.8),0 0 24px color-mix(in srgb,var(--ec) 50%,transparent)}
+  .qual4[data-focus="nunez"] .emb[data-for="nunez"],.qual4[data-focus="valenzuela"] .emb[data-for="valenzuela"],.qual4[data-focus="mila"] .emb[data-for="mila"],.qual4[data-focus="palma"] .emb[data-for="palma"]{opacity:1;visibility:visible;transition:opacity .4s}
+  .qual4[data-focus] .emb[style] img{}
+  .qual4[data-focus="nunez"] .emb[data-for="nunez"] img,.qual4[data-focus="valenzuela"] .emb[data-for="valenzuela"] img,.qual4[data-focus="mila"] .emb[data-for="mila"] img,.qual4[data-focus="palma"] .emb[data-for="palma"] img{transform:none;opacity:1;animation:embFloat 4s ease-in-out 1s infinite alternate}
+  .qual4[data-focus="nunez"] .emb[data-for="nunez"] .emb-ring,.qual4[data-focus="valenzuela"] .emb[data-for="valenzuela"] .emb-ring,.qual4[data-focus="mila"] .emb[data-for="mila"] .emb-ring,.qual4[data-focus="palma"] .emb[data-for="palma"] .emb-ring{transform:scale(1.15);opacity:1}
+  .qual4[data-focus="nunez"] .emb[data-for="nunez"] .emb-txt,.qual4[data-focus="valenzuela"] .emb[data-for="valenzuela"] .emb-txt,.qual4[data-focus="mila"] .emb[data-for="mila"] .emb-txt,.qual4[data-focus="palma"] .emb[data-for="palma"] .emb-txt{opacity:1;transform:none}
+}
+@keyframes embFloat{from{transform:translateY(0) scale(1)}to{transform:translateY(-10px) scale(1.03)}}
+@media (prefers-reduced-motion:reduce){.emb img{animation:none!important;transition:opacity .3s!important}}
 /* ---------- carrera del año ---------- */
 .mcard.has-afiche{padding:0;display:block;background:#1a0b2e}
 .mcard.has-afiche::before{display:none}
@@ -1031,7 +1055,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
 const DATA = {
   actualizado: "2026-06-27",
   carrera: {
-    anio: 2026, cupos: 4, foto: "valenzuela", afiche: "img/maestros-2026.jpg",
+    anio: 2026, cupos: 4, foto: "valenzuela", emblemas: {nunez:"#ffc83d", valenzuela:"#9fd3ff", mila:"#b57bff", palma:"#bfe6ff"}, afiche: "img/maestros-2026.jpg",
     torneo: {nombre:"Rolex Shanghai Masters", mes:"Diciembre", fecha:"1–12 de diciembre", lugar:"Shanghái", pais:"cn", cat:"Grand Slam 2000"},
     jugados: ["Kinoshita Group Japan Open"], quedan: ["Rolex París Masters"],
     desempate: "partidos jugados en el circuito",
@@ -1050,7 +1074,7 @@ const DATA = {
     mila:      {alias:"El Asesino de Leyendas", nombre:"Ignacio Mila",     apodo:"",        estado:"activo", seed:2, pts:1625, tit:1, v:11, d:11, tor:12, fin:3,  fg:1, t500:1, m1000:0, gs:0, mejor:2},
     valenzuela:{alias:"El Lobo Solitario", nombre:"Mario Valenzuela", apodo:"Mario",   estado:"activo", seed:3, pts:1250, tit:1, v:12, d:10, tor:11, fin:4,  fg:1, t500:1, m1000:0, gs:0, mejor:2},
     flores:    {alias:"Pistol Flores", nombre:"Hugo Flores",      apodo:"Hugo",    estado:"activo", seed:4, pts:875,  tit:0, v:5,  d:11, tor:10, fin:1,  fg:0, t500:0, m1000:0, gs:0, mejor:3},
-    palma:     {nombre:"Patricio Palma",   apodo:"",        estado:"activo", seed:5, pts:250,  tit:0, v:2,  d:2,  tor:2,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:5},
+    palma:     {alias:"El Tigre Blanco", nombre:"Patricio Palma",   apodo:"",        estado:"activo", seed:5, pts:250,  tit:0, v:2,  d:2,  tor:2,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:5},
     gatica:    {nombre:"José Gatica",      apodo:"",        estado:"activo", seed:6, pts:0,    tit:0, v:0,  d:3,  tor:3,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:6},
     vilaza:    {nombre:"Darío Vilaza",     apodo:"",        estado:"activo", seed:7, pts:0,    tit:0, v:0,  d:0,  tor:0,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:7},
     juanito:   {emblema:"img/leon.webp?v=1", alias:"El León", nombre:"Juan",             apodo:"Juanito", estado:"inactivo", pts:3250, tit:4, v:16, d:2, tor:6, fin:6, fg:4, t500:2, m1000:1, gs:1, mejor:1, retiro:{pos:1, pts:3750, ult:"Maipú 2017"}},
@@ -1362,6 +1386,12 @@ function sakura(sec){
   $("#qual4").innerHTML=q.map((r,i)=>{ const p=P[r.id]; return `<article class="qcard rv u p${i+1}" style="transition-delay:${i*110}ms" data-id="${r.id}" tabindex="0" role="button" aria-label="Ver ficha de ${p.nombre}">
     <span class="qn">${i+1}</span>${cut(r.id)?`<img class="qcut" src="${cut(r.id)}" alt="" loading="lazy">`:`<span class="qini">${ini(r.id)}</span>`}
     <div class="qin"><span class="qbadge">✦ Clasifica</span><h3>${p.nombre}</h3><div class="qpts num">${fmt(r.pts)}<small>PTS ${C.anio}</small></div><div class="qdet">${r.det||"Aún sin puntos este año"}</div></div></article>`; }).join("");
+  { const Q=$("#qual4"), E=C.emblemas||{};
+    Q.insertAdjacentHTML("beforeend",`<div class="emb-stage" aria-hidden="true">${q.filter(r=>E[r.id]).map(r=>{ const p=P[r.id]; return `<div class="emb" data-for="${r.id}" style="--ec:${E[r.id]}"><span class="emb-ring"></span><img src="img/emblemas/${r.id}.webp${FV}" alt=""><div class="emb-txt"><small>${p.nombre}</small><b>${p.alias||""}</b></div></div>`; }).join("")}</div>`);
+    const set=id=>{ if(id&&E[id]){ Q.dataset.focus=id; } else delete Q.dataset.focus; };
+    Q.querySelectorAll(".qcard").forEach(c=>{ c.addEventListener("mouseenter",()=>set(c.dataset.id)); c.addEventListener("focus",()=>set(c.dataset.id)); c.addEventListener("blur",()=>set(null)); });
+    Q.addEventListener("mouseleave",()=>set(null));
+  }
   const last=q[q.length-1].pts, tie=L.slice(N).some(r=>r.pts===last);
   $("#raceRest").innerHTML=(L.length>N?`<div class="cutline">Línea de clasificación</div>`+L.slice(N).map((r,i)=>{ const p=P[r.id], gap=last-r.pts; return `<div class="rrow" data-id="${r.id}" tabindex="0" role="button" aria-label="Ver ficha de ${p.nombre}"><span class="rp">${N+i+1}</span><span class="rw">${avatar(r.id)}${p.nombre}</span><span class="rx"><b class="num">${fmt(r.pts)}</b>${gap>0?`a ${fmt(gap)} pts del ${N}.º`:"igualado con el "+N+".º"}</span></div>`; }).join(""):"")+
     `<p class="race-note">Torneos que ya suman: ${C.jugados.join(", ")}.${tie?` Con puntos iguales, el desempate es por ${C.desempate}.`:""}</p>`;

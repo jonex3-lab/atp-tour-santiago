@@ -1187,8 +1187,8 @@ const DATA = {
     valenzuela:{alias:"El Lobo Solitario", nombre:"Mario Valenzuela", apodo:"Mario",   estado:"activo", seed:3, pts:1250, tit:1, v:12, d:10, tor:11, fin:4,  fg:1, t500:1, m1000:0, gs:0, mejor:2},
     flores:    {alias:"Pistol Flores", nombre:"Hugo Flores",      apodo:"Hugo",    estado:"activo", seed:4, pts:875,  tit:0, v:5,  d:11, tor:10, fin:1,  fg:0, t500:0, m1000:0, gs:0, mejor:3},
     palma:     {alias:"El Tigre Blanco", nombre:"Patricio Palma",   apodo:"",        estado:"activo", seed:5, pts:250,  tit:0, v:2,  d:2,  tor:2,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:5},
-    gatica:    {nombre:"José Gatica",      apodo:"",        estado:"activo", seed:6, pts:0,    tit:0, v:0,  d:3,  tor:3,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:6},
-    vilaza:    {nombre:"Darío Vilaza",     apodo:"",        estado:"activo", seed:7, pts:0,    tit:0, v:0,  d:0,  tor:0,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:7},
+    gatica:    {alias:"El Oso Pardo", nombre:"José Gatica",      apodo:"",        estado:"activo", seed:6, pts:0,    tit:0, v:0,  d:3,  tor:3,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:6},
+    vilaza:    {alias:"El Emperador", nombre:"Darío Vilaza",     apodo:"",        estado:"activo", seed:7, pts:0,    tit:0, v:0,  d:0,  tor:0,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:7},
     juanito:   {emblema:"img/leon.webp?v=1", alias:"El León", nombre:"Juan",             apodo:"Juanito", estado:"inactivo", pts:3250, tit:4, v:16, d:2, tor:6, fin:6, fg:4, t500:2, m1000:1, gs:1, mejor:1, retiro:{pos:1, pts:3750, ult:"Maipú 2017"}},
     richardi:  {nombre:"Richardi",         apodo:"",        estado:"retirado", pts:185, tit:0, v:2, d:5, tor:4, fin:0, fg:0, mejor:6, retiro:{pos:6, pts:185, ult:"Chépica 2017"}},
     miguel:    {alias:"El Ángel Malo", nombre:"Miguel Flores", apodo:"Miguel", estado:"inactivo", pts:185, tit:0, v:3, d:4, tor:4, fin:0, fg:0, mejor:4, retiro:{pos:6, pts:185, ult:"Maipú 2017"}},
@@ -1268,9 +1268,9 @@ const DATA = {
   /* próximo torneo: fecha en formato "2026-11-14T10:00" (hora de Santiago) o null si está por confirmar */
   proximo: {nombre:"Rolex París Masters", lugar:"París", fecha:null},
   noticias: [
-    {fecha:"2026-11-07", orden:1, tag:"Circuito", destacada:true, jugador:"none", video:"video/intro-siete-v2.mp4", poster:"video/intro-poster.jpg", titulo:"Siete jugadores. Una sola cima.",
+    {fecha:"2026-11-07", orden:1, tag:"Circuito", destacada:true, jugador:"none", video:"video/intro-siete-v3.mp4", poster:"video/intro-poster.jpg", titulo:"Siete jugadores. Una sola cima.",
      texto:"Los siete del circuito actual, en orden de ranking."},
-    {fecha:"2026-11-07", orden:3, tag:"Circuito", destacada:true, jugador:"none", video:"video/presentacion-circuito.mp4", poster:"video/circuito-poster.jpg", titulo:"Elige a tu jugador",
+    {fecha:"2026-11-07", orden:3, tag:"Circuito", destacada:true, jugador:"none", video:"video/presentacion-circuito-v2.mp4", poster:"video/circuito-poster.jpg", titulo:"Elige a tu jugador",
      texto:"Los jugadores del circuito, en clave arcade."},
     {fecha:"2026-11-07", orden:2, tag:"Maestros", destacada:true, jugador:"none", video:"video/rumbo-a-shanghai-v2.mp4", poster:"video/rumbo-poster.jpg", titulo:"Rumbo a Shanghái: los cuatro maestros",
      texto:"The King, el Lobo Solitario, el Tigre Blanco y el Asesino de Leyendas tienen hoy su lugar en el Torneo de Maestros, del 1 al 12 de diciembre."},
@@ -1306,7 +1306,7 @@ document.documentElement.classList.add("js");
 const FLAG_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20"><rect width="30" height="10" fill="#fff"/><rect y="10" width="30" height="10" fill="#d52b1e"/><rect width="10" height="10" fill="#0039a6"/><polygon fill="#fff" points="5.00,2.50 5.56,4.23 7.38,4.23 5.91,5.30 6.47,7.02 5.00,5.96 3.53,7.02 4.09,5.30 2.62,4.23 4.44,4.23"/></svg>';
 document.documentElement.style.setProperty("--flag", `url("data:image/svg+xml,${encodeURIComponent(FLAG_SVG)}")`);
 const FOTOS = new Set(DATA.fotos||[]);
-const FV = "?v=29";
+const FV = "?v=30";
 const curioPh = id => FOTOS.has(id) ? `fotos/${id}-curio.webp${FV}` : null;
 const bust = id => FOTOS.has(id) ? `fotos/${id}-busto.webp${FV}` : null;
 const cut = id => FOTOS.has(id) ? `fotos/${id}-recorte.webp${FV}` : null;
@@ -1357,7 +1357,7 @@ let io=null;
 /* ---------- noticias: portada tipo carrusel ---------- */
 const NIMG={cancha:"img/hero-cancha.jpg",kinoshita:"img/kinoshita.jpg",flores:"img/temporada-flores.jpg",mapa:"img/mapa.jpg",fuego:"img/band1.jpg",aurora:"img/band2.jpg",noche:"img/band3.jpg"};
 const newsBg=n=>NIMG[n.imagen]||(n.torneo==="kin26"?NIMG.kinoshita:NIMG[{Campeón:"cancha",Ranking:"fuego",Cuadro:"noche",Historia:"aurora",Circuito:"mapa"}[n.tag]||"cancha"]);
-const EMB={nunez:"#ffc83d",valenzuela:"#9fd3ff",mila:"#b57bff",palma:"#bfe6ff",juanito:"#ffb300"};
+const EMB={nunez:"#ffc83d",valenzuela:"#9fd3ff",mila:"#b57bff",palma:"#bfe6ff",juanito:"#ffb300",flores:"#ffb347",gatica:"#e07a3a",vilaza:"#ffd45a"};
 function newsWho(n){ const c=newsCut(n); const m=c&&c.match(/fotos\/([a-z]+)-curio/); return m?m[1]:null; }
 const embImg=(n,cls)=>{ const id=newsWho(n); return id&&EMB[id]?`<img class="${cls}" src="img/emblemas/${id}.webp${FV}" alt="" style="--ec:${EMB[id]}">`:""; };
 function newsCut(n){ if(n.jugador==="none") return null; if(n.jugador&&FOTOS.has(n.jugador)) return `fotos/${n.jugador}-curio.webp${FV}`;
@@ -1910,9 +1910,9 @@ document.addEventListener("click",e=>{const b=e.target.closest(".ver-cuadro"); i
 /* ---------- intro arcade ---------- */
 (function(){
   const root=$("#arc"); if(!root) return;
-  const COL={nunez:"#ffc83d",mila:"#b57bff",valenzuela:"#9fd3ff",flores:"#ff2e93",palma:"#d8f0ff",gatica:"#38e1b0",vilaza:"#ff9a3c"};
-  const COL2={nunez:"#7a3b00",mila:"#2a0a5e",valenzuela:"#0d2a5c",flores:"#5a0a3e",palma:"#1d3a6e",gatica:"#063d2f",vilaza:"#5a2400"};
-  const EMBS={nunez:1,mila:1,valenzuela:1,palma:1}; // asociaciones confirmadas
+  const COL={nunez:"#ffc83d",mila:"#b57bff",valenzuela:"#9fd3ff",flores:"#ff2e93",palma:"#d8f0ff",gatica:"#e07a3a",vilaza:"#ff9a3c"};
+  const COL2={nunez:"#7a3b00",mila:"#2a0a5e",valenzuela:"#0d2a5c",flores:"#5a0a3e",palma:"#1d3a6e",gatica:"#3d1a08",vilaza:"#5a2400"};
+  const EMBS={nunez:1,mila:1,valenzuela:1,palma:1,flores:1,gatica:1,vilaza:1}; // asociaciones confirmadas
   const SIETE=activos.slice(0,7).map(([id,p],i)=>({id,p,i,c:COL[id]||"#ffc83d",c2:COL2[id]||"#2a0a5e",ph:cut(id),emb:EMBS[id]?`img/emblemas/${id}.webp${FV}`:null}));
   const st=root.querySelector(".arc-st"), gate=root.querySelector(".arc-gate"), end=root.querySelector(".arc-end"), skip=root.querySelector(".arc-skip");
   const T={open:0,pl:2.2,dur:1.85}; T.vs=T.pl+SIETE.length*T.dur; T.vsd=.62; T.grid=T.vs+4*T.vsd; T.end=T.grid+2.6; T.total=T.end+.6;

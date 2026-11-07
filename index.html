@@ -370,7 +370,7 @@ p{margin:0}
 .cu h3{font-size:clamp(22px,2.4vw,30px);margin:8px 0 12px;line-height:1.1}
 .cu:first-child h3{font-size:clamp(26px,3.2vw,40px)}
 .cu p{margin:0;color:#e3dbf7;font-size:clamp(15px,1.3vw,17.5px);line-height:1.6}
-@media (max-width:760px){.curio{grid-template-columns:1fr}.cu{min-height:0;padding:28px 24px}.cu-in,.cu:first-child .cu-in{max-width:72%}.cu-ph{height:70%;opacity:.55;right:-30px}}
+@media (max-width:760px){.curio{grid-template-columns:1fr}.cu{min-height:0;padding:28px 24px}.cu-in,.cu:first-child .cu-in{max-width:72%}.cu-ph{height:70%;opacity:.85;right:-30px}}
 /* rostro del campeón en el cuadro */
 .sheet-top.has-champ{overflow:hidden}
 .sheet-top .champ-in{position:absolute;right:70px;bottom:-34%;height:134%;width:auto;pointer-events:none;-webkit-mask-image:linear-gradient(to top,transparent 0,#000 30%);mask-image:linear-gradient(to top,transparent 0,#000 30%);animation:champIn 1.1s cubic-bezier(.16,1,.3,1) .25s both}
@@ -1672,7 +1672,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#modal").hidden
 /* ---------- datos curiosos ---------- */
 (function(){
   $("#curio").innerHTML=DATA.curiosidades.map((c,i)=>`<article class="cu rv ${["l","u","r"][i%3]}" style="transition-delay:${(i%3)*110}ms" data-id="${c.j}">
-    ${EMB[c.j]?`<img class="cu-emb" src="img/emblemas/${c.j}.webp${FV}" alt="" loading="lazy" style="--ec:${EMB[c.j]}">`:""}${curioPh(c.j)?`<img class="cu-ph" src="${curioPh(c.j)}" alt="" loading="lazy">`:""}<div class="cu-in"><span class="cu-n num">${String(i+1).padStart(2,"0")}</span><span class="cu-who">${fmini()}${P[c.j].nombre}</span><h3>${c.t}</h3><p>${c.x}</p></div></article>`).join("");
+    ${EMB[c.j]?`<img class="cu-emb" src="img/emblemas/${c.j}.webp${FV}" alt="" loading="lazy" style="--ec:${EMB[c.j]}">`:""}${curioPh(c.j)?`<img class="cu-ph" src="${curioPh(c.j)}" alt="" decoding="async">`:""}<div class="cu-in"><span class="cu-n num">${String(i+1).padStart(2,"0")}</span><span class="cu-who">${fmini()}${P[c.j].nombre}</span><h3>${c.t}</h3><p>${c.x}</p></div></article>`).join("");
   document.querySelectorAll(".cu").forEach(el=>el.onclick=()=>openPlayer(el.dataset.id));
 })();
 

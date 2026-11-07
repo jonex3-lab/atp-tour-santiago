@@ -1190,12 +1190,12 @@ const DATA = {
     gatica:    {alias:"El Oso Pardo", nombre:"José Gatica",      apodo:"",        estado:"activo", seed:6, pts:0,    tit:0, v:0,  d:3,  tor:3,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:6},
     vilaza:    {alias:"El Emperador", nombre:"Darío Vilaza",     apodo:"",        estado:"activo", seed:7, pts:0,    tit:0, v:0,  d:0,  tor:0,  fin:0,  fg:0, t500:0, m1000:0, gs:0, mejor:7},
     juanito:   {emblema:"img/leon.webp?v=1", alias:"El León", nombre:"Juan",             apodo:"Juanito", estado:"inactivo", pts:3250, tit:4, v:16, d:2, tor:6, fin:6, fg:4, t500:2, m1000:1, gs:1, mejor:1, retiro:{pos:1, pts:3750, ult:"Maipú 2017"}},
-    richardi:  {nombre:"Richardi",         apodo:"",        estado:"retirado", pts:185, tit:0, v:2, d:5, tor:4, fin:0, fg:0, mejor:6, retiro:{pos:6, pts:185, ult:"Chépica 2017"}},
+    richardi:  {alias:"La Elegancia", nombre:"Richardi",         apodo:"",        estado:"retirado", pts:185, tit:0, v:2, d:5, tor:4, fin:0, fg:0, mejor:6, retiro:{pos:6, pts:185, ult:"Chépica 2017"}},
     miguel:    {alias:"El Ángel Malo", nombre:"Miguel Flores", apodo:"Miguel", estado:"inactivo", pts:185, tit:0, v:3, d:4, tor:4, fin:0, fg:0, mejor:4, retiro:{pos:6, pts:185, ult:"Maipú 2017"}},
-    ian:       {nombre:"Ian",              apodo:"",        estado:"inactivo", pts:125, tit:0, v:1, d:3, tor:3, fin:0, fg:0, mejor:8, retiro:{pos:8, pts:125, ult:"Maipú 2017"}},
+    ian:       {alias:"El Orgullo", nombre:"Ian",              apodo:"",        estado:"inactivo", pts:125, tit:0, v:1, d:3, tor:3, fin:0, fg:0, mejor:8, retiro:{pos:8, pts:125, ult:"Maipú 2017"}},
     ivan:      {alias:"La Esperanza Blanca", nombre:"Iván", apodo:"",        estado:"inactivo", pts:60, tit:0, v:1, d:4, tor:4, fin:0, fg:0, mejor:11, retiro:{pos:11, pts:60, ult:"Maipú 2017"}},
-    jaime:     {nombre:"Jaime",            apodo:"",        estado:"retirado", pts:0, tit:0, v:1, d:3, tor:2, fin:0, fg:0, mejor:4, retiro:{pos:null, pts:0, ult:"La Cisterna 2016"}},
-    ricardito: {nombre:"Ricardito",        apodo:"",        estado:"inactivo", pts:0, tit:0, v:0, d:3, tor:3, fin:0, fg:0, mejor:null},
+    jaime:     {alias:"Draculón", nombre:"Jaime",            apodo:"",        estado:"retirado", pts:0, tit:0, v:1, d:3, tor:2, fin:0, fg:0, mejor:4, retiro:{pos:null, pts:0, ult:"La Cisterna 2016"}},
+    ricardito: {alias:"El Alquimista", nombre:"Ricardito",        apodo:"",        estado:"inactivo", pts:0, tit:0, v:0, d:3, tor:3, fin:0, fg:0, mejor:null},
     rhurtado:  {nombre:"Ricardo Hurtado",  apodo:"",        estado:"inactivo", pts:125, tit:0, v:1, d:1, tor:1, fin:0, fg:0, mejor:8, retiro:{pos:8, pts:125, ult:"Maipú 2017"}},
     maestrito: {nombre:"Rodrigo",          apodo:"Maestrito", estado:"retirado", pts:125, tit:0, v:1, d:1, tor:1, fin:0, fg:0, mejor:8, retiro:{pos:8, pts:125, ult:"Maipú 2017"}},
     alvaro:    {nombre:"Álvaro Paredes",   apodo:"Álvaro",  estado:"retirado", pts:0, tit:0, v:0, d:2, tor:1, fin:0, fg:0, mejor:null},
@@ -1270,7 +1270,7 @@ const DATA = {
   noticias: [
     {fecha:"2026-11-07", orden:1, tag:"Circuito", destacada:true, jugador:"none", video:"video/intro-siete-v3.mp4", poster:"video/intro-poster.jpg", titulo:"Siete jugadores. Una sola cima.",
      texto:"Los siete del circuito actual, en orden de ranking."},
-    {fecha:"2026-11-07", orden:3, tag:"Circuito", destacada:true, jugador:"none", video:"video/presentacion-circuito-v2.mp4", poster:"video/circuito-poster.jpg", titulo:"Elige a tu jugador",
+    {fecha:"2026-11-07", orden:3, tag:"Circuito", destacada:true, jugador:"none", video:"video/presentacion-circuito-v3.mp4", poster:"video/circuito-poster.jpg", titulo:"Elige a tu jugador",
      texto:"Los jugadores del circuito, en clave arcade."},
     {fecha:"2026-11-07", orden:2, tag:"Maestros", destacada:true, jugador:"none", video:"video/rumbo-a-shanghai-v2.mp4", poster:"video/rumbo-poster.jpg", titulo:"Rumbo a Shanghái: los cuatro maestros",
      texto:"The King, el Lobo Solitario, el Tigre Blanco y el Asesino de Leyendas tienen hoy su lugar en el Torneo de Maestros, del 1 al 12 de diciembre."},
@@ -1306,7 +1306,7 @@ document.documentElement.classList.add("js");
 const FLAG_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20"><rect width="30" height="10" fill="#fff"/><rect y="10" width="30" height="10" fill="#d52b1e"/><rect width="10" height="10" fill="#0039a6"/><polygon fill="#fff" points="5.00,2.50 5.56,4.23 7.38,4.23 5.91,5.30 6.47,7.02 5.00,5.96 3.53,7.02 4.09,5.30 2.62,4.23 4.44,4.23"/></svg>';
 document.documentElement.style.setProperty("--flag", `url("data:image/svg+xml,${encodeURIComponent(FLAG_SVG)}")`);
 const FOTOS = new Set(DATA.fotos||[]);
-const FV = "?v=30";
+const FV = "?v=31";
 const curioPh = id => FOTOS.has(id) ? `fotos/${id}-curio.webp${FV}` : null;
 const bust = id => FOTOS.has(id) ? `fotos/${id}-busto.webp${FV}` : null;
 const cut = id => FOTOS.has(id) ? `fotos/${id}-recorte.webp${FV}` : null;
@@ -1357,7 +1357,7 @@ let io=null;
 /* ---------- noticias: portada tipo carrusel ---------- */
 const NIMG={cancha:"img/hero-cancha.jpg",kinoshita:"img/kinoshita.jpg",flores:"img/temporada-flores.jpg",mapa:"img/mapa.jpg",fuego:"img/band1.jpg",aurora:"img/band2.jpg",noche:"img/band3.jpg"};
 const newsBg=n=>NIMG[n.imagen]||(n.torneo==="kin26"?NIMG.kinoshita:NIMG[{Campeón:"cancha",Ranking:"fuego",Cuadro:"noche",Historia:"aurora",Circuito:"mapa"}[n.tag]||"cancha"]);
-const EMB={nunez:"#ffc83d",valenzuela:"#9fd3ff",mila:"#b57bff",palma:"#bfe6ff",juanito:"#ffb300",flores:"#ffb347",gatica:"#e07a3a",vilaza:"#ffd45a"};
+const EMB={nunez:"#ffc83d",valenzuela:"#9fd3ff",mila:"#b57bff",palma:"#bfe6ff",juanito:"#ffb300",flores:"#ffb347",gatica:"#e07a3a",vilaza:"#ffd45a,richardi:"#e8d9a8",ian:"#ff9a1f",nico:"#fff1c9",ricardito:"#ff3b3b",jaime:"#ff2e55",ivan:"#ffb84d"};
 function newsWho(n){ const c=newsCut(n); const m=c&&c.match(/fotos\/([a-z]+)-curio/); return m?m[1]:null; }
 const embImg=(n,cls)=>{ const id=newsWho(n); return id&&EMB[id]?`<img class="${cls}" src="img/emblemas/${id}.webp${FV}" alt="" style="--ec:${EMB[id]}">`:""; };
 function newsCut(n){ if(n.jugador==="none") return null; if(n.jugador&&FOTOS.has(n.jugador)) return `fotos/${n.jugador}-curio.webp${FV}`;

@@ -1087,7 +1087,7 @@ const DATA = {
     ["nunez", "juanito", 2, 3],["nunez", "valenzuela", 3, 1],["nunez", "flores", 4, 0],["nunez", "mila", 5, 2],["nunez", "richardi", 1, 0],["nunez", "primojaime", 1, 0],["nunez", "jaime", 1, 0],["nunez", "alvaro", 1, 0],["nunez", "maestrito", 1, 0],["nunez", "palma", 1, 0],["juanito", "valenzuela", 3, 0],["juanito", "flores", 3, 0],["juanito", "mila", 3, 0],["juanito", "miguel", 1, 0],["juanito", "ricardito", 1, 0],["juanito", "jaime", 1, 0],["juanito", "rhurtado", 1, 0],["mila", "valenzuela", 3, 3],["valenzuela", "flores", 3, 1],["valenzuela", "miguel", 2, 0],["valenzuela", "nico", 1, 0],["valenzuela", "ivan", 1, 0],["valenzuela", "gatica", 1, 0],["mila", "richardi", 3, 0],["mila", "flores", 1, 0],["mila", "ian", 1, 0],["mila", "palma", 1, 0],["flores", "ivan", 1, 0],["flores", "ian", 1, 0],["flores", "richardi", 1, 0],["flores", "miguel", 1, 0],["palma", "gatica", 2, 0],["miguel", "ian", 1, 0],["miguel", "ivan", 1, 0],["miguel", "jaime", 1, 0],["jaime", "ricardito", 1, 0],["richardi", "alvaro", 1, 0],["richardi", "ricardito", 1, 0],["ivan", "locomario", 1, 0],["maestrito", "luciano", 1, 0],["ian", "benjamin", 1, 0],["rhurtado", "ivan", 1, 0]
   ],
   /* jugadores con foto en la carpeta fotos/ (retrato <id>.jpg y cara <id>-cara.jpg) */
-  fotos: ["nunez","mila","valenzuela","flores","palma","gatica","juanito","richardi","jaime","ian"],
+  fotos: ["nunez","mila","valenzuela","flores","palma","gatica","juanito","richardi","jaime","ian","nico"],
   /* próximo torneo: fecha en formato "2026-11-14T10:00" (hora de Santiago) o null si está por confirmar */
   proximo: {nombre:"Rolex París Masters", lugar:"París", fecha:null},
   noticias: [
@@ -1123,7 +1123,7 @@ document.documentElement.classList.add("js");
 const FLAG_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20"><rect width="30" height="10" fill="#fff"/><rect y="10" width="30" height="10" fill="#d52b1e"/><rect width="10" height="10" fill="#0039a6"/><polygon fill="#fff" points="5.00,2.50 5.56,4.23 7.38,4.23 5.91,5.30 6.47,7.02 5.00,5.96 3.53,7.02 4.09,5.30 2.62,4.23 4.44,4.23"/></svg>';
 document.documentElement.style.setProperty("--flag", `url("data:image/svg+xml,${encodeURIComponent(FLAG_SVG)}")`);
 const FOTOS = new Set(DATA.fotos||[]);
-const FV = "?v=20";
+const FV = "?v=21";
 const curioPh = id => FOTOS.has(id) ? `fotos/${id}-curio.webp${FV}` : null;
 const bust = id => FOTOS.has(id) ? `fotos/${id}-busto.webp${FV}` : null;
 const cut = id => FOTOS.has(id) ? `fotos/${id}-recorte.webp${FV}` : null;

@@ -733,6 +733,8 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
   mask-image:linear-gradient(270deg,#000 30%,transparent 95%),linear-gradient(180deg,#000 55%,transparent 98%);animation-name:raceDrift}
 @keyframes raceDrift{from{transform:scale(1.02) translateX(0)}to{transform:scale(1.1) translateX(-2%)}}
 .race-band .wrap{position:relative;z-index:1}
+.race-bg img.afbg{object-position:center 8%;opacity:.6;width:52%}
+@media (max-width:640px){.race-bg img.afbg{width:100%;opacity:.32}}
 @media (max-width:640px){.race-bg img{width:100%;opacity:.28}}
 .race-band{position:relative;overflow:clip;background:radial-gradient(120% 80% at 85% 0%,rgba(255,200,61,.16),transparent 55%),radial-gradient(90% 70% at 0% 100%,rgba(123,60,255,.35),transparent 60%),linear-gradient(180deg,#120a24,#1c0d33 60%,#120a24)}
 .race-beams{position:absolute;inset:0;pointer-events:none}
@@ -1331,7 +1333,7 @@ function sakura(sec){
 (function(){
   const C=DATA.carrera; if(!C) return; const T=C.torneo, N=C.cupos;
   $("#raceYear").textContent=C.anio;
-  { const bg=$("#raceBg"), fid=C.foto||"valenzuela"; if(FOTOS.has(fid)) bg.src=`fotos/${fid}.jpg${FV}`; else bg.remove(); }
+  { const bg=$("#raceBg"), fid=C.foto||"valenzuela"; if(C.afiche){ bg.src=`${C.afiche}${FV}`; bg.classList.add("afbg"); } else if(FOTOS.has(fid)) bg.src=`fotos/${fid}.jpg${FV}`; else bg.remove(); }
   $("#raceIntro").textContent=`Solo suman los puntos ganados en ${C.anio}. Los ${N} mejores de la carrera se ganan su lugar en el Torneo de Maestros de ${T.mes.toLowerCase()}: el ${T.nombre}.${C.quedan&&C.quedan.length?` Todavía queda por jugarse ${C.quedan.join(" y ")}.`:""}`;
   const emb=`<svg class="memb" viewBox="0 0 160 160" aria-hidden="true"><defs><linearGradient id="mg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".45" stop-color="#ffc83d"/><stop offset="1" stop-color="#c46a00"/></linearGradient></defs>
     <circle cx="80" cy="80" r="74" fill="none" stroke="url(#mg)" stroke-width="2.5" stroke-dasharray="3 6"/>
@@ -1340,7 +1342,7 @@ function sakura(sec){
     <path d="M56 40h48v22c0 18-10 30-24 32-14-2-24-14-24-32z" fill="url(#mg)"/><path d="M56 46H44c0 14 6 22 14 24M104 46h12c0 14-6 22-14 24" fill="none" stroke="url(#mg)" stroke-width="5" stroke-linecap="round"/>
     <rect x="75" y="94" width="10" height="14" rx="2" fill="url(#mg)"/><rect x="62" y="108" width="36" height="10" rx="3" fill="url(#mg)"/><rect x="56" y="118" width="48" height="7" rx="3" fill="#c46a00"/>
     <path d="M80 50l3.5 7.2 7.9 1.1-5.7 5.6 1.3 7.9-7-3.7-7 3.7 1.3-7.9-5.7-5.6 7.9-1.1z" fill="#fff8dd" opacity=".9"/></svg>`;
-  if(C.afiche){ const mc=$("#mcard"); mc.classList.add("has-afiche");
+  if(C.aficheTarjeta&&C.afiche){ const mc=$("#mcard"); mc.classList.add("has-afiche");
     mc.innerHTML=`<img class="mafiche" src="${C.afiche}${FV}" alt="Afiche del Torneo de Maestros ${C.anio}, ${T.nombre}: ${T.fecha} en ${T.lugar}, ${T.cat}"><span class="sr">${T.nombre} · ${T.fecha} · ${T.lugar} · ${T.cat} · ${N} cupos</span>`; }
   else $("#mcard").innerHTML=`<div class="mk">${cflag(T.pais)}Torneo de Maestros · ${C.anio}</div>${emb}
     <div class="mtxt"><h3 class="mname"><span>${T.nombre}</span></h3><div class="mmeta">${T.fecha} · ${T.lugar}, ${PAIS_N[T.pais]||""}<br><span class="mpill">${T.cat}</span></div></div>

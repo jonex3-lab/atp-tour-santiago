@@ -712,6 +712,12 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
 }
 
 /* ---------- carrera del año ---------- */
+.race-bg img{left:auto;right:-2%;width:48%;height:min(920px,100%);object-position:44% 20%;opacity:.55;
+  -webkit-mask-image:linear-gradient(270deg,#000 30%,transparent 95%),linear-gradient(180deg,#000 55%,transparent 98%);
+  mask-image:linear-gradient(270deg,#000 30%,transparent 95%),linear-gradient(180deg,#000 55%,transparent 98%);animation-name:raceDrift}
+@keyframes raceDrift{from{transform:scale(1.02) translateX(0)}to{transform:scale(1.1) translateX(-2%)}}
+.race-band .wrap{position:relative;z-index:1}
+@media (max-width:640px){.race-bg img{width:100%;opacity:.28}}
 .race-band{position:relative;overflow:clip;background:radial-gradient(120% 80% at 85% 0%,rgba(255,200,61,.16),transparent 55%),radial-gradient(90% 70% at 0% 100%,rgba(123,60,255,.35),transparent 60%),linear-gradient(180deg,#120a24,#1c0d33 60%,#120a24)}
 .race-beams{position:absolute;inset:0;pointer-events:none}
 .race-beams i{position:absolute;top:-20%;width:14%;height:140%;background:linear-gradient(180deg,rgba(255,200,61,.0),rgba(255,200,61,.10) 40%,rgba(255,46,147,.06) 70%,transparent);transform:rotate(18deg);filter:blur(6px)}
@@ -854,6 +860,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
   </section>
 
   <section class="band race-band" id="carrera">
+    <div class="rank-bg race-bg" aria-hidden="true"><img id="raceBg" alt=""></div>
     <div class="race-beams" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="wrap">
       <div class="head">
@@ -976,7 +983,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
 const DATA = {
   actualizado: "2026-06-27",
   carrera: {
-    anio: 2026, cupos: 4,
+    anio: 2026, cupos: 4, foto: "valenzuela",
     torneo: {nombre:"Rolex Shanghai Masters", mes:"Diciembre", fecha:"1–12 de diciembre", lugar:"Shanghái", pais:"cn", cat:"Grand Slam 2000"},
     jugados: ["Kinoshita Group Japan Open"], quedan: ["Rolex París Masters"],
     desempate: "partidos jugados en el circuito",
@@ -1289,6 +1296,7 @@ function sakura(sec){
 (function(){
   const C=DATA.carrera; if(!C) return; const T=C.torneo, N=C.cupos;
   $("#raceYear").textContent=C.anio;
+  { const bg=$("#raceBg"), fid=C.foto||"valenzuela"; if(FOTOS.has(fid)) bg.src=`fotos/${fid}.jpg${FV}`; else bg.remove(); }
   $("#raceIntro").textContent=`Solo suman los puntos ganados en ${C.anio}. Los ${N} mejores de la carrera se ganan su lugar en el Torneo de Maestros de ${T.mes.toLowerCase()}: el ${T.nombre}.${C.quedan&&C.quedan.length?` Todavía queda por jugarse ${C.quedan.join(" y ")}.`:""}`;
   const emb=`<svg class="memb" viewBox="0 0 160 160" aria-hidden="true"><defs><linearGradient id="mg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".45" stop-color="#ffc83d"/><stop offset="1" stop-color="#c46a00"/></linearGradient></defs>
     <circle cx="80" cy="80" r="74" fill="none" stroke="url(#mg)" stroke-width="2.5" stroke-dasharray="3 6"/>

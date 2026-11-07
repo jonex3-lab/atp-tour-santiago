@@ -715,6 +715,10 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
   .bracket path.c{stroke-dashoffset:0}.bracket .g{opacity:1;transform:none}
 }
 
+.players-band{position:relative;background:linear-gradient(180deg,#07040d calc(100% - 33.4vw),rgba(7,4,13,0) calc(100% - 33.4vw + 160px)),url(img/cancha-noche.jpg?v=1) center bottom/100% auto no-repeat,#07040d}
+@media (max-width:900px){.players-band{background:#07040d url(img/cancha-noche.jpg?v=1) center bottom/cover no-repeat}}
+.players-band::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,6,18,.55),rgba(10,6,18,.05) 45%,rgba(10,6,18,.35));pointer-events:none}
+.players-band>*{position:relative}
 /* ---------- carrera del año ---------- */
 .mcard.has-afiche{padding:0;display:block;background:#1a0b2e}
 .mcard.has-afiche::before{display:none}
@@ -924,7 +928,7 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
     </div>
   </section>
 
-  <section class="band" id="jugadores">
+  <section class="band players-band" id="jugadores">
     <div class="wrap">
       <div class="head">
         <div class="rv l"><span class="kick">Circuito actual</span><h2 class="fh">Los <em>siete</em></h2></div>

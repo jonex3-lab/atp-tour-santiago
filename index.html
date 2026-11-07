@@ -717,7 +717,9 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
 /* ---------- carrera del año ---------- */
 .hist-band{position:relative;overflow:clip}
 .hist-band .wrap{position:relative;z-index:1}
-.hist-bg img{height:min(1000px,100%);object-position:center 15%}
+.hist-band,.hist-bg{overflow:clip}
+.hist-bg img{position:sticky;display:block;left:auto;margin-left:-2%;top:0;height:100vh;max-height:1000px;object-position:center 15%}
+@media (max-width:640px){.hist-bg img{width:104%}}
 .race-bg img{left:auto;right:-2%;width:48%;height:min(920px,100%);object-position:44% 20%;opacity:.55;
   -webkit-mask-image:linear-gradient(270deg,#000 30%,transparent 95%),linear-gradient(180deg,#000 55%,transparent 98%);
   mask-image:linear-gradient(270deg,#000 30%,transparent 95%),linear-gradient(180deg,#000 55%,transparent 98%);animation-name:raceDrift}
@@ -747,6 +749,10 @@ footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;m
 .qual4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .qcard{position:relative;border-radius:24px;overflow:hidden;min-height:420px;cursor:pointer;background:linear-gradient(180deg,rgba(255,200,61,.20),rgba(123,60,255,.25) 55%,#140a28);border:1px solid rgba(255,255,255,.12);isolation:isolate;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
 .qcard:hover,.qcard:focus-visible{transform:translateY(-6px)}
+.qcard img.qcut{transform-origin:50% 100%;transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .45s}
+.qcard:hover img.qcut,.qcard:focus-visible img.qcut{transform:translateX(-50%) scale(1.1);filter:drop-shadow(0 24px 36px rgba(0,0,0,.6)) brightness(1.06)}
+.qcard:hover .qn{-webkit-text-stroke-color:rgba(255,200,61,.8)}
+@media (prefers-reduced-motion:reduce){.qcard img.qcut{transition:none}}
 .qcard.p1{background:linear-gradient(180deg,rgba(255,200,61,.55),rgba(255,122,26,.25) 45%,#1b0c2e)}
 .qcard .qn{position:absolute;top:6px;left:14px;font-family:var(--f-display);font-weight:900;font-size:120px;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.35);z-index:0}
 .qcard.p1 .qn{-webkit-text-stroke-color:rgba(255,255,255,.7)}
